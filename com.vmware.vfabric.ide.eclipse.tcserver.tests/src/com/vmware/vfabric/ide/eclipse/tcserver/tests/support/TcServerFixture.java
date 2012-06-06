@@ -63,7 +63,7 @@ public class TcServerFixture extends TestConfiguration {
 
 	private static final TcServerFixture DEFAULT = V_2_7;
 
-	public static TcServerFixture[] ALL = new TcServerFixture[] { V_6_0, V_2_0, V_2_1, V_2_5, V_2_6 };
+	public static TcServerFixture[] ALL = new TcServerFixture[] { V_6_0, V_2_0, V_2_1, V_2_5, V_2_6, V_2_7 };
 
 	public static TcServerFixture current() {
 		if (current == null) {
