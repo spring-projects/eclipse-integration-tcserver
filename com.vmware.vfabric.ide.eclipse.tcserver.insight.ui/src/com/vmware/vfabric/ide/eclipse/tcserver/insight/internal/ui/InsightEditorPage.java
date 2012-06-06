@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -51,7 +50,7 @@ public class InsightEditorPage extends ServerEditorPart implements IEditorPart {
 		toolkit.decorateFormHeading(form.getForm());
 		form.setText("Spring Insight");
 		form.setImage(ImageResource.getImage(ImageResource.IMG_SERVER));
-		form.getBody().setLayout(new FillLayout());
+		form.getBody().setLayout(new GridLayout());
 
 		Composite columnComp = toolkit.createComposite(form.getBody());
 		GridLayout layout = new GridLayout();
