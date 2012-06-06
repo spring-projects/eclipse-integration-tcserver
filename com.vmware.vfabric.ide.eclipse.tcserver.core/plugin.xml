@@ -1,0 +1,384 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+  <extension-point id="com.springsource.sts.server.tc.core.callback" name="UI Callback" schema="schema/callback.exsd"/>
+
+  <extension point="org.eclipse.wst.server.core.runtimeTypes">
+    <runtimeType
+       id="com.springsource.tcserver.runtime.60"
+       name="SpringSource tc Server v2.0"
+       description="SpringSource tc Server v2.0 supports J2EE 1.2, 1.3, 1.4, and Java EE 5 Web modules."
+       vendor="SpringSource"
+       version="6.0"
+       class="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntime">
+       <moduleType
+         types="jst.web"
+         versions="2.2, 2.3, 2.4, 2.5"/>
+       <moduleType
+         types="jst.utility"
+         versions="1.0"/>
+       <moduleType
+         types="grails.app"
+         versions="1.0"/>
+    </runtimeType>
+    <runtimeType
+       id="com.springsource.tcserver.runtime.70"
+       name="SpringSource tc Server v2.1"
+       description="SpringSource tc Server v2.1 supports J2EE 1.2, 1.3, 1.4, Java EE 5 and 6 Web modules."
+       vendor="SpringSource"
+       version="7.0"
+       class="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntime">
+       <moduleType
+         types="jst.web"
+         versions="2.2, 2.3, 2.4, 2.5, 3.0"/>
+       <moduleType
+         types="jst.utility"
+         versions="1.0"/>
+       <moduleType
+         types="grails.app"
+         versions="1.0"/>
+    </runtimeType>
+    <runtimeType
+       id="com.vmware.server.tc.runtime.70"
+       name="VMware vFabric tc Server v2.5, v2.6, v2.7"
+       description="VMware vFabric tc Server v2.5, v2.6, and v2.7 support J2EE 1.2, 1.3, 1.4, Java EE 5 and 6 Web modules."
+       vendor="VMware"
+       version="7.0"
+       class="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntime">
+       <moduleType
+         types="jst.web"
+         versions="2.2, 2.3, 2.4, 2.5, 3.0"/>
+       <moduleType
+         types="jst.utility"
+         versions="1.0"/>
+       <moduleType
+         types="grails.app"
+         versions="1.0"/>
+    </runtimeType>
+  </extension>
+  
+  <!--
+  <extension point="org.eclipse.wst.server.core.runtimeLocators">
+    <runtimeLocator
+       id="com.springsource.sts.ide.tomcat.runtime.locator"
+       typeIds="com.springsource.sts.ide.tomcat.server.tcserver.runtime.*"
+       class="org.eclipse.jst.server.tomcat.core.internal.TomcatRuntimeLocator"/>
+  </extension>
+  -->
+
+  <extension point="org.eclipse.jst.server.core.runtimeClasspathProviders">
+     <runtimeClasspathProvider
+        id="com.springsource.sts.ide.tomcat.runtimeTarget"
+        runtimeTypeIds="com.springsource.tcserver.runtime.60,com.springsource.tcserver.runtime.70,com.vmware.server.tc.runtime.70"
+        class="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntimeClasspathProvider"/>
+   </extension>
+
+  <extension point="org.eclipse.wst.server.core.serverTypes">
+     <serverType
+       id="com.springsource.tcserver.60"
+       name="SpringSource tc Server v2.0"
+       description="Publishes and runs J2EE and Java EE Web projects and server configurations to a local tc Server instance."
+       supportsRemoteHosts="false"
+       runtime="true"
+       startTimeout="120000"
+       stopTimeout="15000"
+       initialState="stopped"
+       hasConfiguration="true"
+       launchConfigId="com.springsource.tcserver.launchConfiguration"
+       runtimeTypeId="com.springsource.tcserver.runtime.60"
+       class="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer"
+       behaviourClass="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviour">
+     </serverType>
+     <serverType
+       id="com.springsource.tcserver.70"
+       name="SpringSource tc Server v2.1"
+       description="Publishes and runs J2EE and Java EE Web projects and server configurations to a local tc Server instance."
+       supportsRemoteHosts="false"
+       runtime="true"
+       startTimeout="120000"
+       stopTimeout="15000"
+       initialState="stopped"
+       hasConfiguration="true"
+       launchConfigId="com.springsource.tcserver.launchConfiguration"
+       runtimeTypeId="com.springsource.tcserver.runtime.70"
+       class="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer"
+       behaviourClass="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviour">
+     </serverType>
+     <serverType
+       id="com.vmware.server.tc.70"
+       name="VMware vFabric tc Server v2.5, v2.6, v2.7"
+       description="Publishes and runs J2EE and Java EE Web projects and server configurations to a local tc Server instance."
+       supportsRemoteHosts="false"
+       runtime="true"
+       startTimeout="120000"
+       stopTimeout="15000"
+       initialState="stopped"
+       hasConfiguration="true"
+       launchConfigId="com.vmware.server.tc.launchConfiguration"
+       runtimeTypeId="com.vmware.server.tc.runtime.70"
+       class="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer"
+       behaviourClass="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviour">
+     </serverType>
+  </extension>
+
+  <extension point="org.eclipse.wst.server.core.serverLocators">
+    <serverLocator
+       id="com.springsource.sts.ide.tomcat.server.locator"
+       supportsRemoteHosts="false"
+       typeIds="com.springsource.tcserver.*"
+       class="org.eclipse.jst.server.tomcat.core.internal.TomcatServerLocator"/>
+  </extension>
+
+  <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+     <launchConfigurationType
+        id="com.springsource.tcserver.launchConfiguration"
+        name="SpringSource tc Server"
+        delegate="org.eclipse.jst.server.tomcat.core.internal.TomcatLaunchConfigurationDelegate"
+        modes="run, debug, profile"
+        sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+        sourcePathComputerId="com.springsource.sts.server.tc.core.sourcePathComputer"/>
+  </extension>
+
+  <extension point="org.eclipse.debug.core.launchConfigurationTypes">
+     <launchConfigurationType
+        id="com.vmware.server.tc.launchConfiguration"
+        name="VMware vFabric tc Server"
+        delegate="org.eclipse.jst.server.tomcat.core.internal.TomcatLaunchConfigurationDelegate"
+        modes="run, debug, profile"
+        sourceLocatorId="org.eclipse.jdt.launching.sourceLocator.JavaSourceLookupDirector"
+        sourcePathComputerId="com.springsource.sts.server.tc.core.sourcePathComputer"/>
+  </extension>
+
+  <extension point="org.eclipse.debug.core.sourcePathComputers">
+     <sourcePathComputer
+        id="com.springsource.sts.server.tc.core.sourcePathComputer"
+        class="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerSourcePathComputerDelegate"/>
+  </extension>
+
+  <extension point="org.eclipse.wst.server.core.publishTasks">
+     <publishTask
+        id="com.springsource.sts.ide.tomcat.server.publishTask"
+        typeIds="com.springsource.tcserver.*,com.vmware.server.tc.*"
+        class="org.eclipse.jst.server.tomcat.core.internal.PublishTask"/>
+  </extension>
+
+  <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
+    <runtime-component-type
+       id="com.springsource.tcserver"/>
+
+    <runtime-component-version
+       type="com.springsource.tcserver"
+       version="6.0"/>
+    <runtime-component-version
+       type="com.springsource.tcserver"
+       version="7.0"/>
+
+    <adapter>
+      <runtime-component
+         id="com.springsource.tcserver"/>
+      <factory
+         class="org.eclipse.jst.server.core.internal.RuntimeClasspathProvider$Factory"/>
+      <type
+         class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
+    </adapter>
+
+    <supported>
+      <runtime-component
+         id="com.springsource.tcserver"
+         version="6.0"/>
+      <facet
+         id="jst.web"
+         version="2.2,2.3,2.4,2.5"/>
+      <facet
+         id="jst.utility"
+         version="1.0"/>
+      <facet
+         id="grails.app"
+         version="1.0"/>
+    </supported>
+
+    <supported>
+      <runtime-component
+         id="com.springsource.tcserver"
+         version="7.0"/>
+      <facet
+         id="jst.web"
+         version="2.2,2.3,2.4,2.5,3.0"/>
+      <facet
+         id="jst.webfragment"
+         version="3.0"/>
+      <facet
+         id="jst.utility"
+         version="1.0"/>
+      <facet
+         id="grails.app"
+         version="1.0"/>
+    </supported>
+  </extension>
+
+  <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
+    <runtime-component-type
+       id="com.vmware.server.tc"/>
+
+    <runtime-component-version
+       type="com.vmware.server.tc"
+       version="7.0"/>
+
+    <adapter>
+      <runtime-component
+         id="com.vmware.server.tc"/>
+      <factory
+         class="org.eclipse.jst.server.core.internal.RuntimeClasspathProvider$Factory"/>
+      <type
+         class="org.eclipse.jst.common.project.facet.core.IClasspathProvider"/>
+    </adapter>
+
+    <supported>
+      <runtime-component
+         id="com.vmware.server.tc"
+         version="7.0"/>
+      <facet
+         id="jst.web"
+         version="2.2,2.3,2.4,2.5,3.0"/>
+      <facet
+         id="jst.webfragment"
+         version="3.0"/>
+      <facet
+         id="jst.utility"
+         version="1.0"/>
+      <facet
+         id="grails.app"
+         version="1.0"/>
+    </supported>
+  </extension>
+  
+  <extension point="org.eclipse.wst.common.project.facet.core.defaultFacets">
+    <default-facets>
+      <runtime-component id="com.springsource.tcserver"/>
+      <facet id="wst.jsdt.web" version="1.0"/>
+    </default-facets>
+    <default-facets>
+      <runtime-component id="com.vmware.server.tc"/>
+      <facet id="wst.jsdt.web" version="1.0"/>
+    </default-facets>
+  </extension>
+  
+  <extension point="org.eclipse.jst.server.core.runtimeFacetMappings">
+    <runtimeFacetMapping
+      runtimeTypeId="com.springsource.tcserver.runtime.60"
+      runtime-component="com.springsource.tcserver"
+      version="6.0"/>
+    <runtimeFacetMapping
+      runtimeTypeId="com.springsource.tcserver.runtime.70"
+      runtime-component="com.springsource.tcserver"
+      version="7.0"/>
+    <runtimeFacetMapping
+      runtimeTypeId="com.vmware.server.tc.runtime.70"
+      runtime-component="com.vmware.server.tc"
+      version="7.0"/>
+  </extension>
+
+  <extension
+        point="com.springsource.sts.ide.configurator.serverConfigurations">
+     <runtime
+           id="com.springsource.sts.ide.configurator.server.TcServer6"
+           runtimeName="SpringSource tc Server (Runtime) v6.0"
+           runtimeTypeId="com.springsource.tcserver.runtime.60"
+           serverName="SpringSource tc Server v6.0"
+           serverTypeId="com.springsource.tcserver.60"
+           name="SpringSource tc Server"
+           description="SpringSource tc Server is an enterprise version of Apache Tomcat that provides developers with the lightweight server they want paired with the operational management, advanced diagnostics, and mission-critical support capabilities businesses need."
+           versionRange="[6.0.0,7.0.0)"
+           installPath="tc-server"
+           bundleId="com.springsource.server.tc.bundle"
+           archivePath="tc-server-6.0">
+     </runtime>
+     <runtime
+           archivePath="springsource-tc-server-developer"
+           bundleId="com.springsource.server.tc.bundle"
+           callback="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer20ServerHandlerCallback"
+           description="SpringSource tc Server is an enterprise version of Apache Tomcat that provides developers with the lightweight server they want paired with the operational management, advanced diagnostics, and mission-critical support capabilities businesses need."
+           id="com.springsource.sts.ide.configurator.server.TcServer20"
+           installPath="tc-server-developer"
+           name="SpringSource tc Server Developer Edition"
+           runtimeName="SpringSource tc Server Developer Edition (Runtime) v2.0"
+           runtimeTypeId="com.springsource.tcserver.runtime.60"
+           serverName="SpringSource tc Server Developer Edition v2.0"
+           serverTypeId="com.springsource.tcserver.60"
+           versionRange="[2.0.0,2.1.0)">
+     </runtime>
+     <runtime
+           archivePath="springsource-tc-server-developer"
+           bundleId="com.springsource.server.tc.bundle"
+           callback="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer21ServerHandlerCallback"
+           description="SpringSource tc Server is an enterprise version of Apache Tomcat that provides developers with the lightweight server they want paired with the operational management, advanced diagnostics, and mission-critical support capabilities businesses need."
+           id="com.springsource.sts.ide.configurator.server.TcServer21"
+           installPath="tc-server-developer"
+           name="SpringSource tc Server Developer Edition"
+           runtimeName="SpringSource tc Server Developer Edition (Runtime) v2.1"
+           runtimeTypeId="com.springsource.tcserver.runtime.70"
+           serverName="SpringSource tc Server Developer Edition v2.1"
+           serverTypeId="com.springsource.tcserver.70"
+           versionRange="[2.1.0,2.5.0)">
+     </runtime>
+     <runtime
+           archivePath="vfabric-tc-server-developer"
+           bundleId="com.springsource.server.tc.bundle"
+           callback="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer21ServerHandlerCallback"
+           description="VMware vFabric tc Server is an enterprise version of Apache Tomcat that provides developers with the lightweight server they want paired with the operational management, advanced diagnostics, and mission-critical support capabilities businesses need."
+           id="com.springsource.sts.ide.configurator.server.TcServer25"
+           installPath="vfabric-tc-server-developer"
+           name="VMware vFabric tc Server Developer Edition"
+           runtimeName="VMware vFabric tc Server Developer Edition (Runtime) v2.5"
+           runtimeTypeId="com.vmware.server.tc.runtime.70"
+           serverName="VMware vFabric tc Server Developer Edition v2.5"
+           serverTypeId="com.vmware.server.tc.70"
+           versionRange="[2.5.0,2.6.0)">
+     </runtime>
+     <runtime
+           archivePath="vfabric-tc-server-developer"
+           bundleId="com.springsource.server.tc.bundle"
+           callback="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer21ServerHandlerCallback"
+           description="VMware vFabric tc Server is an enterprise version of Apache Tomcat that provides developers with the lightweight server they want paired with the operational management, advanced diagnostics, and mission-critical support capabilities businesses need."
+           id="com.springsource.sts.ide.configurator.server.TcServer26"
+           installPath="vfabric-tc-server-developer"
+           name="VMware vFabric tc Server Developer Edition"
+           runtimeName="VMware vFabric tc Server Developer Edition (Runtime) v2.6"
+           runtimeTypeId="com.vmware.server.tc.runtime.70"
+           serverName="VMware vFabric tc Server Developer Edition v2.6"
+           serverTypeId="com.vmware.server.tc.70"
+           versionRange="[2.6.0,2.7.0)">
+     </runtime>
+     <runtime
+           archivePath="vfabric-tc-server-developer"
+           bundleId="com.springsource.server.tc.bundle"
+           callback="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer21ServerHandlerCallback"
+           description="VMware vFabric tc Server is an enterprise version of Apache Tomcat that provides developers with the lightweight server they want paired with the operational management, advanced diagnostics, and mission-critical support capabilities businesses need."
+           id="com.springsource.sts.ide.configurator.server.TcServer27"
+           installPath="vfabric-tc-server-developer"
+           name="VMware vFabric tc Server Developer Edition"
+           runtimeName="VMware vFabric tc Server Developer Edition (Runtime) v2.7"
+           runtimeTypeId="com.vmware.server.tc.runtime.70"
+           serverName="VMware vFabric tc Server Developer Edition v2.7"
+           serverTypeId="com.vmware.server.tc.70"
+           versionRange="[2.7.0,3.0.0)">
+     </runtime>
+  </extension>
+
+  <!--
+  <extension point="org.eclipse.wst.server.core.installableRuntimes">
+    <runtime
+      id="com.springsource.sts.ide.tomcat.server.tcserver.runtime.60"
+      licenseUrl=""
+      archiveUrl=""
+      archivePath="tcServer-6.0.18.A-tomcat-asf-unix-beta1.zip"
+      os="win32"/>
+    <runtime
+      id="com.springsource.sts.ide.tomcat.server.tcserver.runtime.60"
+      licenseUrl=""
+      archiveUrl=""
+      archivePath="tcServer-6.0.18.A-tomcat-asf-unix-beta1.tar.gz"
+      os="linux"/>
+  </extension>
+  -->
+</plugin>

@@ -1,0 +1,27 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SpringSource Tool Suite tc Server Integration Tests
+Bundle-SymbolicName: com.vmware.vfabric.ide.eclipse.tcserver.tests;singleton:=true
+Bundle-Version: 3.0.0.qualifier
+Bundle-Vendor: SpringSource
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.debug.core,
+ org.eclipse.jdt.launching,
+ org.eclipse.jst.server.core,
+ org.eclipse.jst.server.tomcat.core,
+ org.eclipse.wst.server.core,
+ com.vmware.vfabric.ide.eclipse.tcserver.core,
+ com.vmware.vfabric.ide.eclipse.tcserver.ui,
+ org.springsource.ide.eclipse.commons.core,
+ org.springsource.ide.eclipse.commons.tests.util,
+ org.springsource.ide.eclipse.commons.configurator;bundle-version="2.0.0",
+ org.eclipse.ui,
+ org.junit4,
+ org.apache.commons.lang,
+ org.eclipse.jdt.core
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: com.vmware.vfabric.ide.eclipse.tcserver.internal.core;x-internal:=true,
+ com.vmware.vfabric.ide.eclipse.tcserver.tests;x-internal:=true,
+ com.vmware.vfabric.ide.eclipse.tcserver.tests.support
+Import-Package: org.springsource.ide.eclipse.commons.frameworks.test.util

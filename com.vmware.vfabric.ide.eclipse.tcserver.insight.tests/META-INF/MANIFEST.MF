@@ -1,0 +1,22 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: SpringSource Tool Suite Insight Tests
+Bundle-SymbolicName: com.vmware.vfabric.ide.eclipse.tcserver.insight.tests;singleton:=true
+Bundle-Version: 3.0.0.qualifier
+Bundle-Vendor: SpringSource
+Require-Bundle: org.eclipse.core.runtime,
+ org.eclipse.core.resources,
+ org.eclipse.debug.core,
+ org.eclipse.jdt.launching,
+ org.eclipse.jst.server.core,
+ org.eclipse.wst.server.core,
+ org.springsource.ide.eclipse.commons.core,
+ com.vmware.vfabric.ide.eclipse.tcserver.insight.ui,
+ com.vmware.vfabric.ide.eclipse.tcserver.core,
+ org.springsource.ide.eclipse.commons.tests.util,
+ org.eclipse.ui,
+ org.junit4
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Export-Package: com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui;x-internal:=true,
+ com.vmware.vfabric.ide.eclipse.tcserver.insight.tests;x-internal:=true
+Bundle-ClassPath: .
