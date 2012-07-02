@@ -66,7 +66,6 @@
 	<signing.keystore>~/.keytool/springsource.jks</signing.keystore>
 	<signing.store.password>${STORE_PASSWORD}</signing.store.password>
 	<signing.key.password>${KEY_PASSWORD}</signing.key.password>
-    <signing.properties>signing.properties</signing.properties>
 
     <dist.name>VMware vFabric tc Server Integration for Eclipse</dist.name>
     <dist.project>eclipse-integration-tcserver</dist.project>
@@ -108,6 +107,7 @@
   </properties>
 
   <profiles>
+	
     <profile>
       <id>e37</id>
       <activation>
@@ -139,6 +139,7 @@
 		</repository>
 	  </repositories>
     </profile>
+
     <profile>
       <id>build.springsource.com</id>
       <activation>
@@ -152,6 +153,7 @@
         <p2.replaceQualifier>true</p2.replaceQualifier>
       </properties>
     </profile>
+
     <profile>
       <id>osx</id>
       <activation>
@@ -164,6 +166,15 @@
         <test.osvmargs>-Dosgi.ws=cocoa -XstartOnFirstThread</test.osvmargs>
       </properties>
     </profile>
+
+	<profile>
+		<id>bamboo-signing</id>
+		<properties>
+			<signing.store.password>${env.bamboo_signing_store_password}</signing.store.password>
+			<signing.key.password>${env.bamboo_signing_key_password}</signing.key.password>
+		</properties>
+	</profile>
+
   </profiles>
 
   <repositories>
@@ -271,7 +282,6 @@
             <configuration>
               <files>
                 <file>${project.build.directory}/git.properties</file>
-				<file>${signing.properties}</file>
               </files>
               <!-- do not fail if properties file does not exist to support, required to build eclipse-repository projects -->
               <quiet>true</quiet>
