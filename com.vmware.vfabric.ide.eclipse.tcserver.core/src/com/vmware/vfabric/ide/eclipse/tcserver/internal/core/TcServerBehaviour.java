@@ -258,7 +258,8 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 			argsToRemove.add("-Dspringloaded");
 		}
 
-		boolean grailsInstalled = Platform.getBundle("com.springsource.sts.grails.runonserver") != null;
+		boolean grailsInstalled = Platform.getBundle("org.grails.ide.eclipse.runonserver") != null
+				|| Platform.getBundle("com.springsource.sts.grails.runonserver") != null;
 
 		boolean addXmx = true;
 		boolean addXss = true;
