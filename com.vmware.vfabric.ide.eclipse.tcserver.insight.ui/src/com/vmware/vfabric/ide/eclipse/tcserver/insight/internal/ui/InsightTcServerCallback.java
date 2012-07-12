@@ -118,8 +118,6 @@ public class InsightTcServerCallback extends TcServerCallback {
 						if (dialog.getReturnCode() == IDialogConstants.YES_ID) {
 							IServerWorkingCopy serverWC = tcServer.getServer().createWorkingCopy();
 							TcServer serverInstance = (TcServer) serverWC.loadAdapter(TcServer.class, null);
-							// @@@ the following line enables insight; false
-							// would disable
 							new ModifyExtraVmArgsCommand(serverInstance, true).execute();
 							try {
 								IServer server = serverWC.save(true, null);
