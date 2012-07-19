@@ -109,7 +109,7 @@ public class InsightTcServerCallback extends TcServerCallback {
 		if (!TcServerInsightUtil.isInsightEnabled(tcServer)) {
 			String value = Activator.getDefault().getPreferenceStore().getString(PREFERENCE_ENABLE_INSIGHT_PONT);
 			if (MessageDialogWithToggle.PROMPT.equals(value)) {
-				Display.getDefault().syncExec(new Runnable() {
+				Display.getDefault().asyncExec(new Runnable() {
 					public void run() {
 						MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoCancelQuestion(
 								UiUtil.getShell(), WANT_INSIGHT_DIALOG_TITLE, WANT_INSIGHT_DIALOG_MESSAGE,
