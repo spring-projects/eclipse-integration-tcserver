@@ -284,13 +284,13 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 			}
 		}
 		if (addXmx) {
-			argsToAdd.add("-Xmx512m");
+			argsToAdd.add("-Xmx768m");
 		}
 		if (addXss) {
 			argsToAdd.add("-Xss192k");
 		}
 		if (addMaxPermSize) {
-			argsToAdd.add("-XX:MaxPermSize=128m");
+			argsToAdd.add("-XX:MaxPermSize=256m");
 		}
 
 		if (grailsInstalled) {
