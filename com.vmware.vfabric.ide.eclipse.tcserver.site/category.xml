@@ -23,6 +23,18 @@
 		<category name="Core / Eclipse Integration vFabric tc Server" />
 	</feature>
 	
+	<!-- Dashboard -->
+	<feature 
+		url="features/org.springsource.ide.eclipse.dashboard_3.0.0.qualifier.jar" 
+		id="org.springsource.ide.eclipse.dashboard" version="3.0.0.qualifier">
+		<category name="Core / Eclipse Integration vFabric tc Server"/>
+	</feature>
+
+	<feature 
+		url="features/org.springsource.ide.eclipse.commons_3.0.0.qualifier.jar" 
+		id="org.springsource.ide.eclipse.commons" version="3.0.0.qualifier">
+	</feature>
+
 	<!-- tc Server Integration -->
 	<feature
 		url="com.vmware.vfabric.ide.eclipse.tcserver_3.0.0.qualifier.jar"
