@@ -47,7 +47,8 @@ public class TcServerReloadingPlugin extends Plugin {
 			Enumeration<URL> libs = plugin.getBundle().findEntries("/lib", "springloaded-*.jar", false);
 			while (libs.hasMoreElements()) {
 				try {
-					agentJarPath = new File(FileLocator.toFileURL(libs.nextElement()).toURI()).getCanonicalPath();
+					URL nextLib = libs.nextElement();
+					agentJarPath = new File(FileLocator.toFileURL(nextLib).getPath()).getCanonicalPath();
 				}
 				catch (Exception e) {
 					plugin.getLog().log(new Status(IStatus.ERROR, PLUGIN_ID, "Error loading tc Server Agent Jar", e));
