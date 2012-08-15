@@ -15,8 +15,10 @@
 
 ## Installation (Release)
 
-  There is no release published yet. Once we have a release out, you will be able to install it
-  either from the Eclipse Marketplace or from a release update site.
+  You can install the latest release of the vFabric tc Server Integration for Eclipse from the
+  Eclipse Marketplace by looking for "tc Server". You can also install it manually from this update site:
+
+  http://dist.springsource.com/release/TOOLS/eclipse-integration-tcserver/
 
 ## Installation (Milestone)
 
