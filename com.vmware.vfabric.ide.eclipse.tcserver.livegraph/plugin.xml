@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.wst.server.ui.editorPageSections">
+      <section
+            class="com.vmware.vfabric.ide.eclipse.tcserver.livegraph.LiveBeansGraphEditorSection"
+            id="com.vmware.vfabric.ide.eclipse.tcserver.livegraph.LiveBeansGraphEditorSection"
+            insertionId="org.eclipse.wst.server.editor.overview.right"
+            order="20"
+            typeIds="com.springsource.tcserver.*, com.vmware.server.tc.*">
+         <enablement>
+            <test
+                  property="org.eclipse.jst.server.tomcat.ui.hasConfiguration"
+                  value="true">
+            </test>
+         </enablement>
+      </section>
+   </extension>
+
+</plugin>
