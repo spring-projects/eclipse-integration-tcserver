@@ -13,7 +13,6 @@ package com.vmware.vfabric.ide.eclipse.tcserver.livegraph;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Arrays;
-import java.util.List;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
@@ -31,15 +30,12 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 
-import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.ModifyExtraVmArgsCommand;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 
 /**
  * @author Leo Dos Santos
  */
 public class LiveBeansGraphEditorSection extends ServerEditorSection {
-
-	private static String FLAG_LIVE_BEANS = "-Dspring.liveBeansView.mbeanDomain";
 
 	private TcServer serverWorkingCopy;
 
@@ -55,6 +51,7 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 				}
 			}
 		};
+		server.addPropertyChangeListener(listener);
 	}
 
 	@Override
@@ -84,31 +81,20 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 		enableMbeanButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				boolean enabled = enableMbeanButton.getSelection();
-				List<String> toAdd = serverWorkingCopy.getAddExtraVmArgs();
-				List<String> toRemove = serverWorkingCopy.getRemoveExtraVmArgs();
-				if (enabled) {
-					if (!toAdd.contains(FLAG_LIVE_BEANS)) {
-						toAdd.add(FLAG_LIVE_BEANS);
-					}
-					if (toRemove.contains(FLAG_LIVE_BEANS)) {
-						toRemove.remove(FLAG_LIVE_BEANS);
-					}
-				}
-				else {
-					if (toAdd.contains(FLAG_LIVE_BEANS)) {
-						toAdd.remove(FLAG_LIVE_BEANS);
-					}
-					if (!toRemove.contains(FLAG_LIVE_BEANS)) {
-						toRemove.add(FLAG_LIVE_BEANS);
-					}
-				}
-				execute(new ModifyExtraVmArgsCommand(serverWorkingCopy, toAdd, toRemove));
+				execute(new ModifyLiveGraphVmArgsCommand(serverWorkingCopy, enableMbeanButton.getSelection()));
 			}
 		});
 		GridDataFactory.fillDefaults().applyTo(enableMbeanButton);
 
 		initialize();
+	}
+
+	@Override
+	public void dispose() {
+		if (server != null) {
+			server.removePropertyChangeListener(listener);
+		}
+		super.dispose();
 	}
 
 	@Override
@@ -128,7 +114,7 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 			Display.getDefault().asyncExec(new Runnable() {
 				public void run() {
 					enableMbeanButton.setSelection(serverWorkingCopy.getAddExtraVmArgs().containsAll(
-							Arrays.asList(FLAG_LIVE_BEANS)));
+							Arrays.asList(TcServerLiveGraphPlugin.FLAG_LIVE_BEANS)));
 				}
 			});
 		}

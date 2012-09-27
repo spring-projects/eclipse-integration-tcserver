@@ -118,7 +118,7 @@ public class InsightTcServerCallback extends TcServerCallback {
 						if (dialog.getReturnCode() == IDialogConstants.YES_ID) {
 							IServerWorkingCopy serverWC = tcServer.getServer().createWorkingCopy();
 							TcServer serverInstance = (TcServer) serverWC.loadAdapter(TcServer.class, null);
-							new ModifyExtraVmArgsCommand(serverInstance, true).execute();
+							new ModifyInsightVmArgsCommand(serverInstance, true).execute();
 							try {
 								IServer server = serverWC.save(true, null);
 								// force publishing to update insight
@@ -140,7 +140,7 @@ public class InsightTcServerCallback extends TcServerCallback {
 	@Override
 	public void setDefaults(TcServer server, IProgressMonitor monitor) {
 		// disable insight by default
-		new ModifyExtraVmArgsCommand(server, false).execute();
+		new ModifyInsightVmArgsCommand(server, false).execute();
 	}
 
 	@Override

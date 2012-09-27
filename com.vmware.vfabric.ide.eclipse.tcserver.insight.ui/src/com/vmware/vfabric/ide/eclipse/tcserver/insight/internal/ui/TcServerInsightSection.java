@@ -99,7 +99,7 @@ public class TcServerInsightSection extends ServerEditorSection {
 						return;
 					}
 				}
-				execute(new ModifyExtraVmArgsCommand(serverInstance, button.getSelection()));
+				execute(new ModifyInsightVmArgsCommand(serverInstance, button.getSelection()));
 			}
 		});
 		GridDataFactory.fillDefaults().span(2, 1).applyTo(button);

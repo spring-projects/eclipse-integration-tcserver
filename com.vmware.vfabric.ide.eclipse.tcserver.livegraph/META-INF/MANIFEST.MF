@@ -10,7 +10,6 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.server.ui,
  org.eclipse.wst.server.core,
  org.eclipse.ui.forms,
- com.vmware.vfabric.ide.eclipse.tcserver.insight.ui,
  com.vmware.vfabric.ide.eclipse.tcserver.core,
  org.eclipse.jst.server.tomcat.core
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
