@@ -11,7 +11,6 @@
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 
 import java.io.IOException;
-import java.util.Hashtable;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -19,8 +18,6 @@ import java.util.concurrent.TimeoutException;
 import javax.management.JMException;
 import javax.management.MBeanServerConnection;
 import javax.management.remote.JMXConnector;
-import javax.management.remote.JMXConnectorFactory;
-import javax.management.remote.JMXServiceURL;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -34,8 +31,6 @@ import org.eclipse.jst.server.tomcat.core.internal.TomcatPlugin;
  * @author Christian Dupuis
  */
 public abstract class AbstractJmxServerCommand<T> {
-
-	private static final String JMX_CONNECTOR_URL = "service:jmx:rmi:///jndi/rmi://%s:%d/jmxrmi"; //$NON-NLS-1$
 
 	public static String[] getSignature(Object[] operationArguments) {
 		String[] classNames = new String[operationArguments.length];
@@ -69,7 +64,7 @@ public abstract class AbstractJmxServerCommand<T> {
 			protected IStatus run(IProgressMonitor monitor) {
 				JMXConnector connector = null;
 				try {
-					connector = getJmxConnector();
+					connector = serverBehaviour.getTomcatServer().getJmxConnector();
 					result[0] = doOperation(connector.getMBeanServerConnection());
 				}
 				catch (Exception e) {
@@ -107,30 +102,6 @@ public abstract class AbstractJmxServerCommand<T> {
 			// swallow exception here
 		}
 		return null;
-	}
-
-	private JMXConnector getJmxConnector() throws IOException {
-		TcServer server = serverBehaviour.getTomcatServer();
-		IServicabilityInfo info;
-		try {
-			info = serverBehaviour.getServicabilityInfo();
-			if (info == null || !info.isValid()) {
-				throw new IOException("JMX access is not configured for server");
-			}
-		}
-		catch (CoreException e) {
-			// TODO log exception
-			throw new IOException("Configuration of JMX connection failed");
-		}
-
-		Hashtable<String, Object> h = new Hashtable<String, Object>();
-		JmxCredentials credentials = info.getCredentials(server);
-		if (credentials != null) {
-			h.put("jmx.remote.credentials", new String[] { credentials.getUsername(), credentials.getPassword() });
-		}
-
-		String connectorUrl = String.format(JMX_CONNECTOR_URL, info.getHost(), Integer.parseInt(info.getPort()));
-		return JMXConnectorFactory.connect(new JMXServiceURL(connectorUrl), h);
 	}
 
 }
