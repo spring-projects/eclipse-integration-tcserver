@@ -42,4 +42,10 @@
 		<category name="Core / Eclipse Integration vFabric tc Server" />
 	</feature>
 
+	<feature
+		url="com.vmware.vfabric.ide.eclipse.tcserver.insight_3.1.0.qualifier.jar"
+		id="com.vmware.vfabric.ide.eclipse.tcserver.insight" version="3.1.0.qualifier">
+		<category name="Core / Eclipse Integration vFabric tc Server" />
+	</feature>
+
 </site>
