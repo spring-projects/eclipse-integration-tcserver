@@ -32,6 +32,13 @@
          unpack="true"/>
 
    <plugin
+         id="com.vmware.vfabric.ide.eclipse.tcserver.livegraph"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="true"/>
+
+   <plugin
          id="com.vmware.vfabric.ide.eclipse.tcserver.ui"
          download-size="0"
          install-size="0"
