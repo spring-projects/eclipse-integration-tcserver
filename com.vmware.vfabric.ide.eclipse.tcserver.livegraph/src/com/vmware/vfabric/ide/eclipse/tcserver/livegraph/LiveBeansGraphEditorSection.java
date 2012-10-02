@@ -222,14 +222,14 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 	}
 
 	private void update() {
-		if (enableMbeanButton != null && !enableMbeanButton.isDisposed()) {
-			Display.getDefault().asyncExec(new Runnable() {
-				public void run() {
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				if (enableMbeanButton != null && !enableMbeanButton.isDisposed()) {
 					enableMbeanButton.setSelection(serverWorkingCopy.getAddExtraVmArgs().containsAll(
 							Arrays.asList(TcServerLiveGraphPlugin.FLAG_LIVE_BEANS)));
 				}
-			});
-		}
+			}
+		});
 	}
 
 }
