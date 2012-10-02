@@ -160,7 +160,7 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 		});
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(enableMbeanButton);
 
-		toolkit.createLabel(composite, "Click to view application (requires Spring 3.1):");
+		toolkit.createLabel(composite, "Click to view application (requires Spring 3.2):");
 		Label separator = toolkit.createSeparator(composite, SWT.HORIZONTAL);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(separator);
 
