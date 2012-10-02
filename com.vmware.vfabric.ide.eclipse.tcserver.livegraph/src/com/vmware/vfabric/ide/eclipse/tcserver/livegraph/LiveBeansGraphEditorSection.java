@@ -203,7 +203,7 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 	}
 
 	private void initialize() {
-		setHyperlinkState(false);
+		setHyperlinkState(server.getOriginal().getServerState() == IServer.STATE_STARTED);
 		update();
 	}
 
