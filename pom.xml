@@ -91,6 +91,7 @@
 
 	<!-- individual version path extensions for all the dependencies -->
 	<dist.eclipse-integration-commons-version>${dist.dependencies-version-path}</dist.eclipse-integration-commons-version>
+	<dist.spring-ide-version>${dist.dependencies-version-path}</dist.spring-ide-version>
 
     <skip.source.check>true</skip.source.check>
 
@@ -185,6 +186,12 @@
 	  <id>eclipse-integration-commons</id>
 	  <layout>p2</layout>
 	  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.eclipse-integration-commons-version}</url>
+	</repository>
+	
+	<repository>
+	  <id>spring-ide</id>
+	  <layout>p2</layout>
+	  <url>http://dist.springframework.org/${dist.type}/IDE/${dist.spring-ide-version}</url>
 	</repository>
 	
 	<repository>
