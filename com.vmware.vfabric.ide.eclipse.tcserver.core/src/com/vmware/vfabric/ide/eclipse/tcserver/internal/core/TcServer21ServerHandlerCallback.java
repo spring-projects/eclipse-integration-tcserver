@@ -17,20 +17,19 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.springsource.ide.eclipse.commons.configurator.ServerHandlerCallback;
 
-
 /**
  * @author Steffen Pingel
  * @author Christian Dupuis
  */
 public class TcServer21ServerHandlerCallback extends ServerHandlerCallback {
 
-	private static final String DEFAULT_INSTANCE = "spring-insight-instance";
+	private static final String DEFAULT_INSTANCE = "base-instance";
 
 	public void configureServer(IServerWorkingCopy server) throws CoreException {
-		// Create Spring Insight instance in case it is missing
+		// Create a default instance in case that one is missing
 		IPath installLocation = server.getRuntime().getLocation();
 		if (!installLocation.append(DEFAULT_INSTANCE).toFile().exists()) {
-			String[] arguments = new String[] { "create", DEFAULT_INSTANCE, "-t", "insight", "--force" };
+			String[] arguments = new String[] { "create", DEFAULT_INSTANCE, "-t", "base", "--force" };
 			TcServerUtil.executeInstanceCreation(installLocation, DEFAULT_INSTANCE, arguments);
 		}
 
