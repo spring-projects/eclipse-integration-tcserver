@@ -13,15 +13,17 @@ package com.vmware.vfabric.ide.eclipse.tcserver.livegraph;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import javax.management.remote.JMXConnector;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -30,22 +32,20 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorSite;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.forms.events.HyperlinkAdapter;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerListener;
 import org.eclipse.wst.server.core.ServerEvent;
+import org.eclipse.wst.server.ui.ServerUICore;
 import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 import org.springframework.ide.eclipse.beans.ui.livegraph.model.LiveBeansModel;
 import org.springframework.ide.eclipse.beans.ui.livegraph.model.LiveBeansModelGenerator;
@@ -67,13 +67,15 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 
 	private Button enableMbeanButton;
 
-	private List<Hyperlink> hyperlinks;
+	private Table appsTable;
+
+	private TableViewer appsViewer;
 
 	private void addPropertyChangeListener() {
 		propertyListener = new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (TcServer.PROPERTY_ADD_EXTRA_VMARGS.equals(evt.getPropertyName())) {
-					update();
+					updateMbeanButton();
 				}
 			}
 		};
@@ -85,11 +87,14 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 			public void serverChanged(ServerEvent event) {
 				if ((event.getKind() & ServerEvent.STATE_CHANGE) != 0) {
 					if (event.getState() == IServer.STATE_STARTED) {
-						setHyperlinkState(true);
+						setTableState(true);
 					}
 					else if (event.getState() == IServer.STATE_STOPPED) {
-						setHyperlinkState(false);
+						setTableState(false);
 					}
+				}
+				else if ((event.getKind() & ServerEvent.SERVER_CHANGE) != 0) {
+					updateTableInput();
 				}
 			}
 		};
@@ -160,28 +165,28 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 		});
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(enableMbeanButton);
 
-		toolkit.createLabel(composite, "Click to view application (requires Spring 3.2):");
-		Label separator = toolkit.createSeparator(composite, SWT.HORIZONTAL);
-		GridDataFactory.fillDefaults().grab(true, false).applyTo(separator);
+		toolkit.createLabel(composite, "Double-click to view application (requires Spring 3.2):");
 
-		IServer original = server.getOriginal();
-		hyperlinks = new ArrayList<Hyperlink>();
-		if (original != null) {
-			IModule[] modules = original.getModules();
-			for (final IModule module : modules) {
-				final Hyperlink link = toolkit.createHyperlink(composite, module.getName(), SWT.NONE);
-				hyperlinks.add(link);
-				GridDataFactory.fillDefaults().indent(5, 0).applyTo(link);
-				link.addHyperlinkListener(new HyperlinkAdapter() {
-					@Override
-					public void linkActivated(HyperlinkEvent e) {
-						connectToApplication(module);
+		appsTable = toolkit.createTable(composite, SWT.SINGLE | SWT.V_SCROLL | SWT.FULL_SELECTION);
+		GridData data = new GridData(GridData.FILL_HORIZONTAL | GridData.VERTICAL_ALIGN_BEGINNING);
+		data.heightHint = 90;
+		appsTable.setLayoutData(data);
+		appsViewer = new TableViewer(appsTable);
+		appsViewer.setContentProvider(new TcServerModuleContentProvider());
+		appsViewer.setLabelProvider(ServerUICore.getLabelProvider());
+		appsViewer.setInput(server.getOriginal().getModules());
+		appsViewer.addDoubleClickListener(new IDoubleClickListener() {
+			public void doubleClick(DoubleClickEvent event) {
+				if (event.getSelection() instanceof IStructuredSelection) {
+					IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+					if (selection.getFirstElement() instanceof IModule) {
+						connectToApplication((IModule) selection.getFirstElement());
 					}
-				});
+				}
 			}
-		}
+		});
 
-		initialize();
+		initializeUiState();
 	}
 
 	@Override
@@ -199,34 +204,41 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 		serverWorkingCopy = (TcServer) server.loadAdapter(TcServer.class, null);
 		addPropertyChangeListener();
 		addServerStateListener();
-		initialize();
+		initializeUiState();
 	}
 
-	private void initialize() {
-		setHyperlinkState(server.getOriginal().getServerState() == IServer.STATE_STARTED);
-		update();
+	private void initializeUiState() {
+		setTableState(server.getOriginal().getServerState() == IServer.STATE_STARTED);
+		updateMbeanButton();
 	}
 
-	private void setHyperlinkState(final boolean enabled) {
+	private void setTableState(final boolean enabled) {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
-				if (hyperlinks != null) {
-					for (Hyperlink link : hyperlinks) {
-						if (!link.isDisposed()) {
-							link.setEnabled(enabled);
-						}
-					}
+				if (appsTable != null && !appsTable.isDisposed()) {
+					appsTable.setEnabled(enabled);
 				}
 			}
 		});
 	}
 
-	private void update() {
+	private void updateMbeanButton() {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				if (enableMbeanButton != null && !enableMbeanButton.isDisposed()) {
 					enableMbeanButton.setSelection(serverWorkingCopy.getAddExtraVmArgs().containsAll(
 							Arrays.asList(TcServerLiveGraphPlugin.FLAG_LIVE_BEANS)));
+				}
+			}
+		});
+	}
+
+	private void updateTableInput() {
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				if (appsViewer != null) {
+					appsViewer.setInput(server.getOriginal().getModules());
+					appsViewer.refresh();
 				}
 			}
 		});
