@@ -17,8 +17,10 @@ import java.util.Arrays;
 
 import javax.management.remote.JMXConnector;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
@@ -113,12 +115,18 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 			}
 		}
 		catch (IOException e) {
-			StatusHandler.log(new Status(IStatus.ERROR, TcServerLiveGraphPlugin.PLUGIN_ID,
-					"An error occurred while connecting to server.", e));
+			Status status = new Status(IStatus.ERROR, TcServerLiveGraphPlugin.PLUGIN_ID,
+					"An error occurred while connecting to server.", e);
+			openErrorDialogWithStatus(status);
 		}
 		catch (PartInitException e) {
-			StatusHandler.log(new Status(IStatus.ERROR, TcServerLiveGraphPlugin.PLUGIN_ID,
-					"An error occurred while opening the Live Beans Graph View.", e));
+			Status status = new Status(IStatus.ERROR, TcServerLiveGraphPlugin.PLUGIN_ID,
+					"An error occurred while opening the Live Beans Graph View.", e);
+			openErrorDialogWithStatus(status);
+		}
+		catch (CoreException e) {
+			Status status = new Status(IStatus.INFO, TcServerLiveGraphPlugin.PLUGIN_ID, e.getMessage(), e);
+			openErrorDialogWithStatus(status);
 		}
 		finally {
 			if (connector != null) {
@@ -210,6 +218,14 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 	private void initializeUiState() {
 		setTableState(server.getOriginal().getServerState() == IServer.STATE_STARTED);
 		updateMbeanButton();
+	}
+
+	private void openErrorDialogWithStatus(IStatus status) {
+		ErrorDialog.openError(getShell(), "Connection Failed", "Could not connect to the server or application.\n\n"
+				+ "Please ensure that the server is configured for JMX access. "
+				+ "This feature is only supported for applications on Spring Framework 3.2 or greater.\n\n"
+				+ "See the Error Log for more details.", status);
+		StatusHandler.log(status);
 	}
 
 	private void setTableState(final boolean enabled) {
