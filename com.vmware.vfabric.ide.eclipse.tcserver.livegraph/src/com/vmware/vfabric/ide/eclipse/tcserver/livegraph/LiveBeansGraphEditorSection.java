@@ -14,12 +14,16 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import javax.management.remote.JMXConnector;
 
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -104,23 +108,16 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 	}
 
 	private void connectToApplication(IModule module) {
-		JMXConnector connector = null;
 		try {
-			connector = serverWorkingCopy.getJmxConnector();
-			LiveBeansModel model = LiveBeansModelGenerator.connectToModel(connector, module.getName());
+			LiveBeansModel model = connectToModel(module);
 			IViewPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.showView(LiveBeansGraphView.VIEW_ID);
 			if (part instanceof LiveBeansGraphView) {
 				((LiveBeansGraphView) part).setInput(model);
 			}
 		}
-		catch (IOException e) {
-			Status status = new Status(IStatus.ERROR, TcServerLiveGraphPlugin.PLUGIN_ID,
-					"An error occurred while connecting to server.", e);
-			openErrorDialogWithStatus(status);
-		}
 		catch (PartInitException e) {
-			Status status = new Status(IStatus.ERROR, TcServerLiveGraphPlugin.PLUGIN_ID,
+			Status status = new Status(IStatus.INFO, TcServerLiveGraphPlugin.PLUGIN_ID,
 					"An error occurred while opening the Live Beans Graph View.", e);
 			openErrorDialogWithStatus(status);
 		}
@@ -128,17 +125,57 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 			Status status = new Status(IStatus.INFO, TcServerLiveGraphPlugin.PLUGIN_ID, e.getMessage(), e);
 			openErrorDialogWithStatus(status);
 		}
-		finally {
-			if (connector != null) {
+	}
+
+	private LiveBeansModel connectToModel(final IModule module) throws CoreException {
+		final CountDownLatch latch = new CountDownLatch(1);
+		final LiveBeansModel[] result = new LiveBeansModel[1];
+		final CoreException[] status = new CoreException[1];
+
+		Job jmxOperation = new Job("Executing Server Command") {
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+				JMXConnector connector = null;
 				try {
-					connector.close();
+					connector = serverWorkingCopy.getJmxConnector();
+					result[0] = LiveBeansModelGenerator.connectToModel(connector, module.getName());
 				}
 				catch (IOException e) {
-					StatusHandler.log(new Status(IStatus.ERROR, TcServerLiveGraphPlugin.PLUGIN_ID,
-							"An error occurred while closing connection to server.", e));
+					status[0] = new CoreException(new Status(IStatus.ERROR, TcServerLiveGraphPlugin.PLUGIN_ID,
+							"An error occurred while connecting to server.", e));
 				}
+				catch (CoreException e) {
+					status[0] = e;
+				}
+				finally {
+					latch.countDown();
+					if (connector != null) {
+						try {
+							connector.close();
+						}
+						catch (IOException e) {
+							StatusHandler.log(new Status(IStatus.ERROR, TcServerLiveGraphPlugin.PLUGIN_ID,
+									"An error occurred while closing connection to server.", e));
+						}
+					}
+				}
+				return Status.OK_STATUS;
+			}
+		};
+		jmxOperation.schedule();
+
+		try {
+			if (latch.await(30, TimeUnit.SECONDS)) {
+				if (status[0] != null) {
+					throw status[0];
+				}
+				return result[0];
 			}
 		}
+		catch (InterruptedException e) {
+			// swallowed
+		}
+		return new LiveBeansModel();
 	}
 
 	@Override
