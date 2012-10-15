@@ -60,7 +60,7 @@ public class TcServerHarness extends TestHarness {
 	public IServer createServer(final String instance) throws Exception {
 		ServerHandler handler = provisionServer();
 		ServerHandlerCallback callback;
-		if (TcServerFixture.INST_INSIGHT.equals(instance)) {
+		if (TcServer21ServerHandlerCallback.DEFAULT_INSTANCE.equals(instance)) {
 			callback = new TcServer21ServerHandlerCallback();
 		}
 		else {

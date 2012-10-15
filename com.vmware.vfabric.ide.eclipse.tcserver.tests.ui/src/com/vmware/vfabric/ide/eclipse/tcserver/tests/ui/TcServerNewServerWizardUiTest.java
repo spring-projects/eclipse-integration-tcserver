@@ -69,9 +69,12 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 	private static final String INVALID_TOMCAT_DIR_MESSAGE = "The Tomcat installation directory is not valid. It is missing expected file or folder tcruntime-ctl.sh.";
 
-	private static final String EXISTING_INTERFACE = "spring-insight-instance";
+	private static final String BASE_INSTANCE = "base-instance";
 
-	private static final String ARBITRARY_SERVER_NAME = "TESTasdfSERVERfooDELETE";
+	private static final String VMWARE_VFABRIC_TC_SERVER_V25_V26_V27 = "VMware vFabric tc Server v2.5, v2.6, v2.7";
+
+	// TODO: for now, until STS-2986 gets fixed
+	private static String ARBITRARY_SERVER_NAME = VMWARE_VFABRIC_TC_SERVER_V25_V26_V27 + " at localhost"; // "TESTasdfSERVERfooDELETE";
 
 	private static final String ARBITRARY_INSTANCE_NAME = "TESTdiamondsINSTANCEemeraldsIGNORE";
 
@@ -97,7 +100,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 			fixture = TcServerFixture.V_2_7;
 			harness = fixture.createHarness();
 
-			server = harness.createServer(TcServerFixture.INST_INSIGHT);
+			server = harness.createServer(BASE_INSTANCE);
 
 			baseInstallDirectoryPath = ((org.eclipse.wst.server.core.internal.Server) server).getRuntime()
 					.getLocation();
@@ -115,7 +118,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 	// Testing the bulk of the UI in detail
 	// ------------------------------------------------------------
-	public void testWithExistingServerExistingInstance() throws CoreException {
+	public void testWithExistingServerWithExistingInstance() throws CoreException {
 		doServerCreationTest(true, true, false);
 	}
 
@@ -156,7 +159,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 		openNewServerDialog();
 
-		selectTcServer(ARBITRARY_SERVER_NAME);
+		ARBITRARY_SERVER_NAME = selectTcServer(ARBITRARY_SERVER_NAME);
 		checkFinishButton(false);
 		pressButton("Next >");
 
@@ -222,22 +225,21 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 	// helpers specific to TC server testing --------------------------------
 
-	public void selectTcServer(String newServerName) {
+	public String selectTcServer(String newServerName) {
 
 		// the "right" way to do this sometimes fails
 		try {
 			// "Server").click();
-			SWTBotUtils
-					.selectChildTreeElement(bot, "New Server", "VMware", "VMware vFabric tc Server v2.5, v2.6, v2.7");
+			SWTBotUtils.selectChildTreeElement(bot, "New Server", "VMware", VMWARE_VFABRIC_TC_SERVER_V25_V26_V27);
 
 		}
 		catch (Exception e) {
 			// fallback to doing it the "wrong" way.
 			bot.tree().collapseNode("VMware");
-			bot.tree().expandNode("VMware").select("VMware vFabric tc Server v2.5, v2.6, v2.7").click();
+			bot.tree().expandNode("VMware").select(VMWARE_VFABRIC_TC_SERVER_V25_V26_V27).click();
 		}
 
-		bot.textWithLabel("Server name:").setText(newServerName);
+		return bot.textWithLabel("Server name:").getText();
 
 	}
 
@@ -281,8 +283,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		instanceCombo.setText("");
 		bot.text(TcServer21WizardFragment.SPECIFY_TC_SERVER_INSTANCE_MESSAGE);
 
-		instanceCombo.setSelection(EXISTING_INTERFACE);
-
+		instanceCombo.setSelection(BASE_INSTANCE);
 	}
 
 	private void selectInstallDirectory(String installDirectoryName) {
@@ -342,7 +343,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IPath workspacePath = workspace.getRoot().getLocation();
 		File deploymentDir = workspacePath.append("Servers").append(serverName + "-config").toFile();
-		assertTrue(deploymentDir.exists());
+		assertTrue("Directory '" + deploymentDir + "' does not exist", deploymentDir.exists());
 		File[] files = deploymentDir.listFiles();
 		assertNotNull(files);
 		// Files that should be there include catalina.policy,
@@ -643,7 +644,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		// "carbon".equals(SWT.getPlatform()) ||
 
 		if (OsUtils.isWindows()) {
-			bot.waitUntil(Conditions.shellIsActive("Java Type Hierarchy - SpringSource Tool Suite"));
+			bot.waitUntil(Conditions.shellIsActive("Java Type Hierarchy - Spring Tool Suite"));
 			bot.menu("Window").menu("Preferences").click();
 		}
 		else {
@@ -660,7 +661,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 			}
 			else if ("gtk".equals(SWT.getPlatform())) {
 
-				bot.waitUntil(Conditions.shellIsActive("Java Type Hierarchy - SpringSource Tool Suite"));
+				bot.waitUntil(Conditions.shellIsActive("Java Type Hierarchy - Spring Tool Suite"));
 				bot.menu("Window").menu("Preferences").click();
 			}
 			else {

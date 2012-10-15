@@ -23,7 +23,7 @@ import org.springsource.ide.eclipse.commons.configurator.ServerHandlerCallback;
  */
 public class TcServer21ServerHandlerCallback extends ServerHandlerCallback {
 
-	private static final String DEFAULT_INSTANCE = "base-instance";
+	public static final String DEFAULT_INSTANCE = "base-instance";
 
 	public void configureServer(IServerWorkingCopy server) throws CoreException {
 		// Create a default instance in case that one is missing
