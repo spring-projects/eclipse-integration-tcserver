@@ -389,6 +389,24 @@
 			class="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerLaunchConfigurationTabGroup">
 		</launchConfigurationTabGroup>
 	</extension>
+ <extension
+       point="org.eclipse.ui.commands">
+    <command
+          defaultHandler="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.BrowseDeploymentLocationHandler"
+          id="com.vmware.server.tc.ui.command.browseDeploymentLocation"
+          name="Browse Deployment Location...">
+    </command>
+ </extension>
+ <extension
+       point="org.eclipse.ui.menus">
+    <menuContribution
+          locationURI="popup:org.eclipse.wst.server.ui.ServersView?after=additions">
+       <command
+             commandId="com.vmware.server.tc.ui.command.browseDeploymentLocation"
+             id="com.vmware.server.tc.ui.menus.browseDeploymentLocation">
+       </command>
+    </menuContribution>
+ </extension>
 	<!--
 	<extension point="org.eclipse.ui.popupMenus">
     	<objectContribution
