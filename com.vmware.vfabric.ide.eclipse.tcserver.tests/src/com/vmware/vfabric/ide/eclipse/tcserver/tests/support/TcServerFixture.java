@@ -57,13 +57,17 @@ public class TcServerFixture extends TestConfiguration {
 			"vfabric-tc-server-developer-2.7.0.RC1",
 			"http://download.springsource.com/milestone/TCS/vfabric-tc-server-developer-2.7.0.RC1.zip");
 
+	public static TcServerFixture V_2_8 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, "com.vmware.server.tc.70",
+			"vfabric-tc-server-developer-2.8.0.RELEASE",
+			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.8.0.RELEASE.zip");
+
 	public static TcServerFixture V_6_0 = new TcServerFixture("com.springsource.tcserver.60", "tcServer-6.0");
 
 	private static TcServerFixture current;
 
-	private static final TcServerFixture DEFAULT = V_2_7;
+	private static final TcServerFixture DEFAULT = V_2_8;
 
-	public static TcServerFixture[] ALL = new TcServerFixture[] { V_6_0, V_2_0, V_2_1, V_2_5, V_2_6, V_2_7 };
+	public static TcServerFixture[] ALL = new TcServerFixture[] { V_6_0, V_2_0, V_2_1, V_2_5, V_2_6, V_2_7, V_2_8 };
 
 	public static TcServerFixture current() {
 		if (current == null) {

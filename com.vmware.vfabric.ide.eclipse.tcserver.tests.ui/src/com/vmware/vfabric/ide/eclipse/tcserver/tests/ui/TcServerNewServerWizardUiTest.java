@@ -71,10 +71,10 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 	private static final String BASE_INSTANCE = "base-instance";
 
-	private static final String VMWARE_VFABRIC_TC_SERVER_V25_V26_V27 = "VMware vFabric tc Server v2.5, v2.6, v2.7";
+	private static final String VMWARE_VFABRIC_TC_SERVER_V25_V26_V27_V28 = "VMware vFabric tc Server v2.5, v2.6, v2.7, v2.8";
 
 	// TODO: for now, until STS-2986 gets fixed
-	private static String ARBITRARY_SERVER_NAME = VMWARE_VFABRIC_TC_SERVER_V25_V26_V27 + " at localhost"; // "TESTasdfSERVERfooDELETE";
+	private static String ARBITRARY_SERVER_NAME = VMWARE_VFABRIC_TC_SERVER_V25_V26_V27_V28 + " at localhost"; // "TESTasdfSERVERfooDELETE";
 
 	private static final String ARBITRARY_INSTANCE_NAME = "TESTdiamondsINSTANCEemeraldsIGNORE";
 
@@ -97,7 +97,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 		if (baseInstallDirectoryPath == null) {
 
-			fixture = TcServerFixture.V_2_7;
+			fixture = TcServerFixture.V_2_8;
 			harness = fixture.createHarness();
 
 			server = harness.createServer(BASE_INSTANCE);
@@ -230,13 +230,13 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		// the "right" way to do this sometimes fails
 		try {
 			// "Server").click();
-			SWTBotUtils.selectChildTreeElement(bot, "New Server", "VMware", VMWARE_VFABRIC_TC_SERVER_V25_V26_V27);
+			SWTBotUtils.selectChildTreeElement(bot, "New Server", "VMware", VMWARE_VFABRIC_TC_SERVER_V25_V26_V27_V28);
 
 		}
 		catch (Exception e) {
 			// fallback to doing it the "wrong" way.
 			bot.tree().collapseNode("VMware");
-			bot.tree().expandNode("VMware").select(VMWARE_VFABRIC_TC_SERVER_V25_V26_V27).click();
+			bot.tree().expandNode("VMware").select(VMWARE_VFABRIC_TC_SERVER_V25_V26_V27_V28).click();
 		}
 
 		return bot.textWithLabel("Server name:").getText();

@@ -40,8 +40,8 @@
     </runtimeType>
     <runtimeType
        id="com.vmware.server.tc.runtime.70"
-       name="VMware vFabric tc Server v2.5, v2.6, v2.7"
-       description="VMware vFabric tc Server v2.5, v2.6, and v2.7 support J2EE 1.2, 1.3, 1.4, Java EE 5 and 6 Web modules."
+       name="VMware vFabric tc Server v2.5, v2.6, v2.7, v2.8"
+       description="VMware vFabric tc Server v2.5, v2.6, v2.7 and v2.8 support J2EE 1.2, 1.3, 1.4, Java EE 5 and 6 Web modules."
        vendor="VMware"
        version="7.0"
        class="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntime">
@@ -106,7 +106,7 @@
      </serverType>
      <serverType
        id="com.vmware.server.tc.70"
-       name="VMware vFabric tc Server v2.5, v2.6, v2.7"
+       name="VMware vFabric tc Server v2.5, v2.6, v2.7, v2.8"
        description="Publishes and runs J2EE and Java EE Web projects and server configurations to a local tc Server instance."
        supportsRemoteHosts="false"
        runtime="true"
@@ -361,7 +361,21 @@
            runtimeTypeId="com.vmware.server.tc.runtime.70"
            serverName="VMware vFabric tc Server Developer Edition v2.7"
            serverTypeId="com.vmware.server.tc.70"
-           versionRange="[2.7.0,3.0.0)">
+           versionRange="[2.7.0,2.8.0)">
+     </runtime>
+     <runtime
+           archivePath="vfabric-tc-server-developer"
+           bundleId="com.springsource.server.tc.bundle"
+           callback="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer21ServerHandlerCallback"
+           description="VMware vFabric tc Server is an enterprise version of Apache Tomcat that provides developers with the lightweight server they want paired with the operational management, advanced diagnostics, and mission-critical support capabilities businesses need."
+           id="com.springsource.sts.ide.configurator.server.TcServer28"
+           installPath="vfabric-tc-server-developer"
+           name="VMware vFabric tc Server Developer Edition"
+           runtimeName="VMware vFabric tc Server Developer Edition (Runtime) v2.8"
+           runtimeTypeId="com.vmware.server.tc.runtime.70"
+           serverName="VMware vFabric tc Server Developer Edition v2.8"
+           serverTypeId="com.vmware.server.tc.70"
+           versionRange="[2.8.0,3.0.0)">
      </runtime>
   </extension>
 
