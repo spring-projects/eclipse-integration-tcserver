@@ -10,12 +10,12 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui;
 
+import java.io.File;
+
 import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-
-import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.InsightTcServerCallback;
 
 /**
  * @author Steffen Pingel
@@ -27,10 +27,10 @@ public class InsightTcServerCallbackTest extends TestCase {
 		String result;
 
 		result = InsightTcServerCallback.addInsightBase("", path);
-		assertEquals(" -Dinsight.base=\"/\"", result);
+		assertEquals(" -Dinsight.base=\"" + File.separatorChar + "\"", result);
 
 		result = InsightTcServerCallback.addInsightBase("arg", path);
-		assertEquals("arg -Dinsight.base=\"/\"", result);
+		assertEquals("arg -Dinsight.base=\"" + File.separatorChar + "\"", result);
 	}
 
 	public void testAddInsightBaseReplace() {
@@ -38,15 +38,15 @@ public class InsightTcServerCallbackTest extends TestCase {
 		String result;
 
 		result = InsightTcServerCallback.addInsightBase("-Dinsight.base=\"old\"", path);
-		assertEquals("-Dinsight.base=\"/\"", result);
+		assertEquals("-Dinsight.base=\"" + File.separatorChar + "\"", result);
 
 		path = new Path("com  plex/path");
 		result = InsightTcServerCallback.addInsightBase("ab  -Dinsight.base=\"old\" cd", path);
-		assertEquals("ab  -Dinsight.base=\"com  plex/path\" cd", result);
+		assertEquals("ab  -Dinsight.base=\"com  plex" + File.separatorChar + "path\" cd", result);
 
 		path = new Path("/");
 		result = InsightTcServerCallback.addInsightBase("-Dinsight.base=\"/space in path/file\"", path);
-		assertEquals("-Dinsight.base=\"/\"", result);
+		assertEquals("-Dinsight.base=\"" + File.separatorChar + "\"", result);
 	}
 
 	public void testAddInsightBaseMultipleArguments() {
@@ -54,11 +54,11 @@ public class InsightTcServerCallbackTest extends TestCase {
 		String result;
 
 		result = InsightTcServerCallback.addInsightBase("-DargOne=\"one\"", path);
-		assertEquals("-DargOne=\"one\" -Dinsight.base=\"/\"", result);
+		assertEquals("-DargOne=\"one\" -Dinsight.base=\"" + File.separatorChar + "\"", result);
 
 		result = InsightTcServerCallback.addInsightBase("-DargOne=\"one\" -Dinsight.base=\"old\" -DargOne=\"two\"",
 				path);
-		assertEquals("-DargOne=\"one\" -Dinsight.base=\"/\" -DargOne=\"two\"", result);
+		assertEquals("-DargOne=\"one\" -Dinsight.base=\"" + File.separatorChar + "\" -DargOne=\"two\"", result);
 	}
 
 }
