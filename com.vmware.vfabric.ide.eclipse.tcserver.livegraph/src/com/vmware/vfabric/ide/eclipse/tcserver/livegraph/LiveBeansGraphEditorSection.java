@@ -14,8 +14,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import javax.management.remote.JMXConnector;
 
@@ -29,6 +32,7 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -47,11 +51,9 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
-import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerListener;
 import org.eclipse.wst.server.core.ServerEvent;
-import org.eclipse.wst.server.ui.ServerUICore;
 import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 import org.springframework.ide.eclipse.beans.ui.livegraph.model.LiveBeansModel;
 import org.springframework.ide.eclipse.beans.ui.livegraph.model.LiveBeansModelGenerator;
@@ -59,6 +61,7 @@ import org.springframework.ide.eclipse.beans.ui.livegraph.views.LiveBeansGraphVi
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviour;
 
 /**
  * @author Leo Dos Santos
@@ -77,6 +80,8 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 
 	private TableViewer appsViewer;
 
+	private ListApplicationsCommand listCommand;
+
 	private void addPropertyChangeListener() {
 		propertyListener = new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
@@ -94,9 +99,11 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 				if ((event.getKind() & ServerEvent.STATE_CHANGE) != 0) {
 					if (event.getState() == IServer.STATE_STARTED) {
 						setTableState(true);
+						updateTableInput();
 					}
 					else if (event.getState() == IServer.STATE_STOPPED) {
 						setTableState(false);
+						updateTableInput();
 					}
 				}
 				else if ((event.getKind() & ServerEvent.SERVER_CHANGE) != 0) {
@@ -107,9 +114,9 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 		server.getOriginal().addServerListener(stateListener);
 	}
 
-	private void connectToApplication(IModule module) {
+	private void connectToApplication(String appName) {
 		try {
-			LiveBeansModel model = connectToModel(module);
+			LiveBeansModel model = connectToModel(appName);
 			IViewPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.showView(LiveBeansGraphView.VIEW_ID);
 			if (part instanceof LiveBeansGraphView) {
@@ -127,7 +134,7 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 		}
 	}
 
-	private LiveBeansModel connectToModel(final IModule module) throws CoreException {
+	private LiveBeansModel connectToModel(final String appName) throws CoreException {
 		final CountDownLatch latch = new CountDownLatch(1);
 		final LiveBeansModel[] result = new LiveBeansModel[1];
 		final CoreException[] status = new CoreException[1];
@@ -138,7 +145,7 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 				JMXConnector connector = null;
 				try {
 					connector = serverWorkingCopy.getJmxConnector();
-					result[0] = LiveBeansModelGenerator.connectToModel(connector, module.getName());
+					result[0] = LiveBeansModelGenerator.connectToModel(connector, appName);
 				}
 				catch (IOException e) {
 					status[0] = new CoreException(new Status(IStatus.ERROR, TcServerLiveGraphPlugin.PLUGIN_ID,
@@ -217,15 +224,14 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 		data.heightHint = 90;
 		appsTable.setLayoutData(data);
 		appsViewer = new TableViewer(appsTable);
-		appsViewer.setContentProvider(new TcServerModuleContentProvider());
-		appsViewer.setLabelProvider(ServerUICore.getLabelProvider());
-		appsViewer.setInput(server.getOriginal().getModules());
+		appsViewer.setContentProvider(new LiveBeansTableContentProvider());
+		appsViewer.setLabelProvider(new LabelProvider());
 		appsViewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
 				if (event.getSelection() instanceof IStructuredSelection) {
 					IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-					if (selection.getFirstElement() instanceof IModule) {
-						connectToApplication((IModule) selection.getFirstElement());
+					if (selection.getFirstElement() instanceof String) {
+						connectToApplication((String) selection.getFirstElement());
 					}
 				}
 			}
@@ -247,6 +253,9 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 	public void init(IEditorSite site, IEditorInput input) {
 		super.init(site, input);
 		serverWorkingCopy = (TcServer) server.loadAdapter(TcServer.class, null);
+		TcServerBehaviour behaviour = (TcServerBehaviour) serverWorkingCopy.getServer().loadAdapter(
+				TcServerBehaviour.class, null);
+		listCommand = new ListApplicationsCommand(behaviour, false);
 		addPropertyChangeListener();
 		addServerStateListener();
 		initializeUiState();
@@ -254,6 +263,7 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 
 	private void initializeUiState() {
 		setTableState(server.getOriginal().getServerState() == IServer.STATE_STARTED);
+		updateTableInput();
 		updateMbeanButton();
 	}
 
@@ -289,8 +299,18 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 	private void updateTableInput() {
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
+				Set input = Collections.EMPTY_SET;
+				try {
+					input = listCommand.execute();
+				}
+				catch (TimeoutException e1) {
+					// ignore, server may not be running
+				}
+				catch (CoreException e1) {
+					// ignore, server may not be running
+				}
 				if (appsViewer != null) {
-					appsViewer.setInput(server.getOriginal().getModules());
+					appsViewer.setInput(input);
 					appsViewer.refresh();
 				}
 			}

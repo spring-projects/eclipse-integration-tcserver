@@ -29,6 +29,7 @@ import org.eclipse.jst.server.tomcat.core.internal.TomcatPlugin;
 /**
  * @author Steffen Pingel
  * @author Christian Dupuis
+ * @author Leo Dos Santos
  */
 public abstract class AbstractJmxServerCommand<T> {
 
@@ -47,8 +48,15 @@ public abstract class AbstractJmxServerCommand<T> {
 
 	protected final TcServerBehaviour serverBehaviour;
 
+	protected final boolean logStatus;
+
 	public AbstractJmxServerCommand(TcServerBehaviour serverBehaviour) {
+		this(serverBehaviour, true);
+	}
+
+	public AbstractJmxServerCommand(TcServerBehaviour serverBehaviour, boolean logStatusErrors) {
 		this.serverBehaviour = serverBehaviour;
+		this.logStatus = logStatusErrors;
 	}
 
 	protected abstract T doOperation(MBeanServerConnection beanServerConnection) throws IOException, JMException;
@@ -92,7 +100,9 @@ public abstract class AbstractJmxServerCommand<T> {
 		try {
 			if (resultLatch.await(30, TimeUnit.SECONDS)) {
 				if (status[0] != null) {
-					TomcatPlugin.log(status[0]);
+					if (logStatus) {
+						TomcatPlugin.log(status[0]);
+					}
 					throw new CoreException(status[0]);
 				}
 				return (T) result[0];

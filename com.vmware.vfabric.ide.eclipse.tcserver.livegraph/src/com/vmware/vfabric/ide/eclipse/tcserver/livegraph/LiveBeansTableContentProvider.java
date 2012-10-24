@@ -10,16 +10,21 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.livegraph;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.wst.server.core.IModule;
 
 /**
  * @author Leo Dos Santos
  */
-public class TcServerModuleContentProvider implements ITreeContentProvider {
+public class LiveBeansTableContentProvider implements ITreeContentProvider {
 
-	private IModule[] modules;
+	private Set applications;
 
 	public void dispose() {
 
@@ -30,7 +35,23 @@ public class TcServerModuleContentProvider implements ITreeContentProvider {
 	}
 
 	public Object[] getElements(Object inputElement) {
-		return modules;
+		List<String> list = new ArrayList<String>();
+		Iterator iter = applications.iterator();
+		while (iter.hasNext()) {
+			Object obj = iter.next();
+			if (obj instanceof Map) {
+				Map attributes = (Map) obj;
+				if (attributes.containsKey("baseName")) {
+					Object name = attributes.get("baseName");
+					// TODO: filter out modules that are not running Spring
+					// Framework 3.2 or newer
+					if (name instanceof String && !"ROOT".equals(name)) {
+						list.add((String) name);
+					}
+				}
+			}
+		}
+		return list.toArray();
 	}
 
 	public Object getParent(Object element) {
@@ -42,10 +63,8 @@ public class TcServerModuleContentProvider implements ITreeContentProvider {
 	}
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		if (newInput instanceof IModule[]) {
-			// TODO: filter out modules that are not running Spring Framework
-			// 3.2 or newer
-			modules = (IModule[]) newInput;
+		if (newInput instanceof Set) {
+			applications = (Set) newInput;
 		}
 	}
 
