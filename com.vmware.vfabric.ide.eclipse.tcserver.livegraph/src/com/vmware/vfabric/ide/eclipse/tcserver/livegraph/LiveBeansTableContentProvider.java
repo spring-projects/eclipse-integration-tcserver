@@ -43,9 +43,7 @@ public class LiveBeansTableContentProvider implements ITreeContentProvider {
 				Map attributes = (Map) obj;
 				if (attributes.containsKey("baseName")) {
 					Object name = attributes.get("baseName");
-					// TODO: filter out modules that are not running Spring
-					// Framework 3.2 or newer
-					if (name instanceof String && !"ROOT".equals(name)) {
+					if (name instanceof String) {
 						list.add((String) name);
 					}
 				}
