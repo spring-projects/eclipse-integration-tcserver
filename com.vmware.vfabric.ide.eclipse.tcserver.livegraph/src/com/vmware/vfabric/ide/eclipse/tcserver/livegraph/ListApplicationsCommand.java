@@ -46,8 +46,7 @@ public class ListApplicationsCommand extends AbstractJmxServerCommand<Set> {
 		ObjectName name = ObjectName.getInstance("tcServer:type=Serviceability,name=Deployer");
 		Object result = connection.invoke(name, "listApplications", arguments, getSignature(arguments));
 
-		// Filter out applications that do not support Live Beans feature.
-		Set applications = new HashSet();
+		Set<DeployedApplication> applications = new HashSet<DeployedApplication>();
 		if (result instanceof Set) {
 			Set resultSet = (Set) result;
 			Iterator iter = resultSet.iterator();
@@ -57,18 +56,21 @@ public class ListApplicationsCommand extends AbstractJmxServerCommand<Set> {
 					Map attributes = (Map) obj;
 					if (attributes.containsKey("baseName") && attributes.get("baseName") instanceof String) {
 						String baseName = (String) attributes.get("baseName");
-						ObjectInstance candidate = null;
-						try {
-							// Test the MBean's existence before proceeding.
-							// Will throw InstanceNotFoundException
-							ObjectName liveBean = ObjectName.getInstance("", "application", "/".concat(baseName));
-							candidate = connection.getObjectInstance(liveBean);
-						}
-						catch (InstanceNotFoundException e) {
-							// No MBean. Ignore.
-						}
-						if (candidate != null) {
-							applications.add(obj);
+						// Flag applications that do not support Live Beans
+						// feature. Ignore default ROOT and manager
+						// applications.
+						if (!baseName.equals("ROOT") && !(baseName.equals("manager"))) {
+							ObjectInstance candidate = null;
+							try {
+								// Test the MBean's existence before proceeding.
+								// Will throw InstanceNotFoundException
+								ObjectName liveBean = ObjectName.getInstance("", "application", "/".concat(baseName));
+								candidate = connection.getObjectInstance(liveBean);
+							}
+							catch (InstanceNotFoundException e) {
+								// No MBean. Ignore.
+							}
+							applications.add(new DeployedApplication(baseName, candidate != null));
 						}
 					}
 				}

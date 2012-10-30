@@ -33,6 +33,7 @@ import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -225,12 +226,16 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 		appsViewer = new TableViewer(appsTable);
 		appsViewer.setContentProvider(new LiveBeansTableContentProvider());
 		appsViewer.setLabelProvider(new LiveBeansTableLabelProvider(server.getOriginal()));
+		appsViewer.setSorter(new ViewerSorter());
 		appsViewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
 				if (event.getSelection() instanceof IStructuredSelection) {
 					IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-					if (selection.getFirstElement() instanceof String) {
-						connectToApplication((String) selection.getFirstElement());
+					if (selection.getFirstElement() instanceof DeployedApplication) {
+						DeployedApplication application = (DeployedApplication) selection.getFirstElement();
+						if (application.isLiveBeansEnabled()) {
+							connectToApplication(application.getName());
+						}
 					}
 				}
 			}

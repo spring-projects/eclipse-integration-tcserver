@@ -10,10 +10,6 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.livegraph;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -24,8 +20,6 @@ import org.eclipse.jface.viewers.Viewer;
  */
 public class LiveBeansTableContentProvider implements ITreeContentProvider {
 
-	private Set applications;
-
 	public void dispose() {
 
 	}
@@ -35,21 +29,10 @@ public class LiveBeansTableContentProvider implements ITreeContentProvider {
 	}
 
 	public Object[] getElements(Object inputElement) {
-		List<String> list = new ArrayList<String>();
-		Iterator iter = applications.iterator();
-		while (iter.hasNext()) {
-			Object obj = iter.next();
-			if (obj instanceof Map) {
-				Map attributes = (Map) obj;
-				if (attributes.containsKey("baseName")) {
-					Object name = attributes.get("baseName");
-					if (name instanceof String) {
-						list.add((String) name);
-					}
-				}
-			}
+		if (inputElement instanceof Set) {
+			return ((Set) inputElement).toArray();
 		}
-		return list.toArray();
+		return new Object[] {};
 	}
 
 	public Object getParent(Object element) {
@@ -61,9 +44,7 @@ public class LiveBeansTableContentProvider implements ITreeContentProvider {
 	}
 
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-		if (newInput instanceof Set) {
-			applications = (Set) newInput;
-		}
+
 	}
 
 }
