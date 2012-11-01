@@ -72,7 +72,7 @@ public abstract class AbstractJmxServerCommand<T> {
 			protected IStatus run(IProgressMonitor monitor) {
 				JMXConnector connector = null;
 				try {
-					connector = serverBehaviour.getTomcatServer().getJmxConnector();
+					connector = JmxUtils.getJmxConnector(serverBehaviour);
 					result[0] = doOperation(connector.getMBeanServerConnection());
 				}
 				catch (Exception e) {

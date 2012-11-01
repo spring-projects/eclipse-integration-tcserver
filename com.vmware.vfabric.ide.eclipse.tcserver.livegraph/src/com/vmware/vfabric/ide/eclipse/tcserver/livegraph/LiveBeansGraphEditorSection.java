@@ -16,17 +16,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Set;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
-import javax.management.remote.JMXConnector;
-
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.ErrorDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -60,6 +54,8 @@ import org.springframework.ide.eclipse.beans.ui.livegraph.model.LiveBeansModelGe
 import org.springframework.ide.eclipse.beans.ui.livegraph.views.LiveBeansGraphView;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.JmxCredentials;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.JmxUtils;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviour;
 
@@ -69,6 +65,8 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviour;
 public class LiveBeansGraphEditorSection extends ServerEditorSection {
 
 	private TcServer serverWorkingCopy;
+
+	private TcServerBehaviour behaviour;
 
 	private PropertyChangeListener propertyListener;
 
@@ -116,7 +114,16 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 
 	private void connectToApplication(String appName) {
 		try {
-			LiveBeansModel model = connectToModel(appName);
+			String username = null;
+			String password = null;
+			String serviceUrl = JmxUtils.getJmxUrl(behaviour);
+			JmxCredentials credentials = JmxUtils.getJmxCredentials(behaviour);
+			if (credentials != null) {
+				username = credentials.getUsername();
+				password = credentials.getPassword();
+			}
+
+			LiveBeansModel model = LiveBeansModelGenerator.connectToModel(serviceUrl, username, password, appName);
 			IViewPart part = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 					.showView(LiveBeansGraphView.VIEW_ID);
 			if (part instanceof LiveBeansGraphView) {
@@ -128,61 +135,14 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 					"An error occurred while opening the Live Beans Graph View.", e);
 			openErrorDialogWithStatus(status);
 		}
+		catch (IOException e) {
+			Status status = new Status(IStatus.INFO, TcServerLiveGraphPlugin.PLUGIN_ID, e.getMessage(), e);
+			openErrorDialogWithStatus(status);
+		}
 		catch (CoreException e) {
 			Status status = new Status(IStatus.INFO, TcServerLiveGraphPlugin.PLUGIN_ID, e.getMessage(), e);
 			openErrorDialogWithStatus(status);
 		}
-	}
-
-	private LiveBeansModel connectToModel(final String appName) throws CoreException {
-		final CountDownLatch latch = new CountDownLatch(1);
-		final LiveBeansModel[] result = new LiveBeansModel[1];
-		final CoreException[] status = new CoreException[1];
-
-		Job jmxOperation = new Job("Executing Server Command") {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				JMXConnector connector = null;
-				try {
-					connector = serverWorkingCopy.getJmxConnector();
-					result[0] = LiveBeansModelGenerator.connectToModel(connector, appName);
-				}
-				catch (IOException e) {
-					status[0] = new CoreException(new Status(IStatus.ERROR, TcServerLiveGraphPlugin.PLUGIN_ID,
-							"An error occurred while connecting to server.", e));
-				}
-				catch (CoreException e) {
-					status[0] = e;
-				}
-				finally {
-					latch.countDown();
-					if (connector != null) {
-						try {
-							connector.close();
-						}
-						catch (IOException e) {
-							StatusHandler.log(new Status(IStatus.ERROR, TcServerLiveGraphPlugin.PLUGIN_ID,
-									"An error occurred while closing connection to server.", e));
-						}
-					}
-				}
-				return Status.OK_STATUS;
-			}
-		};
-		jmxOperation.schedule();
-
-		try {
-			if (latch.await(30, TimeUnit.SECONDS)) {
-				if (status[0] != null) {
-					throw status[0];
-				}
-				return result[0];
-			}
-		}
-		catch (InterruptedException e) {
-			// swallowed
-		}
-		return new LiveBeansModel();
 	}
 
 	@Override
@@ -257,8 +217,7 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 	public void init(IEditorSite site, IEditorInput input) {
 		super.init(site, input);
 		serverWorkingCopy = (TcServer) server.loadAdapter(TcServer.class, null);
-		TcServerBehaviour behaviour = (TcServerBehaviour) serverWorkingCopy.getServer().loadAdapter(
-				TcServerBehaviour.class, null);
+		behaviour = (TcServerBehaviour) serverWorkingCopy.getServer().loadAdapter(TcServerBehaviour.class, null);
 		listCommand = new ListApplicationsCommand(behaviour, false);
 		addPropertyChangeListener();
 		addServerStateListener();

@@ -10,16 +10,10 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Collections;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Properties;
-
-import javax.management.remote.JMXConnector;
-import javax.management.remote.JMXConnectorFactory;
-import javax.management.remote.JMXServiceURL;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
@@ -49,8 +43,6 @@ import org.eclipse.wst.server.core.ServerUtil;
  * @author Leo Dos Santos
  */
 public class TcServer extends TomcatServer {
-
-	public static final String JMX_CONNECTOR_URL = "service:jmx:rmi:///jndi/rmi://%s:%d/jmxrmi"; //$NON-NLS-1$
 
 	public static String ID_TC_SERVER_2_0 = "com.springsource.tcserver.60";
 
@@ -517,30 +509,6 @@ public class TcServer extends TomcatServer {
 			Trace.trace(Trace.SEVERE, "Could not get root URL", e);
 			return null;
 		}
-	}
-
-	public JMXConnector getJmxConnector() throws IOException {
-		IServicabilityInfo info;
-		TcServerBehaviour behaviour = (TcServerBehaviour) getServer().loadAdapter(TcServerBehaviour.class, null);
-		try {
-			info = behaviour.getServicabilityInfo();
-			if (info == null || !info.isValid()) {
-				throw new IOException("JMX access is not configured for server");
-			}
-		}
-		catch (CoreException e) {
-			// TODO log exception
-			throw new IOException("Configuration of JMX connection failed");
-		}
-
-		Hashtable<String, Object> h = new Hashtable<String, Object>();
-		JmxCredentials credentials = info.getCredentials(this);
-		if (credentials != null) {
-			h.put("jmx.remote.credentials", new String[] { credentials.getUsername(), credentials.getPassword() });
-		}
-
-		String connectorUrl = String.format(JMX_CONNECTOR_URL, info.getHost(), Integer.parseInt(info.getPort()));
-		return JMXConnectorFactory.connect(new JMXServiceURL(connectorUrl), h);
 	}
 
 }
