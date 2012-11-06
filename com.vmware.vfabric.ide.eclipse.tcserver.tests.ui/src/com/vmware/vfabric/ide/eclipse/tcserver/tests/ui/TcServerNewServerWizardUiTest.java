@@ -14,7 +14,6 @@ import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withTe
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Calendar;
 
 import org.apache.commons.io.FileUtils;
 import org.eclipse.core.resources.IWorkspace;
@@ -26,55 +25,35 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.bindings.keys.KeyStroke;
 import org.eclipse.jface.bindings.keys.ParseException;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Widget;
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
 import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.finders.UIThreadRunnable;
 import org.eclipse.swtbot.swt.finder.keyboard.Keystrokes;
-import org.eclipse.swtbot.swt.finder.matchers.AllOf;
-import org.eclipse.swtbot.swt.finder.matchers.WidgetOfType;
-import org.eclipse.swtbot.swt.finder.matchers.WithStyle;
-import org.eclipse.swtbot.swt.finder.results.VoidResult;
 import org.eclipse.swtbot.swt.finder.waits.DefaultCondition;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTableItem;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTree;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
 import org.eclipse.wst.server.core.IServer;
-import org.hamcrest.Matcher;
 import org.springsource.ide.eclipse.commons.core.util.OsUtils;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.SWTBotUtils;
 import org.springsource.ide.eclipse.commons.tests.util.swtbot.StsUiTestCase;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.InsightTcServerCallback;
-import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer20WizardFragment;
-import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer21WizardFragment;
-import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerInstanceConfiguratorPage;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerUiPlugin;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerHarness;
 
 /**
  * @author Kaitlin Duck Sherwood
+ * @author Tomasz Zarna
  */
 public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
-	// Note: these two messages appear to be buried in TC or Tomcat code.
-	private static final String INOFFENSIVE_SERVER_DIR_MESSAGE = "Specify the installation directory";
-
-	private static final String INVALID_TOMCAT_DIR_MESSAGE = "The Tomcat installation directory is not valid. It is missing expected file or folder tcruntime-ctl.sh.";
-
 	private static final String BASE_INSTANCE = "base-instance";
 
-	private static final String VMWARE_VFABRIC_TC_SERVER_V25_V26_V27_V28 = "VMware vFabric tc Server v2.5, v2.6, v2.7, v2.8";
-
 	// TODO: for now, until STS-2986 gets fixed
-	private static String ARBITRARY_SERVER_NAME = VMWARE_VFABRIC_TC_SERVER_V25_V26_V27_V28 + " at localhost"; // "TESTasdfSERVERfooDELETE";
+	private static String ARBITRARY_SERVER_NAME = DefineNewServerPage.VMWARE_VFABRIC_TC_SERVER_V25_V26_V27_V28
+			+ " at localhost"; // "TESTasdfSERVERfooDELETE";
 
 	private static final String ARBITRARY_INSTANCE_NAME = "TESTdiamondsINSTANCEemeraldsIGNORE";
 
@@ -154,55 +133,46 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		int oldCount = getServerCount();
 
 		if (!existingServer) {
-			assertTrue("With a clean start, expects 0 servers", 0 == oldCount);
+			assertEquals("With a clean start, expects 0 servers", 0, oldCount);
 		}
 
-		openNewServerDialog();
+		NewServerWizard newServerWizard = NewServerWizard.openWizard();
 
-		ARBITRARY_SERVER_NAME = selectTcServer(ARBITRARY_SERVER_NAME);
-		checkFinishButton(false);
-		pressButton("Next >");
+		DefineNewServerPage defineNewServerPage = newServerWizard.getDefineNewServerPage();
+		defineNewServerPage.selectTcServer();
+		ARBITRARY_SERVER_NAME = defineNewServerPage.getServerName();
+		assertFalse(newServerWizard.isFinishEnabled());
 
+		TcServerConfigurationPage tcServerConfigurationPage = null;
 		if (!existingServer) {
-			checkFinishButton(false);
-			selectInstallDirectory(baseInstallDirectoryPath.toString());
-			checkFinishButton(false);
-			pressButton("Next >");
-		}
-
-		SWTBotShell newServerWizardShell = bot.activeShell();
-		checkFinishButton(false);
-		if (existingInstance) {
-			selectTcServerExistingInstance();
-
+			VMwareVFabricTcServerPage vMwareVFabricTcServerPage = defineNewServerPage.nextToVMwareVFabricTcServerPage();
+			assertFalse(newServerWizard.isFinishEnabled());
+			vMwareVFabricTcServerPage.selectInstallDirectory(baseInstallDirectoryPath);
+			assertFalse(newServerWizard.isFinishEnabled());
+			tcServerConfigurationPage = vMwareVFabricTcServerPage.nextToTcServerConfigurationPage();
 		}
 		else {
-			selectTcServerNewInstance();
-			checkFinishButton(false);
-			pressButton("Next >");
-			Calendar now = Calendar.getInstance();
-			configureNewInstance(ARBITRARY_INSTANCE_NAME + now.get(Calendar.SECOND));
+			tcServerConfigurationPage = defineNewServerPage.nextToTcServerConfigurationPage();
 		}
-		checkFinishButton(true);
+
+		assertFalse(newServerWizard.isFinishEnabled());
+		if (existingInstance) {
+			tcServerConfigurationPage.selectExistingInstance(BASE_INSTANCE);
+		}
+		else {
+			tcServerConfigurationPage.selectTcServerNewInstance();
+			assertFalse(newServerWizard.isFinishEnabled());
+			CreateTcServerInstancePage createTcServerInstancePage = tcServerConfigurationPage
+					.nextToCreateTcServerInstancePage();
+			createTcServerInstancePage.configureNewInstance(ARBITRARY_INSTANCE_NAME);
+		}
+		assertTrue(newServerWizard.isFinishEnabled());
 
 		if (corruptedFiles) {
 			corruptInstallFiles();
 		}
 
-		pressButton("Finish");
-
-		try {
-			bot.waitUntil(SWTBotUtils.widgetIsDisposed(newServerWizardShell));
-		}
-		catch (TimeoutException e) {
-			// We aren't sure why, but something in SWTBot eats the
-			// exception that failing to copy the files throws. This
-			// means that the finish fails, which means that the
-			// New Server dialog doesn't go away.
-			if (corruptedFiles && newServerWizardShell.isVisible()) {
-				bot.button("Cancel").click();
-			}
-		}
+		newServerWizard.pressFinish(corruptedFiles);
 
 		int expectedCount;
 		if (corruptedFiles) {
@@ -224,119 +194,6 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 	}
 
 	// helpers specific to TC server testing --------------------------------
-
-	public String selectTcServer(String newServerName) {
-
-		// the "right" way to do this sometimes fails
-		try {
-			// "Server").click();
-			SWTBotUtils.selectChildTreeElement(bot, "New Server", "VMware", VMWARE_VFABRIC_TC_SERVER_V25_V26_V27_V28);
-
-		}
-		catch (Exception e) {
-			// fallback to doing it the "wrong" way.
-			bot.tree().collapseNode("VMware");
-			bot.tree().expandNode("VMware").select(VMWARE_VFABRIC_TC_SERVER_V25_V26_V27_V28).click();
-		}
-
-		return bot.textWithLabel("Server name:").getText();
-
-	}
-
-	public void selectTcServerExistingInstance() {
-
-		checkFinishButton(false);
-
-		SWTBotCombo instanceCombo = bot.comboBox();
-		// bot.Screenshot("/tmp/select.png");
-		assertFalse(instanceCombo.isEnabled());
-
-		SWTBotRadio newInstanceButton = bot.radio("Create new instance");
-		SWTBotRadio existingInstanceButton = bot.radio("Existing instance");
-
-		assertTrue(newInstanceButton.isEnabled());
-		assertTrue(existingInstanceButton.isEnabled());
-
-		deselectDefaultSelection();
-
-		bot.radio(1).click(); // existingInstanceButton;
-		assertTrue(instanceCombo.isEnabled());
-
-		bot.text(TcServer21WizardFragment.SPECIFY_TC_SERVER_INSTANCE_MESSAGE);
-
-		// BIZARRE; This code:
-		// assertTrue(warningLabel.getText().isEqualTo(TcServer20WizardFragment.THE_SPECIFIED_SERVER_DOES_NOT_EXIST));
-		// gives the error:
-		// "The method isEqualTo(String) is undefined for the type String"
-
-		// Workaround for the above problem; just try looking for the strings;
-		// it will throw an exception if those labels are not found.
-		instanceCombo.setText("gibberish gibberish");
-		// Per this site, you need a space before the text if there
-		// is a warning/error icon.
-		// http://www.prait.ch/wordpress/?p=251
-		bot.text(" " + TcServer20WizardFragment.SERVER_DOES_NOT_EXIST_MESSAGE);
-		// Any valid server will have a "lib" directory which is not
-		// appropriate to use as an instance directory
-		instanceCombo.setText("lib");
-		bot.text(" " + TcServer21WizardFragment.INVALID_SERVER_DIR_MESSAGE);
-		instanceCombo.setText("");
-		bot.text(TcServer21WizardFragment.SPECIFY_TC_SERVER_INSTANCE_MESSAGE);
-
-		instanceCombo.setSelection(BASE_INSTANCE);
-	}
-
-	private void selectInstallDirectory(String installDirectoryName) {
-		bot.waitUntil(Conditions.waitForWidget(withText("Cancel")));
-
-		bot.textWithLabel("Installation directory:").setText("nonsense nonsense");
-		bot.text(" " + INVALID_TOMCAT_DIR_MESSAGE);
-
-		bot.textWithLabel("Installation directory:").setText(baseInstallDirectoryPath.toString());
-		bot.text(INOFFENSIVE_SERVER_DIR_MESSAGE);
-
-	}
-
-	private void selectTcServerNewInstance() {
-
-		bot.waitUntil(Conditions.waitForWidget(withText("tc Server Configuration")));
-
-		checkFinishButton(false);
-
-		SWTBotCombo instanceCombo = bot.comboBox();
-		assertFalse(instanceCombo.isEnabled());
-
-		SWTBotRadio newInstanceButton = bot.radio("Create new instance");
-
-		assertTrue(newInstanceButton.isEnabled());
-
-		deselectDefaultSelection();
-		bot.radio(0).click(); // newInstanceButton;
-		assertFalse(instanceCombo.isEnabled());
-
-	}
-
-	private void configureNewInstance(String instanceName) {
-		bot.text(TcServerInstanceConfiguratorPage.ENTER_NAME);
-
-		// De novo, there might not be any existing interfaces
-		// bot.textWithLabel("Name:").setText(EXISTING_INTERFACE);
-		// bot.text(" " + TcServerInstanceConfiguratorPage.INSTANCE_EXISTS);
-
-		bot.textWithLabel("Name:").setText("blah blah blah");
-		bot.text(" " + TcServerInstanceConfiguratorPage.ILLEGAL_SERVER_NAME);
-
-		bot.textWithLabel("Name:").setText(instanceName);
-		bot.text(TcServerInstanceConfiguratorPage.SELECT_TEMPLATES);
-
-		bot.radio("Combined"); // check for existence
-		bot.radio(0).click();
-
-		// #4 is the "bio-ssl" feature, which works with Insight
-		bot.table().getTableItem(5).toggleCheck();
-		bot.table().getTableItem(5).click();
-
-	}
 
 	private void sanityCheckServer(String serverName) {
 		// Do a sanity check here to see if the server directory has files in it
@@ -367,26 +224,6 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 	// helpers generic to server testing (but not TC testing
 	// ------------------------
-
-	private void openNewServerDialog() {
-
-		SWTBotUtils.menu(bot, "File").menu("New").menu("Other...").click();
-
-		// The "right" way to do this sometimes fails.
-		try {
-			SWTBotUtils.selectChildTreeElement(bot, "New", "Server", "Server").click();
-		}
-		catch (Exception e) {
-			// fallback to doing it the "wrong" way.
-			bot.tree().collapseNode("Server");
-			bot.tree().expandNode("Server").select("Server").click();
-		}
-
-		bot.button("Next >").click();
-
-		SWTBotShell newServerDialog = bot.shell("New Server");
-		assertNotNull(newServerDialog);
-	}
 
 	private SWTBotTreeItem selectServer(String serverName) {
 		SWTBotUtils.getView(bot, "Servers");
@@ -419,7 +256,6 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		assertNotNull(treeItem);
 
 		treeItem.contextMenu("Stop").click();
-
 	}
 
 	private void deleteServer(String serverName) {
@@ -435,9 +271,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		if (treeItem != null) {
 			treeItem.contextMenu("Delete").click();
 			bot.button("OK").click();
-
 		}
-
 	}
 
 	private void deleteAllServers() {
@@ -452,7 +286,6 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 			treeItem.contextMenu("Delete").click();
 			bot.button("OK").click();
 		}
-
 	}
 
 	// if we create a new instance in the file system, we need to remove it
@@ -519,7 +352,6 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		}
 
 		bot.button("OK").click(); // close the Preferences dialog
-
 	}
 
 	// NOTE: which tree (i.e. bot.tree(1), bot.tree(2) )
@@ -527,8 +359,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 	// Worse, the order of the trees that are returned seems to change for
 	// different unit tests. I am getting around it now by opening a perspective
 	// that has no other trees in it, so the Servers view should be the only
-	// tree
-	// around.
+	// tree around.
 	private SWTBotTree getServerTree() {
 		return bot.tree();
 	}
@@ -546,7 +377,6 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 			return 0;
 
 		}
-
 	}
 
 	private void openServersView() {
@@ -582,12 +412,10 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 		IPath insightDirPath = baseInstallDirectoryPath.append("spring-insight-instance");
 		// not strictly needed to make the test work; deleting directories does
-		// an adequate job
-		// does just fine
+		// an adequate job does just fine
 		// makeSubDirUnreadable(insightDirPath, "lib");
 		// makeSubDirUnreadable(insightDirPath, "bin");
 		// makeSubDirUnreadable(baseInstallDirectoryPath, "bash_completion");
-
 	}
 
 	// helpers generic to non-server SWTBot code
@@ -604,31 +432,6 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 			// purely to speed debugging a little bit
 			assertTrue(false); // toss an assertion error
 		}
-
-	}
-
-	private void checkFinishButton(Boolean isEnabled) {
-		SWTBotButton finishButton = bot.button("Finish");
-		assertNotNull(finishButton);
-		assertTrue(finishButton.isEnabled() == isEnabled);
-	}
-
-	// Workaround for bug in SWTBot code, see
-	// https://bugs.eclipse.org/bugs/show_bug.cgi?id=344484
-	void deselectDefaultSelection() {
-		UIThreadRunnable.syncExec(new VoidResult() {
-
-			public void run() {
-				Matcher<Widget> matcher = AllOf.allOf(WidgetOfType.widgetOfType(Button.class),
-						WithStyle.withStyle(SWT.RADIO, "SWT.RADIO"));
-
-				Button b = (Button) bot.widget(matcher, 0); // the default
-															// selection
-				b.setSelection(false);
-
-			}
-
-		});
 	}
 
 	/**
@@ -673,20 +476,4 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		}
 		bot.waitUntil(Conditions.shellIsActive("Preferences"));
 	}
-
-	// helpers which could go anywhere
-	// ------------------------------------------
-
-	// private void makeSubDirUnreadable(IPath baseInstallDirectory, String
-	// subDirName) {
-	// File subDir =
-	// baseInstallDirectory.append(subDirName).addTrailingSeparator().toFile();
-	// assertTrue(subDir.exists() && subDir.isDirectory());
-	// File[] configFiles = subDir.listFiles();
-	// assertTrue(configFiles.length > 0);
-	// for (File aFile : configFiles) {
-	// aFile.setReadable(false);
-	// }
-	// }
-
 }
