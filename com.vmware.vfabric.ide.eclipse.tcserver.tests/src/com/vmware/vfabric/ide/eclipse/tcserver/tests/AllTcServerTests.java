@@ -10,8 +10,9 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.tests;
 
-import junit.framework.Test;
-import junit.framework.TestSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.PropertyWriterTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviourTest;
@@ -20,31 +21,23 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerDeploymentT
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntimeClasspathProviderTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntimeTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerVersionHandlerTest;
-import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
 
 /**
+ * Runs all automated tests for tc Server support.
+ *
  * @author Steffen Pingel
+ * @author Tomasz Zarna
  */
+@RunWith(Suite.class)
+@SuiteClasses({ PropertyWriterTest.class, //
+		TcServerBehaviourTest.class, //
+		TcServerConfiguratorImporterTest.class, //
+		TcServerDeploymentTest.class, //
+		TcServerRuntimeClasspathProviderTest.class, //
+		TcServerRuntimeTest.class, //
+		TcServerVersionHandlerTest.class, //
+		TcServerProvisioningTest.class //
+})
 public class AllTcServerTests {
-
-	public static Test suite() {
-		TestSuite suite = new TestSuite(AllTcServerTests.class.getName());
-		suite.addTestSuite(PropertyWriterTest.class);
-		suite.addTestSuite(TcServerBehaviourTest.class);
-		suite.addTestSuite(TcServerConfiguratorImporterTest.class);
-		suite.addTestSuite(TcServerDeploymentTest.class);
-		suite.addTestSuite(TcServerRuntimeClasspathProviderTest.class);
-		suite.addTestSuite(TcServerRuntimeTest.class);
-		suite.addTestSuite(TcServerVersionHandlerTest.class);
-
-		for (TcServerFixture configuration : TcServerFixture.ALL) {
-			configuration.createSuite(suite);
-			if (configuration.getDownloadUrl() != null) {
-				configuration.add(TcServerProvisioningTest.class);
-			}
-			configuration.done();
-		}
-		return suite;
-	}
-
+	// goofy junit4, no class body needed
 }

@@ -10,11 +10,12 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import junit.framework.TestCase;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -26,31 +27,41 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.Server;
 import org.eclipse.wst.server.core.internal.ServerType;
+import org.junit.After;
+import org.junit.Ignore;
+import org.junit.Test;
 
-import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviour;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
 
 /**
  * @author Steffen Pingel
+ * @author Tomasz Zarna
  */
-public class TcServerBehaviourTest extends TestCase {
+public class TcServerBehaviourTest {
 
 	private IServer server;
 
+	@Test
+	@Ignore("Ignoring tcServer-6.0 tests.")
 	public void testRuntimeVMArgumentsAsf60() throws Exception {
 		runtimeVMArguments(TcServerFixture.V_6_0, null, "tomcat-6.0.19.A", "tomcat-6.0.19.A");
 	}
 
+	@Test
+	@Ignore("Layout.COMBINED javadoc says it's supported by v2.5 and later only.")
 	public void testRuntimeVMArgumentsCombined21() throws Exception {
 		runtimeVMArguments(TcServerFixture.V_2_1, TcServerFixture.INST_COMBINED, TcServerFixture.INST_COMBINED,
 				TcServerFixture.INST_COMBINED);
 	}
 
+	@Test
 	public void testRuntimeVMArgumentsSeparate20() throws Exception {
 		runtimeVMArguments(TcServerFixture.V_2_0, TcServerFixture.INST_INSIGHT, "tomcat-6.0.25.A-SR01",
 				TcServerFixture.INST_INSIGHT);
 	}
 
+	@Test
+	@Ignore("Ignoring tcServer-6.0 tests.")
 	public void testSetupLaunchConfigurationDefaultArgs() throws Exception {
 		server = TcServerFixture.V_6_0.createServer(null);
 		server.publish(Server.PUBLISH_FULL, null);
@@ -72,6 +83,8 @@ public class TcServerBehaviourTest extends TestCase {
 		assertTrue("Expected -Xss192k in '" + args + "'", args.contains("-Xss192k"));
 	}
 
+	@Test
+	@Ignore("Ignoring tcServer-6.0 tests.")
 	public void testTomcatLocationAsfLayout60() throws Exception {
 		server = TcServerFixture.V_6_0.createServer(null);
 		server.publish(Server.PUBLISH_FULL, null);
@@ -110,8 +123,8 @@ public class TcServerBehaviourTest extends TestCase {
 		assertEquals(expectedArgs(runtime, instance), Arrays.asList(behaviour.getRuntimeVMArguments()));
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		if (server != null) {
 			TcServerFixture.deleteServerAndRuntime(server);
 		}

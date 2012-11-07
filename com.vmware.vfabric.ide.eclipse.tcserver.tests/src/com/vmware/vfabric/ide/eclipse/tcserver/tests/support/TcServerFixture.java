@@ -10,9 +10,6 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.tests.support;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -22,14 +19,13 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.springsource.ide.eclipse.commons.configurator.ServerHandler;
 import org.springsource.ide.eclipse.commons.configurator.ServerHandlerCallback;
-import org.springsource.ide.eclipse.commons.core.FileUtil;
-import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 
 /**
  * @author Steffen Pingel
  * @author Kris De Volder
+ * @author Tomasz Zarna
  */
 public class TcServerFixture extends TestConfiguration {
 
@@ -39,11 +35,13 @@ public class TcServerFixture extends TestConfiguration {
 
 	public static String INST_SEPARATE = "separate-instance";
 
-	public static TcServerFixture V_2_0 = new TcServerFixture("com.springsource.tcserver.60",
-			"tc-server-developer-2.0.0.SR01");
+	public static TcServerFixture V_2_0 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID,
+			"com.springsource.tcserver.60", "springsource-tc-server-developer",
+			"http://download.springsource.com/release/TCS/springsource-tc-server-developer-2.0.0.SR01.zip");
 
-	public static TcServerFixture V_2_1 = new TcServerFixture("com.springsource.tcserver.70",
-			"tc-server-developer-2.1.0.RELEASE");
+	public static TcServerFixture V_2_1 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID,
+			"com.springsource.tcserver.70", "springsource-tc-server-developer",
+			"http://download.springsource.com/release/TCS/springsource-tc-server-developer-2.1.0.RELEASE.zip");
 
 	public static TcServerFixture V_2_5 = new TcServerFixture("com.vmware.server.tc.runtime.70",
 			"com.vmware.server.tc.70", "vfabric-tc-server-developer-2.5.2.RELEASE",
@@ -149,16 +147,9 @@ public class TcServerFixture extends TestConfiguration {
 		return serverType;
 	}
 
-	public File getStubLocation() throws IOException {
-		return StsTestUtil.getFilePath(testPluginId, "/testdata/" + stubPath);
-
-	}
-
 	public ServerHandler provisionServer() throws Exception {
-		File baseDir = StsTestUtil.createTempDirectory("tcServer", null);
-		// copy server skeleton
-		FileUtil.copyDirectory(getStubLocation(), baseDir, new NullProgressMonitor());
-		return getHandler(baseDir.getAbsolutePath());
+		TcServerHarness harness = createHarness();
+		return harness.provisionServer();
 	}
 
 	@Override

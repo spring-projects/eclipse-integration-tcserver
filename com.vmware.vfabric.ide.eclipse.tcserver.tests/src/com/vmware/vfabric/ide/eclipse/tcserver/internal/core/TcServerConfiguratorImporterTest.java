@@ -10,34 +10,64 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 import org.springsource.ide.eclipse.commons.configurator.ConfigurableExtension;
+import org.springsource.ide.eclipse.commons.configurator.ServerHandler;
 import org.springsource.ide.eclipse.commons.internal.configurator.ConfiguratorImporter;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
-import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerTestPlugin;
 
 /**
  * @author Steffen Pingel
+ * @author Tomasz Zarna
  */
-public class TcServerConfiguratorImporterTest extends TestCase {
+@RunWith(Parameterized.class)
+public class TcServerConfiguratorImporterTest {
 
-	public void testDetectTcServer20and21() throws Exception {
+	@Rule
+	public TemporaryFolder location = new TemporaryFolder();
+
+	private final TcServerFixture[] fixtures;
+
+	public TcServerConfiguratorImporterTest(TcServerFixture[] fixtures) {
+		this.fixtures = fixtures;
+	}
+
+	@Parameters
+	public static Collection<Object[]> data() {
+		Object[][] data = new Object[][] { { new TcServerFixture[] { TcServerFixture.V_2_7, TcServerFixture.V_2_8 } } };
+		return Arrays.asList(data);
+	}
+
+	@Test
+	public void testDetect() throws Exception {
 		ConfiguratorImporter importer = new ConfiguratorImporter();
 		importer.setScanInstallPath(false);
-		File location = StsTestUtil.getFilePath(TcServerTestPlugin.PLUGIN_ID, "/testdata");
-		importer.setSearchLocations(Collections.singletonList(location));
+		provisionAndCopyFixtures(location.getRoot(), fixtures);
+		importer.setSearchLocations(Collections.singletonList(location.getRoot()));
+
 		List<ConfigurableExtension> extensions = importer.detectExtensions(new NullProgressMonitor());
-		assertContains(TcServerFixture.V_2_0.getStubLocation().getName(), extensions);
-		assertContains(TcServerFixture.V_2_1.getStubLocation().getName(), extensions);
+
+		for (TcServerFixture fixture : fixtures) {
+			assertContains(fixture.getDescription(), extensions);
+		}
 	}
 
 	private void assertContains(String id, List<ConfigurableExtension> extensions) {
@@ -51,4 +81,11 @@ public class TcServerConfiguratorImporterTest extends TestCase {
 		fail("Expected extension with id prefix '" + id + "' in " + StringUtils.join(extensions, ", "));
 	}
 
+	private void provisionAndCopyFixtures(final File destination, TcServerFixture... fixtures) throws Exception {
+		for (TcServerFixture fixture : fixtures) {
+			ServerHandler serverHandler = fixture.provisionServer();
+			StsTestUtil.copyDirectory(new File(serverHandler.getServerPath()),
+					new File(destination, fixture.getDescription()));
+		}
+	}
 }

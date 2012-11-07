@@ -10,18 +10,23 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import junit.framework.TestCase;
-
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerUtil;
+import org.junit.After;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
@@ -29,19 +34,22 @@ import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerTestPlugin;
 
 /**
  * @author Steffen Pingel
+ * @author Tomasz Zarna
  */
-public class TcServerDeploymentTest extends TestCase {
+public class TcServerDeploymentTest {
 
 	private IServer server;
 
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		StsTestUtil.cleanUpProjects();
 		if (server != null) {
 			TcServerFixture.deleteServerAndRuntime(server);
 		}
 	}
 
+	@Test
+	@Ignore(/* TODO */"See STS-3032 for progress on re-enabling the test.")
 	public void testDeployServlet30() throws Exception {
 		if (!StsTestUtil.ECLIPSE_3_6_OR_LATER) {
 			// skip test, the Servlet 3.0 spec is not supported by Eclipse 3.5

@@ -10,38 +10,45 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 
-import java.util.Arrays;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
-import junit.framework.TestCase;
+import java.util.Arrays;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.wst.server.core.IServer;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
-import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntimeClasspathProvider;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
 
 /**
  * @author Steffen Pingel
+ * @author Tomasz Zarna
  */
-public class TcServerRuntimeClasspathProviderTest extends TestCase {
+public class TcServerRuntimeClasspathProviderTest {
 
 	private IServer server;
 
 	private TcServerRuntimeClasspathProvider classPathProvider;
 
-	@Override
-	protected void setUp() throws Exception {
+	@Before
+	public void setUp() throws Exception {
 		classPathProvider = new TcServerRuntimeClasspathProvider();
 	}
 
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		if (server != null) {
 			TcServerFixture.deleteServerAndRuntime(server);
 		}
 	}
 
+	@Test
+	@Ignore("Ignoring tcServer-6.0 tests")
 	public void testResolveClasspathAsf60() throws Exception {
 		server = TcServerFixture.V_6_0.createServer(null);
 		IClasspathEntry[] cp = classPathProvider.resolveClasspathContainer(null, server.getRuntime());
@@ -63,12 +70,14 @@ public class TcServerRuntimeClasspathProviderTest extends TestCase {
 
 	}
 
+	@Test
 	public void testResolveClasspathSeparate20() throws Exception {
 		server = TcServerFixture.V_2_0.createServer(TcServerFixture.INST_INSIGHT);
 		IClasspathEntry[] cp = classPathProvider.resolveClasspathContainer(null, server.getRuntime());
 		assertHasServletApi(server.getRuntime().getLocation(), cp);
 	}
 
+	@Test
 	public void testResolveClasspathSeparate21() throws Exception {
 		server = TcServerFixture.V_2_1.createServer(TcServerFixture.INST_SEPARATE);
 		IClasspathEntry[] cp = classPathProvider.resolveClasspathContainer(null, server.getRuntime());

@@ -10,12 +10,15 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 
-import java.io.File;
+import static org.junit.Assert.assertEquals;
 
-import junit.framework.TestCase;
+import java.io.File;
 
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IServer;
+import org.junit.After;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.springsource.ide.eclipse.commons.configurator.ServerHandler;
 import org.springsource.ide.eclipse.commons.core.FileUtil;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
@@ -25,8 +28,9 @@ import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerTestPlugin;
 
 /**
  * @author Steffen Pingel
+ * @author Tomasz Zarna
  */
-public class TcServerVersionHandlerTest extends TestCase {
+public class TcServerVersionHandlerTest {
 
 	private ServerHandler handler;
 
@@ -38,8 +42,8 @@ public class TcServerVersionHandlerTest extends TestCase {
 
 	protected File tomcatConfDir;
 
-	@Override
-	protected void tearDown() throws Exception {
+	@After
+	public void tearDown() throws Exception {
 		if (handler != null) {
 			handler.deleteServerAndRuntime(new NullProgressMonitor());
 		}
@@ -48,6 +52,8 @@ public class TcServerVersionHandlerTest extends TestCase {
 		}
 	}
 
+	@Test
+	@Ignore("Ignoring tcServer-6.0 tests")
 	public void testVerifyInstallPath60TwoResourceTags() throws Exception {
 		handler = TcServerFixture.V_6_0.provisionServer();
 		baseDir = new File(handler.getServerPath());
@@ -65,6 +71,8 @@ public class TcServerVersionHandlerTest extends TestCase {
 		assertEquals(StsTestUtil.canocalizeXml(originalServerXml), StsTestUtil.canocalizeXml(publishedServerXml));
 	}
 
+	@Test
+	@Ignore("Ignoring tcServer-6.0 tests")
 	public void testVerifyInstallPath60() throws Exception {
 		handler = TcServerFixture.V_6_0.provisionServer();
 		baseDir = new File(handler.getServerPath());
