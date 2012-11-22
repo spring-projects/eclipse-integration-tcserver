@@ -172,7 +172,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 			corruptInstallFiles();
 		}
 
-		newServerWizard.pressFinish(corruptedFiles);
+		newServerWizard.pressFinish(corruptedFiles, "Error creating server instance. Check access permission .*");
 
 		int expectedCount;
 		if (corruptedFiles) {

@@ -10,14 +10,22 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.tests.ui;
 
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.allOf;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.widgetOfType;
+import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withRegex;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swtbot.eclipse.finder.SWTWorkbenchBot;
-import org.eclipse.swtbot.swt.finder.exceptions.WidgetNotFoundException;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotButton;
+import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotLabel;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
-import org.eclipse.swtbot.swt.finder.widgets.TimeoutException;
+import org.eclipse.ui.PlatformUI;
+import org.hamcrest.Matcher;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.SWTBotUtils;
 
 /**
@@ -36,19 +44,21 @@ public class NewServerWizard {
 
 	static NewServerWizard openWizard() {
 
-		SWTBotUtils.menu(bot, "File").menu("New").menu("Other...").click();
-
-		// The "right" way to do this sometimes fails.
-		try {
-			SWTBotUtils.selectChildTreeElement(bot, "New", "Server", "Server").click();
-		}
-		catch (Exception e) {
-			// fallback to doing it the "wrong" way.
-			bot.tree().collapseNode("Server");
-			bot.tree().expandNode("Server").select("Server").click();
-		}
-
-		bot.button("Next >").click();
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+			public void run() {
+				try {
+					Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+					org.eclipse.wst.server.ui.internal.wizard.NewServerWizard newServerWizard = new org.eclipse.wst.server.ui.internal.wizard.NewServerWizard();
+					WizardDialog dlg = new WizardDialog(shell, newServerWizard);
+					dlg.setBlockOnOpen(false);
+					dlg.open();
+				}
+				catch (Exception e) {
+					throw new RuntimeException(e);
+				}
+			}
+		});
+		bot.waitUntil(Conditions.shellIsActive("New Server"));
 
 		SWTBotShell newServerDialog = bot.shell("New Server");
 		assertNotNull(newServerDialog);
@@ -63,30 +73,32 @@ public class NewServerWizard {
 		return bot.button("Finish").isEnabled();
 	}
 
-	void pressFinish(boolean corruptedFiles) {
-		SWTBotButton aButton;
-		try {
-			aButton = bot.button("Finish");
-			assertTrue(aButton.isEnabled());
-			aButton.click();
-		}
-		catch (WidgetNotFoundException e) {
-			// purely to speed debugging a little bit
-			assertTrue(false); // toss an assertion error
-		}
+	void pressFinish() {
+		pressFinish(false, null);
+	}
 
+	void pressFinish(boolean errorDialogExpected, String errorMessageRegex) {
+		ErrorDialog.AUTOMATED_MODE = false;
 		try {
-			bot.waitUntil(SWTBotUtils.widgetIsDisposed(shell));
-		}
-		catch (TimeoutException e) {
-			// We aren't sure why, but something in SWTBot eats the
-			// exception that failing to copy the files throws. This
-			// means that the finish fails, which means that the
-			// New Server dialog doesn't go away.
-			if (corruptedFiles && shell.isVisible()) {
+			assertTrue(isFinishEnabled());
+			bot.button("Finish").click();
+			if (errorDialogExpected) {
+				bot.waitUntil(Conditions.shellIsActive("Server Error"), 10000);
+				SWTBotShell serverErrorDialog = bot.shell("Server Error");
+				assertNotNull(serverErrorDialog);
+				@SuppressWarnings({ "unchecked", "rawtypes" })
+				Matcher matcher = allOf(widgetOfType(Label.class), withRegex(errorMessageRegex));
+				@SuppressWarnings("unchecked")
+				SWTBotLabel label = new SWTBotLabel((Label) serverErrorDialog.bot().widget(matcher));
+				assertNotNull(label);
+				serverErrorDialog.close();
+				// an error occurred, cancel the wizard
 				bot.button("Cancel").click();
 			}
+			bot.waitUntil(SWTBotUtils.widgetIsDisposed(shell));
 		}
-
+		finally {
+			ErrorDialog.AUTOMATED_MODE = true;
+		}
 	}
 }
