@@ -19,7 +19,9 @@ import java.util.regex.Pattern;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -53,16 +55,22 @@ import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
 import org.eclipse.wst.server.ui.wizard.WizardFragment;
 import org.springsource.ide.eclipse.commons.core.FileUtil;
+import org.springsource.ide.eclipse.commons.core.StatusHandler;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerUtil;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TemplatePropertiesReader;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TemplateProperty;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer21InstanceCreationFragment.InstanceConfiguration.Layout;
 
 /**
  * @author Steffen Pingel
  * @author Christian Dupuis
+ * @author Tomasz Zarna
  */
 public class TcServer21InstanceCreationFragment extends WizardFragment {
+
+	public static final String INSTANCE_CONFIGURATION = "instanceConfiguration";
 
 	private static Pattern VALID_CHARS = Pattern.compile("[\\p{Alnum}-][\\p{Alnum}-_]*");
 
@@ -78,6 +86,8 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 		private String name;
 
+		List<TemplateProperty> templateProperties = Collections.emptyList();
+
 		public List<File> getTemplates() {
 			return Collections.unmodifiableList(templates);
 		}
@@ -90,6 +100,9 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			return name;
 		}
 
+		public List<TemplateProperty> getTemplateProperties() {
+			return Collections.unmodifiableList(templateProperties);
+		}
 	}
 
 	private class ChildLabelProvider extends StyledCellLabelProvider {
@@ -123,11 +136,11 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 	private IServerWorkingCopy wc;
 
-	private InstanceConfiguration model;
-
 	private Text readmeText;
 
 	private Label readmeLabel;
+
+	private WizardFragment instancePropertiesPage;
 
 	protected TcServer21InstanceCreationFragment() {
 		setComplete(false);
@@ -214,6 +227,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 									"Could not read information file for {0}.\n\nCheck permissions on {1}",
 									templateDir.getName(), readmeFile));
 						}
+						updateChildFragments();
 					}
 					else {
 						readmeText.setText("");
@@ -286,7 +300,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		return path.toFile().exists();
 	}
 
-	public InstanceConfiguration getModel() {
+	private InstanceConfiguration initModel() {
 		InstanceConfiguration model = new InstanceConfiguration();
 		model.name = nameText.getText();
 		model.templates = new ArrayList<File>();
@@ -307,7 +321,8 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 	@Override
 	public void exit() {
-		model = getModel();
+		InstanceConfiguration model = initModel();
+		getTaskModel().putObject(INSTANCE_CONFIGURATION, model);
 	}
 
 	private void initialize() {
@@ -345,6 +360,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		// reset completion status in case the wizard is re-used
 		setComplete(false);
 
+		InstanceConfiguration model = (InstanceConfiguration) getTaskModel().getObject(INSTANCE_CONFIGURATION);
 		if (model == null) {
 			return;
 		}
@@ -361,6 +377,12 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			arguments.add("-t");
 			arguments.add(template.getName());
 		}
+		for (TemplateProperty prop : model.getTemplateProperties()) {
+			if (!prop.isDefault()) {
+				arguments.add("--property");
+				arguments.add(prop.getTemplate() + "." + prop.getKey() + "=" + prop.getValue());
+			}
+		}
 
 		TcServerUtil.executeInstanceCreation(runtime.getLocation(), model.getName(), arguments.toArray(new String[0]));
 
@@ -372,4 +394,36 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		TcServerUtil.importRuntimeConfiguration(wc, monitor);
 	}
 
+	private List<String> getCheckedTemplateNames() {
+		List<String> checkedTemplateNames = new ArrayList<String>();
+		if (templateViewer != null) {
+			for (Object templateFile : templateViewer.getCheckedElements()) {
+				checkedTemplateNames.add(((File) templateFile).getName());
+			}
+		}
+		return checkedTemplateNames;
+	}
+
+	@Override
+	protected void createChildFragments(List<WizardFragment> list) {
+		List<String> templateNames = getCheckedTemplateNames();
+		if (templateNames.isEmpty()) {
+			return;
+		}
+		TemplatePropertiesReader reader = new TemplatePropertiesReader(wc);
+		for (String templateName : templateNames) {
+			try {
+				List<TemplateProperty> props = reader.read(templateName, new NullProgressMonitor());
+				if (!props.isEmpty()) {
+					TcServerTemplateConfigurationFragment page = new TcServerTemplateConfigurationFragment(
+							templateName, props);
+					list.add(page);
+				}
+			}
+			catch (CoreException e) {
+				StatusHandler.log(new Status(IStatus.ERROR, TcServerUiPlugin.PLUGIN_ID,
+						"Failed to load a template property page for '" + templateName + "'.", e));
+			}
+		}
+	}
 }

@@ -11,6 +11,7 @@
 package com.vmware.vfabric.ide.eclipse.tcserver.tests.ui;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withText;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Calendar;
 
@@ -20,6 +21,8 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerInstanceConfiguratorPage;
 
 /**
+ * Page Object for @link TcServer21InstanceCreationFragment.
+ *
  * @author Kaitlin Duck Sherwood
  * @author Tomasz Zarna
  */
@@ -35,24 +38,50 @@ public class CreateTcServerInstancePage {
 		Calendar now = Calendar.getInstance();
 		String instanceName = arbitraryInstanceName + now.get(Calendar.SECOND);
 
-		shell.bot().text(TcServerInstanceConfiguratorPage.ENTER_NAME);
+		assertMessage(TcServerInstanceConfiguratorPage.ENTER_NAME);
 
 		// De novo, there might not be any existing interfaces
 		// bot.textWithLabel("Name:").setText(EXISTING_INTERFACE);
 		// bot.text(" " + TcServerInstanceConfiguratorPage.INSTANCE_EXISTS);
 
-		shell.bot().textWithLabel("Name:").setText("blah blah blah");
-		shell.bot().text(" " + TcServerInstanceConfiguratorPage.ILLEGAL_SERVER_NAME);
+		setInstanceName("blah blah blah");
+		assertErrorMessage(TcServerInstanceConfiguratorPage.ILLEGAL_SERVER_NAME);
 
-		shell.bot().textWithLabel("Name:").setText(instanceName);
-		shell.bot().text(TcServerInstanceConfiguratorPage.SELECT_TEMPLATES);
+		setInstanceName(instanceName);
+		assertMessage(TcServerInstanceConfiguratorPage.SELECT_TEMPLATES);
 
 		shell.bot().radio("Combined"); // check for existence
 		shell.bot().radio(0).click();
 
-		// #4 is the "bio-ssl" feature, which works with Insight
-		shell.bot().table().getTableItem(5).toggleCheck();
-		shell.bot().table().getTableItem(5).click();
+		selectTemplate("insight"); // no template properties will be added
+	}
+
+	void selectTemplate(String... templateNames) {
+		for (String templateName : templateNames) {
+			shell.bot().table().getTableItem(templateName).toggleCheck();
+			shell.bot().table().getTableItem(templateName).click();
+		}
+	}
+
+	void assertErrorMessage(String errorMessage) {
+		assertMessage(" " + errorMessage);
+	}
+
+	void assertMessage(String message) {
+		shell.bot().text(message);
+	}
+
+	void assertNextButtonEnabled(boolean isEnabled) {
+		assertEquals(isEnabled, shell.bot().button("Next >").isEnabled());
+	}
+
+	void setInstanceName(String instanceName) {
+		shell.bot().textWithLabel("Name:").setText(instanceName);
+	}
+
+	public TcServerTemplatePropertiesPage nextToTcServerTemplatePropertiesPage() {
+		shell.bot().button("Next >").click();
+		return new TcServerTemplatePropertiesPage(shell);
 	}
 
 }

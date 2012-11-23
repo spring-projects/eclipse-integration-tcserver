@@ -43,7 +43,6 @@ public class NewServerWizard {
 	}
 
 	static NewServerWizard openWizard() {
-
 		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				try {
@@ -78,9 +77,10 @@ public class NewServerWizard {
 	}
 
 	void pressFinish(boolean errorDialogExpected, String errorMessageRegex) {
+		boolean errorDialogAutomatedMode = ErrorDialog.AUTOMATED_MODE;
 		ErrorDialog.AUTOMATED_MODE = false;
 		try {
-			assertTrue(isFinishEnabled());
+			assertTrue(isFinishEnabled()); // to fail quick
 			bot.button("Finish").click();
 			if (errorDialogExpected) {
 				bot.waitUntil(Conditions.shellIsActive("Server Error"), 10000);
@@ -95,10 +95,10 @@ public class NewServerWizard {
 				// an error occurred, cancel the wizard
 				bot.button("Cancel").click();
 			}
-			bot.waitUntil(SWTBotUtils.widgetIsDisposed(shell));
+			bot.waitUntil(SWTBotUtils.widgetIsDisposed(shell), 10000);
 		}
 		finally {
-			ErrorDialog.AUTOMATED_MODE = true;
+			ErrorDialog.AUTOMATED_MODE = errorDialogAutomatedMode;
 		}
 	}
 }

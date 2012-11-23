@@ -39,6 +39,7 @@ import org.springsource.ide.eclipse.commons.frameworks.test.util.SWTBotUtils;
 import org.springsource.ide.eclipse.commons.tests.util.swtbot.StsUiTestCase;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.InsightTcServerCallback;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerTemplateConfigurationFragment;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerUiPlugin;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerHarness;
@@ -67,24 +68,17 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 	@Override
 	public void setUp() throws Exception {
-
 		super.setUp();
-
-		// // Java Type Hierarchy is a very plain view, with no tables.
+		// Java Type Hierarchy is a very plain view, with no tables.
 		SWTBotUtils.openPerspective(bot, "Java Type Hierarchy");
 		openServersView();
-
 		if (baseInstallDirectoryPath == null) {
-
 			fixture = TcServerFixture.V_2_8;
 			harness = fixture.createHarness();
-
 			server = harness.createServer(BASE_INSTANCE);
-
 			baseInstallDirectoryPath = ((org.eclipse.wst.server.core.internal.Server) server).getRuntime()
 					.getLocation();
 		}
-
 	}
 
 	@Override
@@ -93,6 +87,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		deleteServer(ARBITRARY_SERVER_NAME);
 		deleteInstallDirectory(baseInstallDirectoryPath);
 		baseInstallDirectoryPath = null;
+		super.tearDown();
 	}
 
 	// Testing the bulk of the UI in detail
@@ -115,6 +110,177 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 	public void testFailedDeployment() throws CoreException {
 		doServerCreationTest(false, false, true);
+	}
+
+	// Testing adding/removing templates properties pages
+	// TODO: replace with @Theories
+	// ------------------------------------------------------------
+	public void testSelectTemplateWithAllPropertiesHavingDefaultValues() {
+		NewServerWizard newServerWizard = NewServerWizard.openWizard();
+
+		DefineNewServerPage defineNewServerPage = newServerWizard.getDefineNewServerPage();
+		defineNewServerPage.selectTcServer();
+
+		TcServerConfigurationPage configurationPage = defineNewServerPage.nextToTcServerConfigurationPage();
+		configurationPage.selectTcServerNewInstance();
+
+		CreateTcServerInstancePage createInstancePage = configurationPage.nextToCreateTcServerInstancePage();
+		// TODO: replace with TestName rule
+		createInstancePage.setInstanceName("testSelectTemplateWithAllPropertiesHavingDefaultValues");
+		createInstancePage.selectTemplate("ajp");
+		assertTrue(newServerWizard.isFinishEnabled());
+
+		TcServerTemplatePropertiesPage templatePropertiesPage = createInstancePage
+				.nextToTcServerTemplatePropertiesPage();
+		templatePropertiesPage.assertProperties("ajp");
+		templatePropertiesPage.setProperty(
+				"Please enter the port that the AJP connector should listen for requests on:", "");
+		templatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE);
+		assertFalse(templatePropertiesPage.isNextButtonEnabled());
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		templatePropertiesPage.setProperty(
+				"Please enter the port that the AJP connector should listen for requests on:", "8009");
+
+		newServerWizard.pressFinish();
+	}
+
+	public void testSelectTemplateWithPropertiesWithoutDefaultValues() throws Exception {
+		NewServerWizard newServerWizard = NewServerWizard.openWizard();
+
+		DefineNewServerPage defineNewServerPage = newServerWizard.getDefineNewServerPage();
+		defineNewServerPage.selectTcServer();
+
+		TcServerConfigurationPage configurationPage = defineNewServerPage.nextToTcServerConfigurationPage();
+		configurationPage.selectTcServerNewInstance();
+
+		CreateTcServerInstancePage createInstancePage = configurationPage.nextToCreateTcServerInstancePage();
+		// TODO: replace with TestName rule
+		createInstancePage.setInstanceName("testSelectTemplateWithPropertiesWithoutDefaultValues");
+		createInstancePage.selectTemplate("diagnostics");
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		TcServerTemplatePropertiesPage templatePropertiesPage = createInstancePage
+				.nextToTcServerTemplatePropertiesPage();
+		templatePropertiesPage.assertProperties("diagnostics");
+		templatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE);
+		assertFalse(templatePropertiesPage.isNextButtonEnabled());
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		templatePropertiesPage.setProperties("diagnostics");
+		assertTrue(templatePropertiesPage.isNextButtonEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
+
+		newServerWizard.pressFinish();
+	}
+
+	public void testSelectTemplatesWithAndWithoutDefaultValues() {
+		NewServerWizard newServerWizard = NewServerWizard.openWizard();
+
+		DefineNewServerPage defineNewServerPage = newServerWizard.getDefineNewServerPage();
+		defineNewServerPage.selectTcServer();
+
+		TcServerConfigurationPage configurationPage = defineNewServerPage.nextToTcServerConfigurationPage();
+		configurationPage.selectTcServerNewInstance();
+
+		CreateTcServerInstancePage createInstancePage = configurationPage.nextToCreateTcServerInstancePage();
+		// TODO: replace with TestName rule
+		createInstancePage.setInstanceName("testSelectTemplatesWithAndWithoutDefaultValues");
+		createInstancePage.selectTemplate("ajp", "diagnostics");
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		TcServerTemplatePropertiesPage ajpTemplatePropertiesPage = createInstancePage
+				.nextToTcServerTemplatePropertiesPage();
+		ajpTemplatePropertiesPage.assertProperties("ajp");
+		assertTrue(ajpTemplatePropertiesPage.isNextButtonEnabled());
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		TcServerTemplatePropertiesPage diagnosticsTemplatePropertiesPage = ajpTemplatePropertiesPage
+				.nextToTcServerTemplatePropertiesPage();
+		diagnosticsTemplatePropertiesPage.assertProperties("diagnostics");
+		diagnosticsTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE);
+		assertFalse(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		diagnosticsTemplatePropertiesPage.setProperties("diagnostics");
+		assertTrue(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
+
+		newServerWizard.pressFinish();
+	}
+
+	public void testSelectTemplatesWithoutDefaultValues() {
+		NewServerWizard newServerWizard = NewServerWizard.openWizard();
+
+		DefineNewServerPage defineNewServerPage = newServerWizard.getDefineNewServerPage();
+		defineNewServerPage.selectTcServer();
+
+		TcServerConfigurationPage configurationPage = defineNewServerPage.nextToTcServerConfigurationPage();
+		configurationPage.selectTcServerNewInstance();
+
+		CreateTcServerInstancePage createInstancePage = configurationPage.nextToCreateTcServerInstancePage();
+		// TODO: replace with TestName rule
+		createInstancePage.setInstanceName("testSelectTemplatesWithoutDefaultValues");
+		createInstancePage.selectTemplate("diagnostics", "jmx-ssl");
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		TcServerTemplatePropertiesPage diagnosticsTemplatePropertiesPage = createInstancePage
+				.nextToTcServerTemplatePropertiesPage();
+		diagnosticsTemplatePropertiesPage.assertProperties("diagnostics");
+		diagnosticsTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE);
+		assertFalse(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		diagnosticsTemplatePropertiesPage.setProperties("diagnostics");
+		assertTrue(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		TcServerTemplatePropertiesPage jmxSslTemplatePropertiesPage = diagnosticsTemplatePropertiesPage
+				.nextToTcServerTemplatePropertiesPage();
+		jmxSslTemplatePropertiesPage.assertProperties("jmx-ssl");
+		jmxSslTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE);
+		assertFalse(jmxSslTemplatePropertiesPage.isNextButtonEnabled());
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		jmxSslTemplatePropertiesPage.setProperties("jmx-ssl");
+		assertTrue(jmxSslTemplatePropertiesPage.isNextButtonEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
+
+		newServerWizard.pressFinish();
+	}
+
+	public void testSelectTemplatesWithNoPropertiesAndWithoutDefaultValues() {
+		NewServerWizard newServerWizard = NewServerWizard.openWizard();
+
+		DefineNewServerPage defineNewServerPage = newServerWizard.getDefineNewServerPage();
+		defineNewServerPage.selectTcServer();
+
+		TcServerConfigurationPage configurationPage = defineNewServerPage.nextToTcServerConfigurationPage();
+		configurationPage.selectTcServerNewInstance();
+
+		CreateTcServerInstancePage createInstancePage = configurationPage.nextToCreateTcServerInstancePage();
+		// TODO: replace with TestName rule
+		createInstancePage.setInstanceName("testSelectTemplatesWithNoPropertiesAndWithoutDefaultValues");
+		createInstancePage.selectTemplate("diagnostics", "insight");
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		TcServerTemplatePropertiesPage diagnosticsTemplatePropertiesPage = createInstancePage
+				.nextToTcServerTemplatePropertiesPage();
+		diagnosticsTemplatePropertiesPage.assertProperties("diagnostics");
+		diagnosticsTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE);
+		assertFalse(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		diagnosticsTemplatePropertiesPage.setProperties("diagnostics");
+		assertTrue(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
+
+		// make sure there has been only one template page added
+		TcServerAddRemoveResourcesPage addRemoveResources = diagnosticsTemplatePropertiesPage
+				.nextToTcServerAddRemoveResourcesPage();
+		assertNotNull(addRemoveResources);
+
+		newServerWizard.pressFinish();
 	}
 
 	// The actual meat of the test -----------------------------------

@@ -16,6 +16,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.PropertyWriterTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviourTest;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerTemplatePropertiesReaderTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerConfiguratorImporterTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerDeploymentTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntimeClasspathProviderTest;
@@ -36,7 +37,8 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerVersionHand
 		TcServerRuntimeClasspathProviderTest.class, //
 		TcServerRuntimeTest.class, //
 		TcServerVersionHandlerTest.class, //
-		TcServerProvisioningTest.class //
+		TcServerProvisioningTest.class, //
+		TcServerTemplatePropertiesReaderTest.class //
 })
 public class AllTcServerTests {
 	// goofy junit4, no class body needed

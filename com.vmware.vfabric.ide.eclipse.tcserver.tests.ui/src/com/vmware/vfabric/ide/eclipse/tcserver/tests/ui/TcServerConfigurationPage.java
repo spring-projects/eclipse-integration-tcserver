@@ -34,6 +34,8 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer20WizardFragm
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer21WizardFragment;
 
 /**
+ * Page Object for @link TcServerInstanceConfiguratorPage
+ *
  * @author Kaitlin Duck Sherwood
  * @author Tomasz Zarna
  */
@@ -91,7 +93,7 @@ public class TcServerConfigurationPage {
 	}
 
 	/**
-	 * Moved from TcServerNewServerWizardUiTest#selectTcServerNewInstance()
+	 * Moved from TcServerNewServerWizardUiTest#selectTcServerNewInstance().
 	 */
 	void selectTcServerNewInstance() {
 		SWTBotCombo instanceCombo = shell.bot().comboBox(0);
@@ -104,15 +106,14 @@ public class TcServerConfigurationPage {
 		deselectDefaultSelection();
 		shell.bot().radio(0).click(); // newInstanceButton;
 		assertFalse(instanceCombo.isEnabled());
-
 	}
 
-	// Workaround for bug in SWTBot code, see
-	// https://bugs.eclipse.org/bugs/show_bug.cgi?id=344484
 	/**
-	 * Moved from TcServerNewServerWizardUiTest#deselectDefaultSelection()
+	 * Moved from TcServerNewServerWizardUiTest#deselectDefaultSelection().
 	 */
 	private void deselectDefaultSelection() {
+		// Workaround for bug in SWTBot code, see
+		// https://bugs.eclipse.org/bugs/show_bug.cgi?id=344484
 		UIThreadRunnable.syncExec(new VoidResult() {
 			public void run() {
 				Matcher<Widget> matcher = AllOf.allOf(WidgetOfType.widgetOfType(Button.class),
@@ -121,7 +122,6 @@ public class TcServerConfigurationPage {
 				Button b = (Button) shell.bot().widget(matcher, 0);
 				b.setSelection(false);
 			}
-
 		});
 	}
 
