@@ -58,13 +58,14 @@ public class TcServerTemplatePropertiesReaderTest {
 				}
 			}
 		}
-		assertArrayEquals(new String[] { "ajp", "apr", "apr-ssl", "apr-ssl-tomcat-6", "async-logger", "base", "bio",
-				"bio-ssl", "cluster-node", "diagnostics", "insight", "jmx-ssl", "nio", "nio-ssl" },
+		assertArrayEquals(new String[] { "ajp", "apr", "apr-ssl", "async-logger", "base", "bio", "bio-ssl",
+				"cluster-node", "diagnostics", "insight", "jmx-ssl", "nio", "nio-ssl" },
 				actualTemplates.toArray(new String[actualTemplates.size()]));
 	}
 
 	private boolean isTemplate(File child) {
-		return child.isDirectory() && !child.getName().startsWith("base-tomcat-");
+		return child.isDirectory() && !child.getName().startsWith("base-tomcat-")
+				&& !child.getName().equals("apr-ssl-tomcat-6");
 	}
 
 	@Test
@@ -131,14 +132,6 @@ public class TcServerTemplatePropertiesReaderTest {
 				"Please enter the path that the SSL private key should be stored to:", "conf/tc-server.key");
 		assertPropsEquals(props.get(12), "apr-ssl", "ssl.private.key.location.input",
 				"Please enter the path that the SSL private key should be read from:");
-	}
-
-	@Test
-	public void aprSslTomcat6Template() throws Exception {
-		List<TemplateProperty> props = reader.read("apr-ssl-tomcat-6", new NullProgressMonitor());
-		Assume.assumeNotNull(props);
-
-		assertEquals(0, props.size());
 	}
 
 	@Test

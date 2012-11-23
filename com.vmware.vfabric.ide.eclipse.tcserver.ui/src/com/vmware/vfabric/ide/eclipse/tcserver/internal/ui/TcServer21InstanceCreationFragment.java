@@ -352,7 +352,8 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 	}
 
 	private boolean isTemplate(File child) {
-		return child.isDirectory() && !child.getName().startsWith("base-tomcat-");
+		return child.isDirectory() && !child.getName().startsWith("base-tomcat-")
+				&& !child.getName().equals("apr-ssl-tomcat-6");
 	}
 
 	@Override
