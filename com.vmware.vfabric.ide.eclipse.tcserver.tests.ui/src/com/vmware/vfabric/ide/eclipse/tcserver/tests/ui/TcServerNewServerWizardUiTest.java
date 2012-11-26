@@ -83,8 +83,9 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 	@Override
 	protected void tearDown() throws Exception {
+		deleteAllServers();
+		deleteAllRuntimeConfigurations();
 		harness.dispose();
-		deleteServer(ARBITRARY_SERVER_NAME);
 		deleteInstallDirectory(baseInstallDirectoryPath);
 		baseInstallDirectoryPath = null;
 		super.tearDown();
@@ -286,18 +287,12 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 	// The actual meat of the test -----------------------------------
 	private void doServerCreationTest(boolean existingServer, boolean existingInstance, boolean corruptedFiles)
 			throws CoreException {
-
-		if (existingServer) {
-			deleteServer(ARBITRARY_SERVER_NAME);
-		}
-		else {
+		if (!existingServer) {
 			deleteAllServers();
 			deleteAllRuntimeConfigurations();
 		}
 
-		deleteInstances(baseInstallDirectoryPath, ARBITRARY_INSTANCE_NAME);
 		int oldCount = getServerCount();
-
 		if (!existingServer) {
 			assertEquals("With a clean start, expects 0 servers", 0, oldCount);
 		}
@@ -527,7 +522,12 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 	// that has no other trees in it, so the Servers view should be the only
 	// tree around.
 	private SWTBotTree getServerTree() {
-		return bot.tree();
+		try {
+			return bot.tree();
+		}
+		catch (WidgetNotFoundException e) {
+			return null;
+		}
 	}
 
 	private int getServerCount() {
