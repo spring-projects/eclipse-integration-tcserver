@@ -26,9 +26,9 @@ import org.eclipse.wst.server.core.internal.Runtime;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 
-
 /**
  * @author Steffen Pingel
+ * @author Tomasz Zarna
  */
 public class TcServerUtil {
 
@@ -73,9 +73,9 @@ public class TcServerUtil {
 		return Status.OK_STATUS;
 	}
 
-	public static void executeInstanceCreation(IPath installLocation, String instanceName, String[] arguments)
+	public static void executeInstanceCreation(IPath runtimeLocation, String instanceName, String[] arguments)
 			throws CoreException {
-		ServerInstanceCommand command = new ServerInstanceCommand(installLocation.toFile());
+		ServerInstanceCommand command = new ServerInstanceCommand(runtimeLocation.toFile());
 
 		// execute
 		int returnCode;
@@ -83,19 +83,32 @@ public class TcServerUtil {
 			returnCode = command.execute(arguments);
 		}
 		catch (Exception e) {
-			throw handleResult(installLocation, command, new Status(IStatus.ERROR, ITcServerConstants.PLUGIN_ID,
+			throw handleResult(runtimeLocation, command, new Status(IStatus.ERROR, ITcServerConstants.PLUGIN_ID,
 					"The instance creation command resulted in an exception", e));
 		}
 
 		if (returnCode != 0) {
-			throw handleResult(installLocation, command, null);
+			throw handleResult(runtimeLocation, command, null);
 		}
 
 		// verify result
-		IStatus status = validateInstance(new File(installLocation.toFile(), instanceName), true);
-		if (!status.isOK()) {
-			throw handleResult(installLocation, command, status);
+		File instanceDirectory = getInstanceDirectory(arguments, instanceName);
+		if (instanceDirectory == null) {
+			instanceDirectory = new File(runtimeLocation.toFile(), instanceName);
 		}
+		IStatus status = validateInstance(instanceDirectory, true);
+		if (!status.isOK()) {
+			throw handleResult(runtimeLocation, command, status);
+		}
+	}
+
+	private static File getInstanceDirectory(String[] arguments, String instanceName) {
+		for (int i = 0; i < arguments.length; i++) {
+			if (arguments[i].equals("-i") && arguments[i + 1] != null) {
+				return new File(arguments[i + 1], instanceName);
+			}
+		}
+		return null;
 	}
 
 	private static CoreException handleResult(IPath installLocation, ServerInstanceCommand command, IStatus result) {

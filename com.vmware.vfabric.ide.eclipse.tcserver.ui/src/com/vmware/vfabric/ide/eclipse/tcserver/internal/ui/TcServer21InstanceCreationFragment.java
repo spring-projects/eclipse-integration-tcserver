@@ -21,6 +21,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -40,11 +41,16 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.FontMetrics;
 import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -72,6 +78,12 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 	public static final String INSTANCE_CONFIGURATION = "instanceConfiguration";
 
+	public static final String SPECIFY_INSTANCE_PARAMETERS_MESSAGE = "Specify instance parameters.";
+
+	public static final String SELECT_TEMPLATE_MESSAGE = "Select one or more templates.";
+
+	public static final String LOCATION_DOES_NOT_EXIST_MESSAGE = "The specified location does not exist.";
+
 	private static Pattern VALID_CHARS = Pattern.compile("[\\p{Alnum}-][\\p{Alnum}-_]*");
 
 	public static class InstanceConfiguration {
@@ -88,6 +100,8 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 		List<TemplateProperty> templateProperties = Collections.emptyList();
 
+		private String instanceDir;
+
 		public List<File> getTemplates() {
 			return Collections.unmodifiableList(templates);
 		}
@@ -102,6 +116,10 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 		public List<TemplateProperty> getTemplateProperties() {
 			return Collections.unmodifiableList(templateProperties);
+		}
+
+		public String getInstanceDir() {
+			return instanceDir;
 		}
 	}
 
@@ -142,6 +160,14 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 	private WizardFragment instancePropertiesPage;
 
+	private Button defaultLocationCheckbox;
+
+	private Label locationLabel;
+
+	private Combo locationPathField;
+
+	private Button locationBrowseButton;
+
 	protected TcServer21InstanceCreationFragment() {
 		setComplete(false);
 	}
@@ -156,11 +182,11 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		this.wizardHandle = handle;
 
 		handle.setTitle("Create tc Server Instance");
-		handle.setDescription("Specify instance parameters.");
+		handle.setDescription(SPECIFY_INSTANCE_PARAMETERS_MESSAGE);
 		handle.setImageDescriptor(TcServerImages.WIZB_SERVER);
 
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(2, false));
+		composite.setLayout(new GridLayout(3, false));
 
 		Label label = new Label(composite, SWT.NONE);
 		label.setText("Name:");
@@ -175,7 +201,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		});
 
 		label = new Label(composite, SWT.NONE);
-		GridDataFactory.fillDefaults().span(2, 1).applyTo(label);
+		GridDataFactory.fillDefaults().span(3, 1).applyTo(label);
 		label.setText("Templates:");
 
 		templateViewer = CheckboxTableViewer.newCheckList(composite, SWT.BORDER);
@@ -187,7 +213,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 												// something reasonable
 		gc.dispose();
 
-		GridDataFactory.fillDefaults().span(2, 1).grab(true, true).hint(SWT.DEFAULT, hintHeight)
+		GridDataFactory.fillDefaults().span(3, 1).grab(true, true).hint(SWT.DEFAULT, hintHeight)
 				.applyTo(templateViewer.getControl());
 
 		templateViewer.setContentProvider(new IStructuredContentProvider() {
@@ -240,7 +266,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		templateViewer.setSorter(new ViewerSorter());
 
 		readmeLabel = new Label(composite, SWT.NONE);
-		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(readmeLabel);
+		GridDataFactory.fillDefaults().span(3, 1).grab(true, false).applyTo(readmeLabel);
 		readmeLabel.setText("Template information:");
 
 		readmeText = new Text(composite, SWT.V_SCROLL | SWT.BORDER | SWT.READ_ONLY | SWT.WRAP);
@@ -249,12 +275,12 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		textLineHeight = fm.getHeight();
 		gc.dispose();
 
-		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).hint(SWT.DEFAULT, textLineHeight * 7)
+		GridDataFactory.fillDefaults().span(3, 1).grab(true, false).hint(SWT.DEFAULT, textLineHeight * 7)
 				.applyTo(readmeText);
 		readmeText.setText("Click on a template to see information about that template.");
 
 		Group layoutGroup = new Group(composite, SWT.BORDER);
-		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(layoutGroup);
+		GridDataFactory.fillDefaults().span(3, 1).grab(true, false).applyTo(layoutGroup);
 		layoutGroup.setLayout(new GridLayout(1, false));
 		layoutGroup.setText("Layout");
 
@@ -264,13 +290,82 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		combinedLayoutButton = new Button(layoutGroup, SWT.RADIO);
 		combinedLayoutButton.setText("Combined");
 
+		defaultLocationCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
+		defaultLocationCheckbox.setSelection(true);
+		defaultLocationCheckbox.setText("Use default instance location");
+		GridDataFactory.fillDefaults().span(3, 1).applyTo(defaultLocationCheckbox);
+		defaultLocationCheckbox.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				boolean checked = defaultLocationCheckbox.getSelection();
+				if (checked) {
+					locationPathField.setText(runtime.getLocation().toOSString());
+					((ServerWorkingCopy) wc).setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, (String) null);
+				}
+				validate();
+				locationLabel.setEnabled(!checked);
+				locationPathField.setEnabled(!checked);
+				locationBrowseButton.setEnabled(!checked);
+			}
+		});
+
+		locationLabel = new Label(composite, SWT.NONE);
+		locationLabel.setText("Location:");
+		GridData data = new GridData();
+		locationLabel.setLayoutData(data);
+		locationLabel.setEnabled(false);
+
+		locationPathField = new Combo(composite, SWT.DROP_DOWN);
+		locationPathField.setEnabled(false);
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		locationPathField.setLayoutData(data);
+		locationPathField.addModifyListener(new ModifyListener() {
+			public void modifyText(ModifyEvent e) {
+				validate();
+				((ServerWorkingCopy) wc).setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, locationPathField.getText());
+			}
+		});
+
+		locationBrowseButton = new Button(composite, SWT.PUSH);
+		locationBrowseButton.setText("Browse...");
+		data = new GridData();
+		locationBrowseButton.setLayoutData(data);
+		locationBrowseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				handleLocationBrowseButtonPressed();
+				validate();
+			}
+		});
+		locationBrowseButton.setEnabled(false);
+
 		Dialog.applyDialogFont(composite);
 		return composite;
+	}
+
+	private void handleLocationBrowseButtonPressed() {
+		DirectoryDialog dialog = new DirectoryDialog(locationBrowseButton.getShell());
+		dialog.setMessage("Select location");
+		String dirName = locationPathField.getText();
+		if (!dirName.equals("")) {//$NON-NLS-1$
+			File path = new File(dirName);
+			if (path.exists()) {
+				dialog.setFilterPath(dirName);
+			}
+		}
+		String selectedDirectory = dialog.open();
+		if (selectedDirectory != null) {
+			locationPathField.setText(selectedDirectory);
+			((ServerWorkingCopy) wc).setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, selectedDirectory);
+		}
 	}
 
 	protected void validate() {
 		if (nameText.getText().trim().length() == 0) {
 			wizardHandle.setMessage(TcServerInstanceConfiguratorPage.ENTER_NAME, IMessageProvider.NONE);
+		}
+		else if (!isDefaultLocationSelected() && !isValidLocation(locationPathField.getText())) {
+			wizardHandle.setMessage(LOCATION_DOES_NOT_EXIST_MESSAGE, IMessageProvider.ERROR);
 		}
 		else if (instanceExists()) {
 			wizardHandle.setMessage(TcServerInstanceConfiguratorPage.INSTANCE_EXISTS, IMessageProvider.ERROR);
@@ -279,7 +374,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			wizardHandle.setMessage(TcServerInstanceConfiguratorPage.ILLEGAL_SERVER_NAME, IMessageProvider.ERROR);
 		}
 		else if (templateViewer.getCheckedElements().length == 0) {
-			wizardHandle.setMessage("Select one or more templates.", IMessageProvider.NONE);
+			wizardHandle.setMessage(SELECT_TEMPLATE_MESSAGE, IMessageProvider.NONE);
 		}
 		else {
 			wizardHandle.setMessage(null, IMessageProvider.NONE);
@@ -293,11 +388,26 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 	}
 
 	private boolean instanceExists() {
-		if (runtime == null) {
-			return false;
+		IPath path = null;
+		if (isDefaultLocationSelected()) {
+			if (runtime == null) {
+				return false;
+			}
+			path = runtime.getLocation();
 		}
-		IPath path = runtime.getLocation().append(nameText.getText());
+		else {
+			path = new Path(locationPathField.getText());
+		}
+		path = path.append(nameText.getText());
 		return path.toFile().exists();
+	}
+
+	private boolean isDefaultLocationSelected() {
+		return defaultLocationCheckbox.getSelection();
+	}
+
+	private boolean isValidLocation(String location) {
+		return new File(location).exists();
 	}
 
 	private InstanceConfiguration initModel() {
@@ -308,6 +418,9 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			model.templates.add((File) element);
 		}
 		model.layout = (separateLayoutButton.getSelection()) ? Layout.SEPARATE : Layout.COMBINED;
+		if (!defaultLocationCheckbox.getSelection()) {
+			model.instanceDir = locationPathField.getText();
+		}
 		return model;
 	}
 
@@ -349,6 +462,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			}
 		}
 		templateViewer.setInput(templates);
+		locationPathField.setText(runtimePath.toOSString());
 	}
 
 	private boolean isTemplate(File child) {
@@ -366,10 +480,12 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			return;
 		}
 
+		IPath runtimeLocation = runtime.getLocation();
+
 		List<String> arguments = new ArrayList<String>();
 		arguments.add("create");
-		String tomcatVersion = TcServerUtil.getServerVersion(runtime);
 		arguments.add(model.getName());
+		String tomcatVersion = TcServerUtil.getServerVersion(runtime);
 		if (tomcatVersion != null) {
 			arguments.add("-v");
 			arguments.add(tomcatVersion);
@@ -385,7 +501,14 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			}
 		}
 
-		TcServerUtil.executeInstanceCreation(runtime.getLocation(), model.getName(), arguments.toArray(new String[0]));
+		String instanceDir = model.getInstanceDir();
+		if (instanceDir != null) {
+			arguments.add("-i");
+			arguments.add(instanceDir);
+		}
+
+		TcServerUtil.executeInstanceCreation(runtimeLocation, model.getName(),
+				arguments.toArray(new String[arguments.size()]));
 
 		// start server inline for new instances
 		((ServerWorkingCopy) wc).setAttribute(ITomcatServer.PROPERTY_TEST_ENVIRONMENT, false);

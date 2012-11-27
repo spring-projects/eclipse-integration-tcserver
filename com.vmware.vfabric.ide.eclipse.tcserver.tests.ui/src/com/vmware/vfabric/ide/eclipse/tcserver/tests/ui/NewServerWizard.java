@@ -93,12 +93,16 @@ public class NewServerWizard {
 				assertNotNull(label);
 				serverErrorDialog.close();
 				// an error occurred, cancel the wizard
-				bot.button("Cancel").click();
+				pressCancel();
 			}
 			bot.waitUntil(SWTBotUtils.widgetIsDisposed(shell), 10000);
 		}
 		finally {
 			ErrorDialog.AUTOMATED_MODE = errorDialogAutomatedMode;
 		}
+	}
+
+	void pressCancel() {
+		bot.button("Cancel").click();
 	}
 }

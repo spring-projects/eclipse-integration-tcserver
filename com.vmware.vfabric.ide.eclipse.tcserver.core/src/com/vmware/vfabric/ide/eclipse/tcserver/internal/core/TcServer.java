@@ -24,6 +24,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.server.tomcat.core.internal.ITomcatServer;
@@ -41,6 +42,7 @@ import org.eclipse.wst.server.core.ServerUtil;
  * @author Steffen Pingel
  * @author Christian Dupuis
  * @author Leo Dos Santos
+ * @author Tomasz Zarna
  */
 public class TcServer extends TomcatServer {
 
@@ -159,6 +161,10 @@ public class TcServer extends TomcatServer {
 			return getTomcatRuntime().getTomcatLocation();
 		}
 		else {
+			String instanceDir = getInstanceDirectory();
+			if (instanceDir != null) {
+				path = Path.fromOSString(instanceDir);
+			}
 			String serverName = getAttribute(KEY_SERVER_NAME, (String) null);
 			if (serverName != null) {
 				path = path.append(serverName);

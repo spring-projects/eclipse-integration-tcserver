@@ -36,9 +36,13 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotTreeItem;
 import org.eclipse.wst.server.core.IServer;
 import org.springsource.ide.eclipse.commons.core.util.OsUtils;
 import org.springsource.ide.eclipse.commons.frameworks.test.util.SWTBotUtils;
+import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 import org.springsource.ide.eclipse.commons.tests.util.swtbot.StsUiTestCase;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.InsightTcServerCallback;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer21InstanceCreationFragment;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer21WizardFragment;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerInstanceConfiguratorPage;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerTemplateConfigurationFragment;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerUiPlugin;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
@@ -210,7 +214,111 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		newServerWizard.pressFinish();
 	}
 
+	public void testNewInstanceInSelectedLocation() throws Exception {
+		deleteAllServers();
+		assertEquals("With a clean start, expects 0 servers", 0, getServerCount());
+
+		NewServerWizard newServerWizard = NewServerWizard.openWizard();
+
+		DefineNewServerPage defineNewServerPage = newServerWizard.getDefineNewServerPage();
+		defineNewServerPage.selectTcServer();
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		TcServerConfigurationPage tcServerConfigurationPage = defineNewServerPage.nextToTcServerConfigurationPage();
+		tcServerConfigurationPage.selectTcServerNewInstance();
+
+		CreateTcServerInstancePage createTcServerInstancePage = tcServerConfigurationPage
+				.nextToCreateTcServerInstancePage();
+		createTcServerInstancePage.setInstanceName("foo");
+		createTcServerInstancePage.selectTemplate("insight");
+		createTcServerInstancePage.selectUseDefaultServerLocation(false);
+		createTcServerInstancePage.assertServerLocationEnabled(true);
+		createTcServerInstancePage.assertNextButtonEnabled(true);
+		createTcServerInstancePage.setServerLocation("bar");
+		createTcServerInstancePage
+				.assertErrorMessage(TcServer21InstanceCreationFragment.LOCATION_DOES_NOT_EXIST_MESSAGE);
+		createTcServerInstancePage.assertNextButtonEnabled(false);
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		File tempDirectory = StsTestUtil.createTempDirectory();
+		createTcServerInstancePage.setServerLocation(tempDirectory.toString());
+		createTcServerInstancePage
+				.assertMessage(TcServer21InstanceCreationFragment.SPECIFY_INSTANCE_PARAMETERS_MESSAGE);
+		assertTrue(newServerWizard.isFinishEnabled());
+
+		newServerWizard.pressFinish();
+
+		// try to create another "foo" instance in the same custom location
+
+		newServerWizard = NewServerWizard.openWizard();
+
+		defineNewServerPage = newServerWizard.getDefineNewServerPage();
+		defineNewServerPage.selectTcServer();
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		tcServerConfigurationPage = defineNewServerPage.nextToTcServerConfigurationPage();
+		tcServerConfigurationPage.selectTcServerNewInstance();
+
+		createTcServerInstancePage = tcServerConfigurationPage.nextToCreateTcServerInstancePage();
+		createTcServerInstancePage.setInstanceName("foo");
+		createTcServerInstancePage.selectTemplate("insight");
+		createTcServerInstancePage.selectUseDefaultServerLocation(false);
+		createTcServerInstancePage.setServerLocation(tempDirectory.toString());
+
+		createTcServerInstancePage.assertNextButtonEnabled(false);
+		assertFalse(newServerWizard.isFinishEnabled());
+		createTcServerInstancePage.assertErrorMessage(TcServerInstanceConfiguratorPage.INSTANCE_EXISTS);
+
+		newServerWizard.pressCancel();
+	}
+
+	public void testDuplicatedNewInstanceInDefaultLocation() {
+		deleteAllServers();
+		assertEquals("With a clean start, expects 0 servers", 0, getServerCount());
+
+		// create instance named "foo"
+
+		NewServerWizard newServerWizard = NewServerWizard.openWizard();
+
+		DefineNewServerPage defineNewServerPage = newServerWizard.getDefineNewServerPage();
+		defineNewServerPage.selectTcServer();
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		TcServerConfigurationPage tcServerConfigurationPage = defineNewServerPage.nextToTcServerConfigurationPage();
+		tcServerConfigurationPage.selectTcServerNewInstance();
+
+		CreateTcServerInstancePage createTcServerInstancePage = tcServerConfigurationPage
+				.nextToCreateTcServerInstancePage();
+		createTcServerInstancePage.setInstanceName("foo");
+		createTcServerInstancePage.selectTemplate("insight");
+
+		newServerWizard.pressFinish();
+
+		// instance named "foo" created, now try to override it, should fail
+
+		newServerWizard = NewServerWizard.openWizard();
+
+		defineNewServerPage = newServerWizard.getDefineNewServerPage();
+		defineNewServerPage.selectTcServer();
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		tcServerConfigurationPage = defineNewServerPage.nextToTcServerConfigurationPage();
+		tcServerConfigurationPage.selectTcServerNewInstance();
+
+		createTcServerInstancePage = tcServerConfigurationPage.nextToCreateTcServerInstancePage();
+		createTcServerInstancePage.setInstanceName("foo");
+		createTcServerInstancePage.selectTemplate("insight");
+		createTcServerInstancePage.selectUseDefaultServerLocation(false);
+
+		createTcServerInstancePage.assertNextButtonEnabled(false);
+		assertFalse(newServerWizard.isFinishEnabled());
+		createTcServerInstancePage.assertErrorMessage(TcServerInstanceConfiguratorPage.INSTANCE_EXISTS);
+
+		newServerWizard.pressCancel();
+	}
+
 	public void testSelectTemplatesWithoutDefaultValues() {
+
 		NewServerWizard newServerWizard = NewServerWizard.openWizard();
 
 		DefineNewServerPage defineNewServerPage = newServerWizard.getDefineNewServerPage();
@@ -284,15 +392,86 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		newServerWizard.pressFinish();
 	}
 
+	public void testExistingInstanceInSelectedLocation() throws Exception {
+		// to make sure an instance exists under
+		// baseInstallDirectoryPath/ARBITRARY_INSTANCE_NAME
+		doServerCreationTest(false, false, false);
+
+		NewServerWizard newServerWizard = NewServerWizard.openWizard();
+
+		DefineNewServerPage defineNewServerPage = newServerWizard.getDefineNewServerPage();
+		defineNewServerPage.selectTcServer();
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		TcServerConfigurationPage tcServerConfigurationPage = defineNewServerPage.nextToTcServerConfigurationPage();
+		tcServerConfigurationPage.selectExistingInstance();
+		tcServerConfigurationPage.assertServerBrowseButtonEnabled(true);
+
+		tcServerConfigurationPage.setInstanceLocation("foo");
+		tcServerConfigurationPage.assertErrorMessage(TcServer21WizardFragment.SERVER_DOES_NOT_EXIST_MESSAGE);
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		File tempDirectory = StsTestUtil.createTempDirectory();
+		tcServerConfigurationPage.setInstanceLocation(tempDirectory.toString());
+		tcServerConfigurationPage.assertErrorMessage(TcServer21WizardFragment.INVALID_SERVER_DIR_MESSAGE);
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		tempDirectory.delete(); // making sure it doesn't exist
+		tcServerConfigurationPage.setInstanceLocation(tempDirectory.toString());
+		tcServerConfigurationPage.assertErrorMessage(TcServer21WizardFragment.SERVER_DOES_NOT_EXIST_MESSAGE);
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		String existingInstanceLocation = findExistingInstace(baseInstallDirectoryPath.append(ARBITRARY_INSTANCE_NAME));
+		tcServerConfigurationPage.setInstanceLocation(existingInstanceLocation);
+		tcServerConfigurationPage.assertMessage(TcServer21WizardFragment.SPECIFY_TC_SERVER_INSTANCE_MESSAGE);
+		assertTrue(newServerWizard.isFinishEnabled());
+
+		newServerWizard.pressFinish();
+	}
+
+	public void testExistingServerNoInstanceInSelectedLocation() throws Exception {
+		// create a server with no instances
+		doServerCreationTest(false, true, false);
+		deleteInstances(baseInstallDirectoryPath, BASE_INSTANCE);
+
+		NewServerWizard newServerWizard = NewServerWizard.openWizard();
+
+		DefineNewServerPage defineNewServerPage = newServerWizard.getDefineNewServerPage();
+		defineNewServerPage.selectTcServer();
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		TcServerConfigurationPage tcServerConfigurationPage = defineNewServerPage.nextToTcServerConfigurationPage();
+		tcServerConfigurationPage.selectExistingInstance();
+		tcServerConfigurationPage.assertServerBrowseButtonEnabled(true);
+
+		tcServerConfigurationPage.setInstanceLocation("foo");
+		tcServerConfigurationPage.assertErrorMessage(TcServer21WizardFragment.SERVER_DOES_NOT_EXIST_MESSAGE);
+		assertFalse(newServerWizard.isFinishEnabled());
+
+		newServerWizard.pressCancel();
+	}
+
+	private String findExistingInstace(final IPath arbitraryInstancePath) {
+		for (File file : arbitraryInstancePath.removeLastSegments(1).toFile().listFiles()) {
+			if (file.isDirectory() && file.getName().startsWith(arbitraryInstancePath.lastSegment())) {
+				return file.toString();
+			}
+		}
+		fail("Couldn't find an existing instance directory.");
+		return null;
+	}
+
 	// The actual meat of the test -----------------------------------
 	private void doServerCreationTest(boolean existingServer, boolean existingInstance, boolean corruptedFiles)
 			throws CoreException {
+
 		if (!existingServer) {
 			deleteAllServers();
 			deleteAllRuntimeConfigurations();
 		}
 
 		int oldCount = getServerCount();
+
 		if (!existingServer) {
 			assertEquals("With a clean start, expects 0 servers", 0, oldCount);
 		}
@@ -317,6 +496,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		}
 
 		assertFalse(newServerWizard.isFinishEnabled());
+
 		if (existingInstance) {
 			tcServerConfigurationPage.selectExistingInstance(BASE_INSTANCE);
 		}
@@ -383,7 +563,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 	}
 
-	// helpers generic to server testing (but not TC testing
+	// helpers generic to server testing (but not TC testing)
 	// ------------------------
 
 	private SWTBotTreeItem selectServer(String serverName) {

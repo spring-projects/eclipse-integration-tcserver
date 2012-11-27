@@ -17,9 +17,12 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jst.server.tomcat.core.internal.ITomcatServer;
+import org.eclipse.jst.server.tomcat.core.internal.TomcatServer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -30,6 +33,7 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.TaskModel;
@@ -45,6 +49,7 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerUtil;
 /**
  * @author Steffen Pingel
  * @author Christian Dupuis
+ * @author Tomasz Zarna
  */
 public class TcServer21WizardFragment extends WizardFragment {
 
@@ -54,6 +59,8 @@ public class TcServer21WizardFragment extends WizardFragment {
 
 	public static final String SPECIFY_TC_SERVER_INSTANCE_MESSAGE = "Specify the tc Server instance.";
 
+	public static final String SERVER_DOES_NOT_EXIST_MESSAGE = "The specified server does not exist.";
+
 	private static final String SERVER_PATH = ".";
 
 	private Label descriptionLabel;
@@ -61,6 +68,8 @@ public class TcServer21WizardFragment extends WizardFragment {
 	private Combo serverNameCombo;
 
 	private Label serverNameLabel;
+
+	private Button serverBrowseButton;
 
 	private IServerWorkingCopy wc;
 
@@ -89,14 +98,14 @@ public class TcServer21WizardFragment extends WizardFragment {
 		Composite composite = new Composite(parent, SWT.NONE);
 
 		GridLayout layout = new GridLayout();
-		layout.numColumns = 2;
+		layout.numColumns = 3;
 		composite.setLayout(layout);
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		newInstanceButton = new Button(composite, SWT.RADIO);
 		newInstanceButton.setSelection(true);
 		newInstanceButton.setText("Create new instance");
-		GridDataFactory.fillDefaults().span(2, 1).applyTo(newInstanceButton);
+		GridDataFactory.fillDefaults().span(3, 1).applyTo(newInstanceButton);
 		newInstanceButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -105,6 +114,7 @@ public class TcServer21WizardFragment extends WizardFragment {
 				validate();
 				serverNameCombo.setEnabled(false);
 				serverNameLabel.setEnabled(false);
+				serverBrowseButton.setEnabled(false);
 			}
 		});
 		creatingNewInstance = true;
@@ -118,9 +128,10 @@ public class TcServer21WizardFragment extends WizardFragment {
 				validate();
 				serverNameCombo.setEnabled(true);
 				serverNameLabel.setEnabled(true);
+				serverBrowseButton.setEnabled(true);
 			}
 		});
-		GridDataFactory.fillDefaults().span(2, 1).applyTo(existingInstanceButton);
+		GridDataFactory.fillDefaults().span(3, 1).applyTo(existingInstanceButton);
 
 		serverNameLabel = new Label(composite, SWT.NONE);
 		serverNameLabel.setText("Instance:");
@@ -132,23 +143,58 @@ public class TcServer21WizardFragment extends WizardFragment {
 		serverNameCombo.setLayoutData(data);
 		serverNameCombo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
-				((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_SERVER_NAME, serverNameCombo.getText());
+				IPath serverPath = new Path(serverNameCombo.getText());
+				if (!serverPath.isEmpty() && serverPath.isAbsolute()) {
+					((ServerWorkingCopy) wc).setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR,
+							serverNameCombo.getText());
+				}
+				else {
+					((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_SERVER_NAME, serverNameCombo.getText());
+				}
 				validate();
 			}
 		});
+
+		serverBrowseButton = new Button(composite, SWT.PUSH);
+		serverBrowseButton.setText("Browse...");
+		serverBrowseButton.setLayoutData(new GridData());
+		serverBrowseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				handleLocationBrowseButtonPressed();
+				validate();
+			}
+		});
+
 		serverNameCombo.setEnabled(false);
 		serverNameLabel.setEnabled(false);
+		serverBrowseButton.setEnabled(false);
 
 		Label separator = new Label(composite, SWT.NONE);
-		GridDataFactory.fillDefaults().span(2, 1).applyTo(separator);
+		GridDataFactory.fillDefaults().span(3, 1).applyTo(separator);
 
 		descriptionLabel = new Label(composite, SWT.WRAP);
 		descriptionLabel.setBackground(composite.getBackground());
-		GridDataFactory.fillDefaults().span(2, 1).grab(true, false).applyTo(descriptionLabel);
+		GridDataFactory.fillDefaults().span(3, 1).grab(true, false).applyTo(descriptionLabel);
 
 		initialize();
 
 		return composite;
+	}
+
+	private void handleLocationBrowseButtonPressed() {
+		File path = wc.getRuntime().getLocation().toFile();
+
+		DirectoryDialog dialog = new DirectoryDialog(serverBrowseButton.getShell());
+		dialog.setMessage("Select location");
+		if (path.exists()) {
+			dialog.setFilterPath(path.toString());
+		}
+		String selectedDirectory = dialog.open();
+		if (selectedDirectory != null) {
+			serverNameCombo.add(selectedDirectory, 0);
+			serverNameCombo.select(0);
+		}
 	}
 
 	@Override
@@ -191,6 +237,14 @@ public class TcServer21WizardFragment extends WizardFragment {
 
 	private File getInstanceDirectory() {
 		if (wc != null) {
+			String instanceDir = ((ServerWorkingCopy) wc).getAttribute(TomcatServer.PROPERTY_INSTANCE_DIR,
+					(String) null);
+			if (instanceDir != null) {
+				File file = new File(instanceDir);
+				if (file.exists()) {
+					return file;
+				}
+			}
 			String serverName = ((ServerWorkingCopy) wc).getAttribute(TcServer.KEY_SERVER_NAME, (String) null);
 			if (serverName != null) {
 				IPath path = wc.getRuntime().getLocation();
@@ -219,10 +273,11 @@ public class TcServer21WizardFragment extends WizardFragment {
 		if (file != null && file.exists()) {
 			return TcServerUtil.validateInstance(file, true);
 		}
-		return new Status(IStatus.ERROR, ITcServerConstants.PLUGIN_ID, "The specified server does not exist.");
+		return new Status(IStatus.ERROR, ITcServerConstants.PLUGIN_ID, SERVER_DOES_NOT_EXIST_MESSAGE);
 	}
 
 	private void initialize() {
+		existingInstanceButton.setEnabled(false);
 		if (wc != null && serverNameCombo != null) {
 			// add all directories that have a server configuration
 			serverNameCombo.removeAll();
@@ -231,20 +286,15 @@ public class TcServer21WizardFragment extends WizardFragment {
 			if (file.exists()) {
 				File[] serverDirectories = file.listFiles();
 				if (serverDirectories != null) {
-					existingInstanceButton.setEnabled(false);
 					for (File directory : serverDirectories) {
 						if (directory.isDirectory() && new File(directory, ".tc-runtime-instance").exists()) {
 							serverNameCombo.add(directory.getName());
-							existingInstanceButton.setEnabled(true);
 						}
 					}
 				}
-				else {
-					existingInstanceButton.setEnabled(false);
-				}
 			}
+			existingInstanceButton.setEnabled(true);
 		}
-
 	}
 
 	private void updateDescription(IStatus status) {

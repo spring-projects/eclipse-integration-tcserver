@@ -13,6 +13,7 @@ package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springsource.ide.eclipse.commons.core.process.OutputWriter;
@@ -21,10 +22,10 @@ import org.springsource.ide.eclipse.commons.core.process.StandardProcessRunner;
 import org.springsource.ide.eclipse.commons.core.process.SystemErrOutputWriter;
 import org.springsource.ide.eclipse.commons.core.process.SystemOutOutputWriter;
 
-
 /**
  * @author Christian Dupuis
  * @author Steffen Pingel
+ * @author Tomasz Zarna
  * @since 2.5.2
  */
 public final class ServerInstanceCommand {
@@ -67,9 +68,7 @@ public final class ServerInstanceCommand {
 	public int execute(String... arguments) {
 		List<String> allArguments = new ArrayList<String>(arguments.length + 1);
 		allArguments.add(this.script.getAbsolutePath());
-		for (String argument : arguments) {
-			allArguments.add(argument);
-		}
+		allArguments.addAll(Arrays.asList(arguments));
 
 		try {
 			return this.processRunner.run(this.script.getParentFile(),

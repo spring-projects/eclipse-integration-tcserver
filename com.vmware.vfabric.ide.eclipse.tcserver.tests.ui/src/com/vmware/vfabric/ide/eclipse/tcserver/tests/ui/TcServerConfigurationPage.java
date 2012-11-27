@@ -24,7 +24,6 @@ import org.eclipse.swtbot.swt.finder.matchers.AllOf;
 import org.eclipse.swtbot.swt.finder.matchers.WidgetOfType;
 import org.eclipse.swtbot.swt.finder.matchers.WithStyle;
 import org.eclipse.swtbot.swt.finder.results.VoidResult;
-import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotRadio;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
@@ -39,21 +38,15 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer21WizardFragm
  * @author Kaitlin Duck Sherwood
  * @author Tomasz Zarna
  */
-public class TcServerConfigurationPage {
-
-	private final SWTBotShell shell;
+public class TcServerConfigurationPage extends AbstractTcServerPage {
 
 	TcServerConfigurationPage(SWTBotShell shell) {
-		this.shell = shell;
+		super(shell);
 		shell.bot().waitUntil(Conditions.waitForWidget(withText("tc Server Configuration")));
 	}
 
-	/**
-	 * Moved from TcServerNewServerWizardUiTest#selectTcServerExistingInstance()
-	 */
-	void selectExistingInstance(String existingInstanceName) {
+	void selectExistingInstance() {
 		SWTBotCombo instanceCombo = shell.bot().comboBox(0);
-		// bot.Screenshot("/tmp/select.png");
 		assertFalse(instanceCombo.isEnabled());
 
 		SWTBotRadio newInstanceButton = shell.bot().radio("Create new instance");
@@ -64,8 +57,20 @@ public class TcServerConfigurationPage {
 
 		deselectDefaultSelection();
 
-		shell.bot().radio(1).click(); // existingInstanceButton;
+		existingInstanceButton.click();
 		assertTrue(instanceCombo.isEnabled());
+	}
+
+	private SWTBotCombo getExistingInstanceCombo() {
+		return shell.bot().comboBox(0);
+	}
+
+	/**
+	 * Moved from TcServerNewServerWizardUiTest#selectTcServerExistingInstance()
+	 */
+	void selectExistingInstance(String existingInstanceName) {
+		selectExistingInstance();
+		SWTBotCombo instanceCombo = getExistingInstanceCombo();
 
 		shell.bot().text(TcServer21WizardFragment.SPECIFY_TC_SERVER_INSTANCE_MESSAGE);
 
@@ -89,7 +94,6 @@ public class TcServerConfigurationPage {
 		shell.bot().text(TcServer21WizardFragment.SPECIFY_TC_SERVER_INSTANCE_MESSAGE);
 
 		instanceCombo.setSelection(existingInstanceName);
-
 	}
 
 	/**
@@ -125,43 +129,13 @@ public class TcServerConfigurationPage {
 		});
 	}
 
-	private SWTBotCheckBox getUseDefaultLocationCheckbox() {
-		return shell.bot().checkBox("Use default server location");
+	void assertServerBrowseButtonEnabled(boolean enabled) {
+		assertEquals(enabled, shell.bot().button("Browse...").isEnabled());
 	}
 
-	void assertUseDefaultServerLocationChecked(boolean isChecked) {
-		assertEquals(isChecked, getUseDefaultLocationCheckbox().isChecked());
-	}
-
-	private SWTBotCombo getServerLocationCombobox() {
-		return shell.bot().comboBox(0);
-	}
-
-	void assertServerLocationEnabled(boolean isEnabled) {
-		assertEquals(isEnabled, shell.bot().label("Location:").isEnabled());
-		assertEquals(isEnabled, getServerLocationCombobox().isEnabled());
-	}
-
-	void selectUseDefaultServerLocation(boolean select) {
-		SWTBotCheckBox checkbox = getUseDefaultLocationCheckbox();
-		if (select) {
-			checkbox.select();
-		}
-		else {
-			checkbox.deselect();
-		}
-	}
-
-	void assertErrorMessage(String errorMessage) {
-		shell.bot().text(" " + errorMessage);
-	}
-
-	void assertNextButtonEnabled(boolean isEnabled) {
-		assertEquals(isEnabled, shell.bot().button("Next >").isEnabled());
-	}
-
-	void setServerLocation(String location) {
-		getServerLocationCombobox().setText(location);
+	public void setInstanceLocation(String location) {
+		SWTBotCombo instanceCombo = getExistingInstanceCombo();
+		instanceCombo.setText(location);
 	}
 
 	public CreateTcServerInstancePage nextToCreateTcServerInstancePage() {

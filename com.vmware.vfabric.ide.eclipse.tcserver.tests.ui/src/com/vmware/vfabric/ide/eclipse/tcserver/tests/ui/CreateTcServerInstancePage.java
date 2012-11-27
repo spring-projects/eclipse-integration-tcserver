@@ -16,6 +16,8 @@ import static org.junit.Assert.assertEquals;
 import java.util.Calendar;
 
 import org.eclipse.swtbot.eclipse.finder.waits.Conditions;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCheckBox;
+import org.eclipse.swtbot.swt.finder.widgets.SWTBotCombo;
 import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerInstanceConfiguratorPage;
@@ -26,11 +28,10 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerInstanceConfi
  * @author Kaitlin Duck Sherwood
  * @author Tomasz Zarna
  */
-public class CreateTcServerInstancePage {
-	private final SWTBotShell shell;
+public class CreateTcServerInstancePage extends AbstractTcServerPage {
 
 	CreateTcServerInstancePage(SWTBotShell shell) {
-		this.shell = shell;
+		super(shell);
 		shell.bot().waitUntil(Conditions.waitForWidget(withText("Create tc Server Instance")));
 	}
 
@@ -63,12 +64,36 @@ public class CreateTcServerInstancePage {
 		}
 	}
 
-	void assertErrorMessage(String errorMessage) {
-		assertMessage(" " + errorMessage);
+	private SWTBotCheckBox getUseDefaultLocationCheckbox() {
+		return shell.bot().checkBox("Use default instance location");
 	}
 
-	void assertMessage(String message) {
-		shell.bot().text(message);
+	void selectTemplate(String templateName) {
+		shell.bot().table().getTableItem(templateName).toggleCheck();
+		shell.bot().table().getTableItem(templateName).click();
+	}
+
+	void assertUseDefaultServerLocationChecked(boolean isChecked) {
+		assertEquals(isChecked, getUseDefaultLocationCheckbox().isChecked());
+	}
+
+	private SWTBotCombo getServerLocationCombobox() {
+		return shell.bot().comboBox(0);
+	}
+
+	void assertServerLocationEnabled(boolean isEnabled) {
+		assertEquals(isEnabled, shell.bot().label("Location:").isEnabled());
+		assertEquals(isEnabled, getServerLocationCombobox().isEnabled());
+	}
+
+	void selectUseDefaultServerLocation(boolean select) {
+		SWTBotCheckBox checkbox = getUseDefaultLocationCheckbox();
+		if (select) {
+			checkbox.select();
+		}
+		else {
+			checkbox.deselect();
+		}
 	}
 
 	void assertNextButtonEnabled(boolean isEnabled) {
@@ -79,9 +104,13 @@ public class CreateTcServerInstancePage {
 		shell.bot().textWithLabel("Name:").setText(instanceName);
 	}
 
+	void setServerLocation(String location) {
+		selectUseDefaultServerLocation(false);
+		getServerLocationCombobox().setText(location);
+	}
+
 	public TcServerTemplatePropertiesPage nextToTcServerTemplatePropertiesPage() {
 		shell.bot().button("Next >").click();
 		return new TcServerTemplatePropertiesPage(shell);
 	}
-
 }
