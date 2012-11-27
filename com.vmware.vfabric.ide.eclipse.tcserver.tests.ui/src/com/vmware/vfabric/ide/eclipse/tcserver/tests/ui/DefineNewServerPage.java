@@ -20,14 +20,12 @@ import org.springsource.ide.eclipse.commons.frameworks.test.util.SWTBotUtils;
  * @author Kaitlin Duck Sherwood
  * @author Tomasz Zarna
  */
-public class DefineNewServerPage {
+public class DefineNewServerPage extends AbstractTcServerPage {
 
 	static final String VMWARE_VFABRIC_TC_SERVER_V25_V26_V27_V28 = "VMware vFabric tc Server v2.5, v2.6, v2.7, v2.8";
 
-	private final SWTBotShell shell;
-
 	DefineNewServerPage(SWTBotShell shell) {
-		this.shell = shell;
+		super(shell);
 		shell.bot().waitUntil(Conditions.waitForWidget(withText("Define a New Server")));
 	}
 

@@ -11,7 +11,6 @@
 package com.vmware.vfabric.ide.eclipse.tcserver.tests.ui;
 
 import static org.eclipse.swtbot.swt.finder.matchers.WidgetMatcherFactory.withText;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -129,8 +128,8 @@ public class TcServerConfigurationPage extends AbstractTcServerPage {
 		});
 	}
 
-	void assertServerBrowseButtonEnabled(boolean enabled) {
-		assertEquals(enabled, shell.bot().button("Browse...").isEnabled());
+	boolean isServerBrowseButtonEnabled() {
+		return shell.bot().button("Browse...").isEnabled();
 	}
 
 	public void setInstanceLocation(String location) {

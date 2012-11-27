@@ -233,11 +233,11 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		createTcServerInstancePage.selectTemplate("insight");
 		createTcServerInstancePage.selectUseDefaultServerLocation(false);
 		createTcServerInstancePage.assertServerLocationEnabled(true);
-		createTcServerInstancePage.assertNextButtonEnabled(true);
+		assertTrue(createTcServerInstancePage.isNextButtonEnabled());
 		createTcServerInstancePage.setServerLocation("bar");
 		createTcServerInstancePage
 				.assertErrorMessage(TcServer21InstanceCreationFragment.LOCATION_DOES_NOT_EXIST_MESSAGE);
-		createTcServerInstancePage.assertNextButtonEnabled(false);
+		assertFalse(createTcServerInstancePage.isNextButtonEnabled());
 		assertFalse(newServerWizard.isFinishEnabled());
 
 		File tempDirectory = StsTestUtil.createTempDirectory();
@@ -265,7 +265,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		createTcServerInstancePage.selectUseDefaultServerLocation(false);
 		createTcServerInstancePage.setServerLocation(tempDirectory.toString());
 
-		createTcServerInstancePage.assertNextButtonEnabled(false);
+		assertFalse(createTcServerInstancePage.isNextButtonEnabled());
 		assertFalse(newServerWizard.isFinishEnabled());
 		createTcServerInstancePage.assertErrorMessage(TcServerInstanceConfiguratorPage.INSTANCE_EXISTS);
 
@@ -310,7 +310,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		createTcServerInstancePage.selectTemplate("insight");
 		createTcServerInstancePage.selectUseDefaultServerLocation(false);
 
-		createTcServerInstancePage.assertNextButtonEnabled(false);
+		assertFalse(createTcServerInstancePage.isNextButtonEnabled());
 		assertFalse(newServerWizard.isFinishEnabled());
 		createTcServerInstancePage.assertErrorMessage(TcServerInstanceConfiguratorPage.INSTANCE_EXISTS);
 
@@ -405,7 +405,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 		TcServerConfigurationPage tcServerConfigurationPage = defineNewServerPage.nextToTcServerConfigurationPage();
 		tcServerConfigurationPage.selectExistingInstance();
-		tcServerConfigurationPage.assertServerBrowseButtonEnabled(true);
+		assertTrue(tcServerConfigurationPage.isServerBrowseButtonEnabled());
 
 		tcServerConfigurationPage.setInstanceLocation("foo");
 		tcServerConfigurationPage.assertErrorMessage(TcServer21WizardFragment.SERVER_DOES_NOT_EXIST_MESSAGE);
@@ -442,7 +442,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 		TcServerConfigurationPage tcServerConfigurationPage = defineNewServerPage.nextToTcServerConfigurationPage();
 		tcServerConfigurationPage.selectExistingInstance();
-		tcServerConfigurationPage.assertServerBrowseButtonEnabled(true);
+		assertTrue(tcServerConfigurationPage.isServerBrowseButtonEnabled());
 
 		tcServerConfigurationPage.setInstanceLocation("foo");
 		tcServerConfigurationPage.assertErrorMessage(TcServer21WizardFragment.SERVER_DOES_NOT_EXIST_MESSAGE);

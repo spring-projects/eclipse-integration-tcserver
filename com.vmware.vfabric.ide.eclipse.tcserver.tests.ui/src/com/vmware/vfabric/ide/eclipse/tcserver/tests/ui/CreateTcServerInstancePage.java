@@ -96,10 +96,6 @@ public class CreateTcServerInstancePage extends AbstractTcServerPage {
 		}
 	}
 
-	void assertNextButtonEnabled(boolean isEnabled) {
-		assertEquals(isEnabled, shell.bot().button("Next >").isEnabled());
-	}
-
 	void setInstanceName(String instanceName) {
 		shell.bot().textWithLabel("Name:").setText(instanceName);
 	}

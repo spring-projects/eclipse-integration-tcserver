@@ -20,17 +20,15 @@ import org.eclipse.swtbot.swt.finder.widgets.SWTBotShell;
  * @author Kaitlin Duck Sherwood
  * @author Tomasz Zarna
  */
-public class VMwareVFabricTcServerPage {
+public class VMwareVFabricTcServerPage extends AbstractTcServerPage {
 
 	// Note: these two messages appear to be buried in TC or Tomcat code.
 	private static final String INOFFENSIVE_SERVER_DIR_MESSAGE = "Specify the installation directory";
 
 	private static final String INVALID_TOMCAT_DIR_MESSAGE = "The Tomcat installation directory is not valid. It is missing expected file or folder tcruntime-ctl.sh.";
 
-	private final SWTBotShell shell;
-
 	VMwareVFabricTcServerPage(SWTBotShell shell) {
-		this.shell = shell;
+		super(shell);
 		shell.bot().waitUntil(Conditions.waitForWidget(withText("VMware vFabric tc Server")));
 	}
 
@@ -43,9 +41,9 @@ public class VMwareVFabricTcServerPage {
 		shell.bot().waitUntil(Conditions.waitForWidget(withText("Cancel")));
 
 		shell.bot().textWithLabel("Installation directory:").setText("nonsense nonsense");
-		shell.bot().text(" " + INVALID_TOMCAT_DIR_MESSAGE);
+		assertErrorMessage(INVALID_TOMCAT_DIR_MESSAGE);
 
 		shell.bot().textWithLabel("Installation directory:").setText(installDirectoryPath.toString());
-		shell.bot().text(INOFFENSIVE_SERVER_DIR_MESSAGE);
+		assertMessage(INOFFENSIVE_SERVER_DIR_MESSAGE);
 	}
 }
