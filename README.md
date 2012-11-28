@@ -64,7 +64,7 @@
   The VMware vFabric tc Server Integration for Eclipse project uses Maven Tycho to do continuous integration
   builds and to produce p2 repos and update sites. To build the project yourself, you can execute:
 
-  mvn -Pe37 -Dmaven.test.skip=true clean install
+  `mvn -Pe37 -Dmaven.test.skip=true clean install`
 
 ## Contributing
 
