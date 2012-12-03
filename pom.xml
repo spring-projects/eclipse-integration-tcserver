@@ -19,7 +19,7 @@
   </scm>
 
   <modules>
-    <module>com.vmware.vfabric.ide.eclipse.tcserver-feature</module>
+	<module>com.vmware.vfabric.ide.eclipse.tcserver-feature</module>
 	<module>com.vmware.vfabric.ide.eclipse.tcserver.core</module>
 	<module>com.vmware.vfabric.ide.eclipse.tcserver.reloading</module>
 	<module>com.vmware.vfabric.ide.eclipse.tcserver.livegraph</module>
@@ -27,11 +27,11 @@
 	<module>com.vmware.vfabric.ide.eclipse.tcserver.tests.ui</module>
 	<module>com.vmware.vfabric.ide.eclipse.tcserver.ui</module>
 
-    <module>com.vmware.vfabric.ide.eclipse.tcserver.insight-feature</module>
+	<module>com.vmware.vfabric.ide.eclipse.tcserver.insight-feature</module>
 	<module>com.vmware.vfabric.ide.eclipse.tcserver.insight.tests</module>
 	<module>com.vmware.vfabric.ide.eclipse.tcserver.insight.ui</module>
 
-    <module>com.vmware.vfabric.ide.eclipse.tcserver.site</module>
+	<module>com.vmware.vfabric.ide.eclipse.tcserver.site</module>
   </modules>
 
   <!-- Common Configuration -->
@@ -78,8 +78,8 @@
     <dist.type>snapshot</dist.type>
     <dist.bucket>dist.springsource.com</dist.bucket>
     <dist.platform.name></dist.platform.name>
-    <dist.platform.version></dist.platform.version>		
-    <dist.platform.id></dist.platform.id>		
+    <dist.platform.version></dist.platform.version>
+    <dist.platform.id></dist.platform.id>
     <dist.target></dist.target>
     <dist.properties>dist.properties</dist.properties>
 
@@ -110,7 +110,7 @@
   </properties>
 
   <profiles>
-	
+
     <profile>
       <id>e37</id>
       <activation>
@@ -124,7 +124,7 @@
         <package.qualifierPrefix>e37</package.qualifierPrefix>
         <version.weaving>1.0.0.R3_6_2</version.weaving>
       </properties>
-	  <repositories>
+      <repositories>
 		<repository>
 		  <id>platform</id>
 		  <layout>p2</layout>
@@ -181,25 +181,25 @@
   </profiles>
 
   <repositories>
-	
+
 	<repository>
 	  <id>eclipse-integration-commons</id>
 	  <layout>p2</layout>
 	  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.eclipse-integration-commons-version}</url>
 	</repository>
-	
+
 	<repository>
 	  <id>spring-ide</id>
 	  <layout>p2</layout>
 	  <url>http://dist.springframework.org/${dist.type}/IDE/${dist.spring-ide-version}</url>
 	</repository>
-	
+
 	<repository>
 	  <id>mylyn</id>
 	  <layout>p2</layout>
 	  <url>http://download.eclipse.org/mylyn/releases/3.7</url>
 	</repository>
-	
+
     <!-- required for Maven and Ant AWS dependency -->
     <repository>
       <id>springsource-maven-release</id>
@@ -248,7 +248,7 @@
       </extension>
     </extensions>
     <plugins>
-	
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
@@ -513,23 +513,6 @@
             <appArgLine>
               -eclipse.keyring ${project.build.directory}/keystore -eclipse.password ${project.build.directory}/keystore.password
             </appArgLine>
-            <dependencies>
-              <dependency>
-                <type>p2-installable-unit</type>
-                <artifactId>org.eclipse.wst.server_ui.feature.feature.group</artifactId>
-                <version>0.0.0</version>
-              </dependency>
-              <dependency>
-                <type>p2-installable-unit</type>
-                <artifactId>org.eclipse.jst.web_ui.feature.feature.group</artifactId>
-                <version>0.0.0</version>
-              </dependency>
-              <dependency>
-                <type>p2-installable-unit</type>
-                <artifactId>org.eclipse.jst.enterprise_ui.feature.feature.group</artifactId>
-                <version>0.0.0</version>
-              </dependency>
-            </dependencies>
           </configuration>
         </plugin>
       </plugins>

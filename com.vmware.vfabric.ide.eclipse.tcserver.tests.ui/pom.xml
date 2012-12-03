@@ -10,10 +10,6 @@
   </parent>
   <artifactId>com.vmware.vfabric.ide.eclipse.tcserver.tests.ui</artifactId>
   <packaging>eclipse-test-plugin</packaging>
-  <properties>
-    <test.class>com.vmware.vfabric.ide.eclipse.tcserver.tests.ui.AllTcServerUiTests</test.class>
-    <test.useUIThread>false</test.useUIThread>
-  </properties>
   <profiles>
     <profile>
       <id>heartbeat</id>
@@ -25,6 +21,16 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-surefire-plugin</artifactId>
+				<version>${tycho-version}</version>
+				<configuration>
+					<useUIThread>false</useUIThread>
+					<testSuite>com.vmware.vfabric.ide.eclipse.tcserver.tests.ui</testSuite>
+					<testClass>com.vmware.vfabric.ide.eclipse.tcserver.tests.ui.AllTcServerUiTests</testClass>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-p2-plugin</artifactId>

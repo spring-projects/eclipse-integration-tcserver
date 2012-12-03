@@ -793,7 +793,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		// "carbon".equals(SWT.getPlatform()) ||
 
 		if (OsUtils.isWindows()) {
-			bot.waitUntil(Conditions.shellIsActive("Java Type Hierarchy - Spring Tool Suite"));
+			SWTBotUtils.waitForShellWithRegex(bot, "Java Type Hierarchy.*");
 			bot.menu("Window").menu("Preferences").click();
 		}
 		else {
@@ -809,8 +809,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 				}
 			}
 			else if ("gtk".equals(SWT.getPlatform())) {
-
-				bot.waitUntil(Conditions.shellIsActive("Java Type Hierarchy - Spring Tool Suite"));
+				SWTBotUtils.waitForShellWithRegex(bot, "Java Type Hierarchy.*");
 				bot.menu("Window").menu("Preferences").click();
 			}
 			else {
