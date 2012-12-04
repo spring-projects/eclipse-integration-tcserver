@@ -16,6 +16,10 @@ package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
  */
 public class TemplateProperty {
 
+	private static final String GENERATE = "GENERATE";
+
+	private static final String RANDOM = "RANDOM";
+
 	private final String template;
 
 	private final String key;
@@ -57,12 +61,17 @@ public class TemplateProperty {
 	 * @return the default value for the given property, can be
 	 * <code>null</code>
 	 */
-	public String getDefault() {
-		return getDefault(null);
+	public String getRawDefault() {
+		return defaultValue;
 	}
 
-	public String getDefault(String ifNull) {
-		return defaultValue == null ? ifNull : defaultValue;
+	public String getDefault() {
+		if (defaultValue == null || GENERATE.equals(defaultValue) || RANDOM.equals(defaultValue)) {
+			return "";
+		}
+		else {
+			return defaultValue;
+		}
 	}
 
 	public String getValue() {

@@ -35,7 +35,7 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer21InstanceCre
  */
 public class TcServerTemplateConfigurationFragment extends WizardFragment {
 
-	public static final String ENTER_VALUE = "Enter a value for each property.";
+	public static final String ENTER_VALUE = "Enter a value for all required properties.";
 
 	final private String templateName;
 
@@ -55,7 +55,7 @@ public class TcServerTemplateConfigurationFragment extends WizardFragment {
 	private boolean checkIfAllPropertiesHaveDefaultValues() {
 		if (properties != null) {
 			for (TemplateProperty prop : properties) {
-				if (prop.getDefault() == null) {
+				if (prop.getRawDefault() == null) {
 					return false;
 				}
 			}
@@ -129,7 +129,7 @@ public class TcServerTemplateConfigurationFragment extends WizardFragment {
 
 			final Text value = new Text(composite, SWT.BORDER);
 			GridDataFactory.fillDefaults().grab(true, false).applyTo(value);
-			value.setText(prop.getDefault(""));
+			value.setText(prop.getDefault());
 			value.setData(prop);
 			value.addModifyListener(new ModifyListener() {
 				public void modifyText(ModifyEvent e) {

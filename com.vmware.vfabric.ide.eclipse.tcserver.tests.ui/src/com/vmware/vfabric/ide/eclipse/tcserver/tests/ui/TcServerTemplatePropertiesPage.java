@@ -70,7 +70,7 @@ public class TcServerTemplatePropertiesPage extends AbstractTcServerPage {
 			assertTemplateName("jmx-ssl");
 			assertProperty(
 					"Please enter the distinguised name the SSL certificate should use. To be prompted for name components leave blank:",
-					"GENERATE");
+					"");
 			assertProperty("Please enter the first and last name the SSL certificate should use:", "Unknown");
 			assertProperty("Please enter the organizational unit the SSL certificate should use:", "Unknown");
 			assertProperty("Please enter the organization the SSL certificate should use:", "Unknown");
@@ -81,14 +81,14 @@ public class TcServerTemplatePropertiesPage extends AbstractTcServerPage {
 			assertProperty("Please enter the alias that the keystore should refer to the SSL private key as:",
 					"tc-server-jmx-ssl");
 			assertProperty("Please enter the alias that the keystore refers to the SSL private key as:", "");
-			assertProperty("Please enter the password that keystore should protect the SSL private key with:", "RANDOM");
+			assertProperty("Please enter the password that keystore should protect the SSL private key with:", "");
 			assertProperty("Please enter the password that keystore protects the SSL private key with:", "");
 			assertProperty("Please enter the path that the SSL keystore should be stored to:",
 					"conf/tc-server-jmx-ssl.keystore");
 			assertProperty(
 					"Please enter the path that the SSL keystore should be read from. To create a new keystore, leave blank:",
-					"GENERATE");
-			assertProperty("Please enter the password that the SSL keystore should protect itself with:", "RANDOM");
+					"");
+			assertProperty("Please enter the password that the SSL keystore should protect itself with:", "");
 			assertProperty("Please enter the password that the SSL keystore protects itself with:", "");
 		}
 		else {

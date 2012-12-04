@@ -370,10 +370,10 @@ public class TcServerTemplatePropertiesReaderTest {
 		assertEquals(expected[1], actual.getKey());
 		assertEquals(expected[2], actual.getMessage());
 		if (expected.length == 4) {
-			assertEquals("Default values for " + expected[1] + " didn't match:", expected[3], actual.getDefault());
+			assertEquals("Default values for " + expected[1] + " didn't match:", expected[3], actual.getRawDefault());
 		}
 		else {
-			assertNull("Expecting null but found: " + actual.getDefault(), actual.getDefault());
+			assertNull("Expecting null but found: " + actual.getRawDefault(), actual.getRawDefault());
 		}
 	}
 

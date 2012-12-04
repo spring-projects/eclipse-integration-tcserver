@@ -176,7 +176,7 @@ public class TemplatePropertiesReader {
 		String key = findLink(defaultValue);
 		for (TemplateProperty prop : propsFoundSoFar) {
 			if (prop.getKey().equals(key)) {
-				return prop.getDefault();
+				return prop.getRawDefault();
 			}
 		}
 		return defaultValue;
