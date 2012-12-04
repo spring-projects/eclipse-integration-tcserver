@@ -140,7 +140,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		templatePropertiesPage.assertProperties("ajp");
 		templatePropertiesPage.setProperty(
 				"Please enter the port that the AJP connector should listen for requests on:", "");
-		templatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE);
+		templatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE_MESSAGE);
 		assertFalse(templatePropertiesPage.isNextButtonEnabled());
 		assertFalse(newServerWizard.isFinishEnabled());
 
@@ -168,7 +168,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		TcServerTemplatePropertiesPage templatePropertiesPage = createInstancePage
 				.nextToTcServerTemplatePropertiesPage();
 		templatePropertiesPage.assertProperties("diagnostics");
-		templatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE);
+		templatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE_MESSAGE);
 		assertFalse(templatePropertiesPage.isNextButtonEnabled());
 		assertFalse(newServerWizard.isFinishEnabled());
 
@@ -203,9 +203,19 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		TcServerTemplatePropertiesPage diagnosticsTemplatePropertiesPage = ajpTemplatePropertiesPage
 				.nextToTcServerTemplatePropertiesPage();
 		diagnosticsTemplatePropertiesPage.assertProperties("diagnostics");
-		diagnosticsTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE);
+		diagnosticsTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE_MESSAGE);
 		assertFalse(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
 		assertFalse(newServerWizard.isFinishEnabled());
+
+		// STS-3097: the error message should disappear after backtracking to
+		// previous template page
+		assertTrue(diagnosticsTemplatePropertiesPage.isBackButtonEnabled());
+		ajpTemplatePropertiesPage = diagnosticsTemplatePropertiesPage.backToTcServerTemplatePropertiesPage();
+		ajpTemplatePropertiesPage.assertProperties("ajp");
+		ajpTemplatePropertiesPage
+				.assertMessage(TcServerTemplateConfigurationFragment.SPECIFY_TEMPLATE_PROPERTIES_MESSAGE);
+		assertTrue(ajpTemplatePropertiesPage.isNextButtonEnabled());
+		diagnosticsTemplatePropertiesPage = ajpTemplatePropertiesPage.nextToTcServerTemplatePropertiesPage();
 
 		diagnosticsTemplatePropertiesPage.setProperties("diagnostics");
 		assertTrue(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
@@ -336,7 +346,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		TcServerTemplatePropertiesPage diagnosticsTemplatePropertiesPage = createInstancePage
 				.nextToTcServerTemplatePropertiesPage();
 		diagnosticsTemplatePropertiesPage.assertProperties("diagnostics");
-		diagnosticsTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE);
+		diagnosticsTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE_MESSAGE);
 		assertFalse(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
 		assertFalse(newServerWizard.isFinishEnabled());
 
@@ -347,7 +357,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		TcServerTemplatePropertiesPage jmxSslTemplatePropertiesPage = diagnosticsTemplatePropertiesPage
 				.nextToTcServerTemplatePropertiesPage();
 		jmxSslTemplatePropertiesPage.assertProperties("jmx-ssl");
-		jmxSslTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE);
+		jmxSslTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE_MESSAGE);
 		assertFalse(jmxSslTemplatePropertiesPage.isNextButtonEnabled());
 		assertFalse(newServerWizard.isFinishEnabled());
 
@@ -376,7 +386,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		TcServerTemplatePropertiesPage diagnosticsTemplatePropertiesPage = createInstancePage
 				.nextToTcServerTemplatePropertiesPage();
 		diagnosticsTemplatePropertiesPage.assertProperties("diagnostics");
-		diagnosticsTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE);
+		diagnosticsTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE_MESSAGE);
 		assertFalse(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
 		assertFalse(newServerWizard.isFinishEnabled());
 

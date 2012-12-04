@@ -13,10 +13,12 @@ package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -70,73 +72,73 @@ public class TcServerTemplatePropertiesReaderTest {
 
 	@Test
 	public void ajpTemplate() throws Exception {
-		List<TemplateProperty> props = reader.read("ajp", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("ajp", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
 		assertEquals(2, props.size());
-		assertPropsEquals(props.get(0), "ajp", "http.port",
+		assertPropsEquals(props, "ajp", "http.port",
 				"Please enter the port that the AJP connector should listen for requests on:", "8009");
-		assertPropsEquals(props.get(1), "ajp", "https.port",
+		assertPropsEquals(props, "ajp", "https.port",
 				"Please enter the port that the AJP connector should redirect SSL requests to:", "8443");
 	}
 
 	@Test
 	public void aprTemplate() throws Exception {
-		List<TemplateProperty> props = reader.read("apr", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("apr", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
 		assertEquals(2, props.size());
-		assertPropsEquals(props.get(0), "apr", "http.port",
+		assertPropsEquals(props, "apr", "http.port",
 				"Please enter the port that the APR connector should listen for HTTP requests on:", "8080");
-		assertPropsEquals(props.get(1), "apr", "https.port",
+		assertPropsEquals(props, "apr", "https.port",
 				"Please enter the port that the APR connector should redirect HTTPS requests to:", "8443");
 	}
 
 	@Test
 	public void aprSslTemplate() throws Exception {
-		List<TemplateProperty> props = reader.read("apr-ssl", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("apr-ssl", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
 		assertEquals(13, props.size());
-		assertPropsEquals(props.get(0), "apr-ssl", "https.port",
+		assertPropsEquals(props, "apr-ssl", "https.port",
 				"Please enter the port that the APR connector should listen for HTTPS requests on:", "8443");
 		assertPropsEquals(
-				props.get(1),
+				props,
 				"apr-ssl",
 				"ssl.certificate.dname",
 				"Please enter the distinguised name the SSL certificate should use. To create a new name, leave blank:",
 				"GENERATE");
-		assertPropsEquals(props.get(2), "apr-ssl", "ssl.certificate.dname.CN",
+		assertPropsEquals(props, "apr-ssl", "ssl.certificate.dname.CN",
 				"Please enter the first and last name the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(3), "apr-ssl", "ssl.certificate.dname.OU",
+		assertPropsEquals(props, "apr-ssl", "ssl.certificate.dname.OU",
 				"Please enter the organizational unit the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(4), "apr-ssl", "ssl.certificate.dname.O",
+		assertPropsEquals(props, "apr-ssl", "ssl.certificate.dname.O",
 				"Please enter the organization the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(5), "apr-ssl", "ssl.certificate.dname.L",
+		assertPropsEquals(props, "apr-ssl", "ssl.certificate.dname.L",
 				"Please enter the city or locality the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(6), "apr-ssl", "ssl.certificate.dname.ST",
+		assertPropsEquals(props, "apr-ssl", "ssl.certificate.dname.ST",
 				"Please enter the state or province the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(7), "apr-ssl", "ssl.certificate.dname.C",
+		assertPropsEquals(props, "apr-ssl", "ssl.certificate.dname.C",
 				"Please enter the two-letter country code the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(8), "apr-ssl", "ssl.key.size",
+		assertPropsEquals(props, "apr-ssl", "ssl.key.size",
 				"Please enter the size in bits that the SSL private key should be:", "2048");
-		assertPropsEquals(props.get(9), "apr-ssl", "ssl.certificate.location",
+		assertPropsEquals(props, "apr-ssl", "ssl.certificate.location",
 				"Please enter the path that the SSL certificate should be stored to:", "conf/tc-server.cer");
 		assertPropsEquals(
-				props.get(10),
+				props,
 				"apr-ssl",
 				"ssl.certificate.location.input",
 				"Please enter the path that the SSL certificate should be read from. To create a new certificate, leave blank:",
 				"GENERATE");
-		assertPropsEquals(props.get(11), "apr-ssl", "ssl.private.key.location",
+		assertPropsEquals(props, "apr-ssl", "ssl.private.key.location",
 				"Please enter the path that the SSL private key should be stored to:", "conf/tc-server.key");
-		assertPropsEquals(props.get(12), "apr-ssl", "ssl.private.key.location.input",
+		assertPropsEquals(props, "apr-ssl", "ssl.private.key.location.input",
 				"Please enter the path that the SSL private key should be read from:");
 	}
 
 	@Test
 	public void asyncLoggerTemplate() throws Exception {
-		List<TemplateProperty> props = reader.read("async-logger", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("async-logger", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
 		assertEquals(0, props.size());
@@ -144,112 +146,112 @@ public class TcServerTemplatePropertiesReaderTest {
 
 	@Test
 	public void baseTemplate() throws Exception {
-		List<TemplateProperty> props = reader.read("base", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("base", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
 		assertEquals(3, props.size());
-		assertPropsEquals(props.get(0), "base", "jmx.port",
+		assertPropsEquals(props, "base", "jmx.port",
 				"Please enter the port that the JMX socket listener should listen on:", "6969");
-		assertPropsEquals(props.get(1), "base", "shutdown.port",
+		assertPropsEquals(props, "base", "shutdown.port",
 				"Please enter the port that Tomcat Shutdown should listen on:", "-1");
-		assertPropsEquals(props.get(2), "base", "runtime.user",
+		assertPropsEquals(props, "base", "runtime.user",
 				"Please enter the user account that should start the instance when using the 'bin/init.d.sh' script:",
 				"tcserver");
 	}
 
 	@Test
 	public void bioTemplate() throws Exception {
-		List<TemplateProperty> props = reader.read("bio", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("bio", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
 		assertEquals(2, props.size());
-		assertPropsEquals(props.get(0), "bio", "http.port",
+		assertPropsEquals(props, "bio", "http.port",
 				"Please enter the port that the BIO connector should listen for HTTP requests on:", "8080");
-		assertPropsEquals(props.get(1), "bio", "https.port",
+		assertPropsEquals(props, "bio", "https.port",
 				"Please enter the port that the BIO connector should redirect HTTPS requests to:", "8443");
 	}
 
 	@Test
 	public void bioSslTemplate() throws Exception {
-		List<TemplateProperty> props = reader.read("bio-ssl", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("bio-ssl", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
 		assertEquals(17, props.size());
-		assertPropsEquals(props.get(0), "bio-ssl", "https.port",
+		assertPropsEquals(props, "bio-ssl", "https.port",
 				"Please enter the port that the BIO connector should listen for HTTPS requests on:", "8443");
 		assertPropsEquals(
-				props.get(1),
+				props,
 				"bio-ssl",
 				"ssl.certificate.dname",
 				"Please enter the distinguised name the SSL certificate should use (i.e. cn=MyCompany,dc=mycompany,dc=com). To be prompted for name components leave blank:",
 				"GENERATE");
-		assertPropsEquals(props.get(2), "bio-ssl", "ssl.certificate.dname.CN",
+		assertPropsEquals(props, "bio-ssl", "ssl.certificate.dname.CN",
 				"Please enter the first and last name the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(3), "bio-ssl", "ssl.certificate.dname.OU",
+		assertPropsEquals(props, "bio-ssl", "ssl.certificate.dname.OU",
 				"Please enter the organizational unit the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(4), "bio-ssl", "ssl.certificate.dname.O",
+		assertPropsEquals(props, "bio-ssl", "ssl.certificate.dname.O",
 				"Please enter the organization the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(5), "bio-ssl", "ssl.certificate.dname.L",
+		assertPropsEquals(props, "bio-ssl", "ssl.certificate.dname.L",
 				"Please enter the city or locality the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(6), "bio-ssl", "ssl.certificate.dname.ST",
+		assertPropsEquals(props, "bio-ssl", "ssl.certificate.dname.ST",
 				"Please enter the state or province the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(7), "bio-ssl", "ssl.certificate.dname.C",
+		assertPropsEquals(props, "bio-ssl", "ssl.certificate.dname.C",
 				"Please enter the two-letter country code the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(8), "bio-ssl", "ssl.key.size",
+		assertPropsEquals(props, "bio-ssl", "ssl.key.size",
 				"Please enter the size in bits that the SSL private key should be:", "2048");
-		assertPropsEquals(props.get(9), "bio-ssl", "ssl.key.alias",
+		assertPropsEquals(props, "bio-ssl", "ssl.key.alias",
 				"Please enter the alias that the keystore should refer to the SSL private key as:", "tc-server-bio-ssl");
-		assertPropsEquals(props.get(10), "bio-ssl", "ssl.key.alias.input",
+		assertPropsEquals(props, "bio-ssl", "ssl.key.alias.input",
 				"Please enter the alias that the keystore refers to the SSL private key as:");
-		assertPropsEquals(props.get(11), "bio-ssl", "ssl.key.password",
+		assertPropsEquals(props, "bio-ssl", "ssl.key.password",
 				"Please enter the password that keystore should protect the SSL private key with:", "RANDOM");
-		assertPropsEquals(props.get(12), "bio-ssl", "ssl.key.password.input",
+		assertPropsEquals(props, "bio-ssl", "ssl.key.password.input",
 				"Please enter the password that keystore protects the SSL private key with:");
-		assertPropsEquals(props.get(13), "bio-ssl", "ssl.keystore.location",
+		assertPropsEquals(props, "bio-ssl", "ssl.keystore.location",
 				"Please enter the path that the SSL keystore should be stored to:", "conf/tc-server-bio-ssl.keystore");
 		assertPropsEquals(
-				props.get(14),
+				props,
 				"bio-ssl",
 				"ssl.keystore.location.input",
 				"Please enter the path that the SSL keystore should be read from. To create a new keystore, leave blank:",
 				"GENERATE");
-		assertPropsEquals(props.get(15), "bio-ssl", "ssl.keystore.password",
+		assertPropsEquals(props, "bio-ssl", "ssl.keystore.password",
 				"Please enter the password that the SSL keystore should protect itself with:", "RANDOM");
-		assertPropsEquals(props.get(16), "bio-ssl", "ssl.keystore.password.input",
+		assertPropsEquals(props, "bio-ssl", "ssl.keystore.password.input",
 				"Please enter the password that the SSL keystore protects itself with:");
 	}
 
 	@Test
 	public void clusterNodeTemplate() throws Exception {
-		List<TemplateProperty> props = reader.read("cluster-node", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("cluster-node", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
 		assertEquals(1, props.size());
-		assertPropsEquals(props.get(0), "cluster-node", "node.name",
+		assertPropsEquals(props, "cluster-node", "node.name",
 				"Please enter the cluster node name used to identify this instance:", "tc-runtime-1");
 	}
 
 	@Test
 	public void diagnosticsTemplate() throws Exception {
-		List<TemplateProperty> props = reader.read("diagnostics", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("diagnostics", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
 		assertEquals(5, props.size());
-		assertPropsEquals(props.get(0), "diagnostics", "jdbc.resource.name",
+		assertPropsEquals(props, "diagnostics", "jdbc.resource.name",
 				"Please enter the JNDI name that the diagnostic DataSource should be available at:");
-		assertPropsEquals(props.get(1), "diagnostics", "jdbc.username",
+		assertPropsEquals(props, "diagnostics", "jdbc.username",
 				"Please enter the username that the diagnostic DataSource should connect to the database with:");
-		assertPropsEquals(props.get(2), "diagnostics", "jdbc.password",
+		assertPropsEquals(props, "diagnostics", "jdbc.password",
 				"Please enter the password that the diagnostic DataSource should connect to the database with:");
-		assertPropsEquals(props.get(3), "diagnostics", "jdbc.driverClassName",
+		assertPropsEquals(props, "diagnostics", "jdbc.driverClassName",
 				"Please enter the JDBC driver class name that the diagnostic DataSource should connect to the database with:");
-		assertPropsEquals(props.get(4), "diagnostics", "jdbc.url",
+		assertPropsEquals(props, "diagnostics", "jdbc.url",
 				"Please enter the JDBC URL that the diagnostic DataSource should connect to the database with:");
 	}
 
 	@Test
 	public void insightTemplate() throws Exception {
-		List<TemplateProperty> props = reader.read("insight", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("insight", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
 		assertEquals(0, props.size());
@@ -257,112 +259,122 @@ public class TcServerTemplatePropertiesReaderTest {
 
 	@Test
 	public void jmxSslTemplate() throws Exception {
-		List<TemplateProperty> props = reader.read("jmx-ssl", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("jmx-ssl", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
 		assertEquals(16, props.size());
 		assertPropsEquals(
-				props.get(0),
+				props,
 				"jmx-ssl",
 				"ssl.certificate.dname",
 				"Please enter the distinguised name the SSL certificate should use. To be prompted for name components leave blank:",
 				"GENERATE");
-		assertPropsEquals(props.get(1), "jmx-ssl", "ssl.certificate.dname.CN",
+		assertPropsEquals(props, "jmx-ssl", "ssl.certificate.dname.CN",
 				"Please enter the first and last name the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(2), "jmx-ssl", "ssl.certificate.dname.OU",
+		assertPropsEquals(props, "jmx-ssl", "ssl.certificate.dname.OU",
 				"Please enter the organizational unit the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(3), "jmx-ssl", "ssl.certificate.dname.O",
+		assertPropsEquals(props, "jmx-ssl", "ssl.certificate.dname.O",
 				"Please enter the organization the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(4), "jmx-ssl", "ssl.certificate.dname.L",
+		assertPropsEquals(props, "jmx-ssl", "ssl.certificate.dname.L",
 				"Please enter the city or locality the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(5), "jmx-ssl", "ssl.certificate.dname.ST",
+		assertPropsEquals(props, "jmx-ssl", "ssl.certificate.dname.ST",
 				"Please enter the state or province the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(6), "jmx-ssl", "ssl.certificate.dname.C",
+		assertPropsEquals(props, "jmx-ssl", "ssl.certificate.dname.C",
 				"Please enter the two-letter country code the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(7), "jmx-ssl", "ssl.key.size",
+		assertPropsEquals(props, "jmx-ssl", "ssl.key.size",
 				"Please enter the size in bits that the SSL private key should be:", "2048");
-		assertPropsEquals(props.get(8), "jmx-ssl", "ssl.key.alias",
+		assertPropsEquals(props, "jmx-ssl", "ssl.key.alias",
 				"Please enter the alias that the keystore should refer to the SSL private key as:", "tc-server-jmx-ssl");
-		assertPropsEquals(props.get(9), "jmx-ssl", "ssl.key.alias.input",
+		assertPropsEquals(props, "jmx-ssl", "ssl.key.alias.input",
 				"Please enter the alias that the keystore refers to the SSL private key as:");
-		assertPropsEquals(props.get(10), "jmx-ssl", "ssl.key.password",
+		assertPropsEquals(props, "jmx-ssl", "ssl.key.password",
 				"Please enter the password that keystore should protect the SSL private key with:", "RANDOM");
-		assertPropsEquals(props.get(11), "jmx-ssl", "ssl.key.password.input",
+		assertPropsEquals(props, "jmx-ssl", "ssl.key.password.input",
 				"Please enter the password that keystore protects the SSL private key with:");
-		assertPropsEquals(props.get(12), "jmx-ssl", "ssl.keystore.location",
+		assertPropsEquals(props, "jmx-ssl", "ssl.keystore.location",
 				"Please enter the path that the SSL keystore should be stored to:", "conf/tc-server-jmx-ssl.keystore");
 		assertPropsEquals(
-				props.get(13),
+				props,
 				"jmx-ssl",
 				"ssl.keystore.location.input",
 				"Please enter the path that the SSL keystore should be read from. To create a new keystore, leave blank:",
 				"GENERATE");
-		assertPropsEquals(props.get(14), "jmx-ssl", "ssl.keystore.password",
+		assertPropsEquals(props, "jmx-ssl", "ssl.keystore.password",
 				"Please enter the password that the SSL keystore should protect itself with:", "RANDOM");
-		assertPropsEquals(props.get(15), "jmx-ssl", "ssl.keystore.password.input",
+		assertPropsEquals(props, "jmx-ssl", "ssl.keystore.password.input",
 				"Please enter the password that the SSL keystore protects itself with:");
 	}
 
 	@Test
 	public void nioTemplate() throws Exception {
-		List<TemplateProperty> props = reader.read("nio", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("nio", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
 		assertEquals(2, props.size());
-		assertPropsEquals(props.get(0), "nio", "http.port",
+		assertPropsEquals(props, "nio", "http.port",
 				"Please enter the port that the NIO connector should listen for HTTP requests on:", "8080");
-		assertPropsEquals(props.get(1), "nio", "https.port",
+		assertPropsEquals(props, "nio", "https.port",
 				"Please enter the port that the NIO connector should redirect HTTPS requests to:", "8443");
 	}
 
 	@Test
 	public void nioSslTemplate() throws Exception {
-		List<TemplateProperty> props = reader.read("nio-ssl", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("nio-ssl", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
 		assertEquals(17, props.size());
-		assertPropsEquals(props.get(0), "nio-ssl", "https.port",
+		assertPropsEquals(props, "nio-ssl", "https.port",
 				"Please enter the port that the NIO connector should listen for HTTPS requests on:", "8443");
 		assertPropsEquals(
-				props.get(1),
+				props,
 				"nio-ssl",
 				"ssl.certificate.dname",
 				"Please enter the distinguised name the SSL certificate should use. To be prompted for name components leave blank:",
 				"GENERATE");
-		assertPropsEquals(props.get(2), "nio-ssl", "ssl.certificate.dname.CN",
+		assertPropsEquals(props, "nio-ssl", "ssl.certificate.dname.CN",
 				"Please enter the first and last name the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(3), "nio-ssl", "ssl.certificate.dname.OU",
+		assertPropsEquals(props, "nio-ssl", "ssl.certificate.dname.OU",
 				"Please enter the organizational unit the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(4), "nio-ssl", "ssl.certificate.dname.O",
+		assertPropsEquals(props, "nio-ssl", "ssl.certificate.dname.O",
 				"Please enter the organization the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(5), "nio-ssl", "ssl.certificate.dname.L",
+		assertPropsEquals(props, "nio-ssl", "ssl.certificate.dname.L",
 				"Please enter the city or locality the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(6), "nio-ssl", "ssl.certificate.dname.ST",
+		assertPropsEquals(props, "nio-ssl", "ssl.certificate.dname.ST",
 				"Please enter the state or province the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(7), "nio-ssl", "ssl.certificate.dname.C",
+		assertPropsEquals(props, "nio-ssl", "ssl.certificate.dname.C",
 				"Please enter the two-letter country code the SSL certificate should use:", "Unknown");
-		assertPropsEquals(props.get(8), "nio-ssl", "ssl.key.size",
+		assertPropsEquals(props, "nio-ssl", "ssl.key.size",
 				"Please enter the size in bits that the SSL private key should be:", "2048");
-		assertPropsEquals(props.get(9), "nio-ssl", "ssl.key.alias",
+		assertPropsEquals(props, "nio-ssl", "ssl.key.alias",
 				"Please enter the alias that the keystore should refer to the SSL private key as:", "tc-server-nio-ssl");
-		assertPropsEquals(props.get(10), "nio-ssl", "ssl.key.alias.input",
+		assertPropsEquals(props, "nio-ssl", "ssl.key.alias.input",
 				"Please enter the alias that the keystore refers to the SSL private key as:");
-		assertPropsEquals(props.get(11), "nio-ssl", "ssl.key.password",
+		assertPropsEquals(props, "nio-ssl", "ssl.key.password",
 				"Please enter the password that keystore should protect the SSL private key with:", "RANDOM");
-		assertPropsEquals(props.get(12), "nio-ssl", "ssl.key.password.input",
+		assertPropsEquals(props, "nio-ssl", "ssl.key.password.input",
 				"Please enter the password that keystore protects the SSL private key with:");
-		assertPropsEquals(props.get(13), "nio-ssl", "ssl.keystore.location",
+		assertPropsEquals(props, "nio-ssl", "ssl.keystore.location",
 				"Please enter the path that the SSL keystore should be stored to:", "conf/tc-server-nio-ssl.keystore");
 		assertPropsEquals(
-				props.get(14),
+				props,
 				"nio-ssl",
 				"ssl.keystore.location.input",
 				"Please enter the path that the SSL keystore should be read from. To create a new keystore, leave blank:",
 				"GENERATE");
-		assertPropsEquals(props.get(15), "nio-ssl", "ssl.keystore.password",
+		assertPropsEquals(props, "nio-ssl", "ssl.keystore.password",
 				"Please enter the password that the SSL keystore should protect itself with:", "RANDOM");
-		assertPropsEquals(props.get(16), "nio-ssl", "ssl.keystore.password.input",
+		assertPropsEquals(props, "nio-ssl", "ssl.keystore.password.input",
 				"Please enter the password that the SSL keystore protects itself with:");
+	}
+
+	private void assertPropsEquals(Set<TemplateProperty> actual, String... expected) {
+		for (TemplateProperty prop : actual) {
+			if (prop.getKey().equals(expected[1])) {
+				assertPropsEquals(prop, expected);
+				return;
+			}
+		}
+		fail("Could not find property with the given key: " + expected[1]);
 	}
 
 	private void assertPropsEquals(TemplateProperty actual, String... expected) {

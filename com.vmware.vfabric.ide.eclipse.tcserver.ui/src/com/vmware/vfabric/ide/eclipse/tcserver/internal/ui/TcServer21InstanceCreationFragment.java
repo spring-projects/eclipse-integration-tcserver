@@ -13,7 +13,9 @@ package com.vmware.vfabric.ide.eclipse.tcserver.internal.ui;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
@@ -98,7 +100,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 		private String name;
 
-		List<TemplateProperty> templateProperties = Collections.emptyList();
+		Set<TemplateProperty> templateProperties = new HashSet<TemplateProperty>();
 
 		private String instanceDir;
 
@@ -114,8 +116,8 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			return name;
 		}
 
-		public List<TemplateProperty> getTemplateProperties() {
-			return Collections.unmodifiableList(templateProperties);
+		public Set<TemplateProperty> getTemplateProperties() {
+			return Collections.unmodifiableSet(templateProperties);
 		}
 
 		public String getInstanceDir() {
@@ -537,7 +539,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		TemplatePropertiesReader reader = new TemplatePropertiesReader(wc);
 		for (String templateName : templateNames) {
 			try {
-				List<TemplateProperty> props = reader.read(templateName, new NullProgressMonitor());
+				Set<TemplateProperty> props = reader.read(templateName, new NullProgressMonitor());
 				if (!props.isEmpty()) {
 					TcServerTemplateConfigurationFragment page = new TcServerTemplateConfigurationFragment(
 							templateName, props);

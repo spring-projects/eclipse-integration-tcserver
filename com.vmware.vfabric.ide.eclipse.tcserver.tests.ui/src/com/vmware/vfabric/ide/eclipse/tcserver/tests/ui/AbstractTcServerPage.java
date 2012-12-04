@@ -28,6 +28,10 @@ public class AbstractTcServerPage {
 		return shell.bot().button("Next >").isEnabled();
 	}
 
+	boolean isBackButtonEnabled() {
+		return shell.bot().button("< Back").isEnabled();
+	}
+
 	void assertMessage(String message) {
 		shell.bot().text(message);
 	}

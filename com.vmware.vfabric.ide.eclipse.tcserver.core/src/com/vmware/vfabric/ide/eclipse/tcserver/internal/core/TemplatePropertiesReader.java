@@ -13,11 +13,11 @@ package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Properties;
+import java.util.Set;
 import java.util.Vector;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -77,7 +77,7 @@ public class TemplatePropertiesReader {
 		this.serverAttributes = serverAttributes;
 	}
 
-	public List<TemplateProperty> read(String templateName, IProgressMonitor monitor) throws CoreException {
+	public Set<TemplateProperty> read(String templateName, IProgressMonitor monitor) throws CoreException {
 		IPath runtimePath = serverAttributes.getRuntime().getLocation();
 		IPath templatePath = runtimePath.append("templates");
 		if (templatePath.toFile().exists()) {
@@ -97,11 +97,11 @@ public class TemplatePropertiesReader {
 		return child.isDirectory() && !child.getName().startsWith("base-tomcat-");
 	}
 
-	private List<TemplateProperty> read(File templateDir, IProgressMonitor monitor) throws CoreException {
+	private Set<TemplateProperty> read(File templateDir, IProgressMonitor monitor) throws CoreException {
 		File configurationPromptsFile = new File(templateDir, CONFIGURATION_PROMPTS_PROPERTIES);
 		Properties props = new TemplatePropertiesReader.OrderedProperties();
 		if (!configurationPromptsFile.exists()) {
-			return Collections.emptyList();
+			return Collections.emptySet();
 		}
 		try {
 			FileReader in = new FileReader(configurationPromptsFile);
@@ -113,7 +113,7 @@ public class TemplatePropertiesReader {
 		}
 
 		if (props.size() == 0) {
-			return Collections.emptyList();
+			return Collections.emptySet();
 		}
 
 		File serverFragmentFile = new File(templateDir, SERVER_FRAGMENT_XML);
@@ -125,7 +125,7 @@ public class TemplatePropertiesReader {
 			sslPropertiesContent = FileUtil.readFile(sslPropertiesFile, monitor);
 		}
 
-		List<TemplateProperty> result = new ArrayList<TemplateProperty>(props.size());
+		Set<TemplateProperty> result = new HashSet<TemplateProperty>(props.size());
 		Enumeration e = props.propertyNames();
 		while (e.hasMoreElements()) {
 			String key = (String) e.nextElement();
@@ -172,7 +172,7 @@ public class TemplatePropertiesReader {
 		return null;
 	}
 
-	private static String resolveLink(List<TemplateProperty> propsFoundSoFar, String defaultValue) {
+	private static String resolveLink(Set<TemplateProperty> propsFoundSoFar, String defaultValue) {
 		String key = findLink(defaultValue);
 		for (TemplateProperty prop : propsFoundSoFar) {
 			if (prop.getKey().equals(key)) {

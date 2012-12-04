@@ -132,4 +132,9 @@ public class TcServerTemplatePropertiesPage extends AbstractTcServerPage {
 		shell.bot().button("Next >").click();
 		return new TcServerAddRemoveResourcesPage(shell);
 	}
+
+	TcServerTemplatePropertiesPage backToTcServerTemplatePropertiesPage() {
+		shell.bot().button("< Back").click();
+		return new TcServerTemplatePropertiesPage(shell);
+	}
 }

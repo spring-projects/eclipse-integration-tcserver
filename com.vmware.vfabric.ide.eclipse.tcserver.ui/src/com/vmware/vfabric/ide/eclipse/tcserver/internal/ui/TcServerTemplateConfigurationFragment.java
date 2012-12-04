@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.ui;
 
-import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.Dialog;
@@ -35,15 +35,17 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer21InstanceCre
  */
 public class TcServerTemplateConfigurationFragment extends WizardFragment {
 
-	public static final String ENTER_VALUE = "Enter a value for all required properties.";
+	public static final String SPECIFY_TEMPLATE_PROPERTIES_MESSAGE = "Specify template properties.";
+
+	public static final String ENTER_VALUE_MESSAGE = "Enter a value for all required properties.";
 
 	final private String templateName;
 
 	private IWizardHandle wizardHandle;
 
-	private final List<TemplateProperty> properties;
+	private final Set<TemplateProperty> properties;
 
-	public TcServerTemplateConfigurationFragment(String templateName, List<TemplateProperty> properties) {
+	public TcServerTemplateConfigurationFragment(String templateName, Set<TemplateProperty> properties) {
 		Assert.isNotNull(templateName);
 		Assert.isNotNull(properties);
 		Assert.isLegal(!properties.isEmpty());
@@ -80,11 +82,13 @@ public class TcServerTemplateConfigurationFragment extends WizardFragment {
 		if (model == null) {
 			return;
 		}
-		if (model.templateProperties.isEmpty()) {
-			model.templateProperties = properties;
-		}
-		else {
-			model.templateProperties.addAll(properties);
+		for (TemplateProperty property : properties) {
+			// TemplateProperty#equals() is based on 'key' and 'template',
+			// so remove an old entry in case 'value' has changed
+			if (model.templateProperties.contains(property)) {
+				model.templateProperties.remove(property);
+			}
+			model.templateProperties.add(property);
 		}
 	}
 
@@ -92,8 +96,10 @@ public class TcServerTemplateConfigurationFragment extends WizardFragment {
 		boolean errorFound = false;
 		for (TemplateProperty prop : properties) {
 			if (prop.getValue() == null || prop.getValue().isEmpty()) {
-				wizardHandle.setMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE, IMessageProvider.ERROR);
+				wizardHandle.setMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE_MESSAGE,
+						IMessageProvider.ERROR);
 				errorFound = true;
+				break;
 			}
 		}
 		if (!errorFound) {
@@ -113,7 +119,7 @@ public class TcServerTemplateConfigurationFragment extends WizardFragment {
 		this.wizardHandle = handle;
 
 		handle.setTitle("Template Configuration");
-		handle.setDescription("Specify template properties.");
+		handle.setDescription(SPECIFY_TEMPLATE_PROPERTIES_MESSAGE);
 		handle.setImageDescriptor(TcServerImages.WIZB_SERVER);
 
 		Composite composite = new Composite(parent, SWT.NONE);
