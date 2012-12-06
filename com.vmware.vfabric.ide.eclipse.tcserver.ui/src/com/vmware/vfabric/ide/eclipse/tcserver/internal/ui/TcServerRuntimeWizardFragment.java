@@ -27,6 +27,9 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.TypedListener;
 import org.eclipse.wst.server.core.TaskModel;
 import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
@@ -37,6 +40,7 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerUtil;
 /**
  * @author Steffen Pingel
  * @author Christian Dupuis
+ * @author Tomasz Zarna
  */
 public class TcServerRuntimeWizardFragment extends TomcatRuntimeWizardFragment {
 
@@ -78,10 +82,41 @@ public class TcServerRuntimeWizardFragment extends TomcatRuntimeWizardFragment {
 		wizard.setImageDescriptor(TcServerImages.WIZB_SERVER);
 		if (composite instanceof TomcatRuntimeComposite) {
 			Control[] children = composite.getChildren();
-			if (children.length >= 3) {
+			if (children.length > 3) {
 				Control control = children[2];
 				if (control instanceof Label) {
 					((Label) control).setText("Installation &directory:");
+				}
+				control = children[3];
+				if (control instanceof Text) {
+					final Text installDir = ((Text) control);
+					final Listener[] listeners = installDir.getListeners(SWT.Modify);
+					for (Listener listener : listeners) {
+						installDir.removeListener(SWT.Modify, listener);
+					}
+					installDir.addModifyListener(new ModifyListener() {
+						public void modifyText(ModifyEvent e) {
+							String installDirText = installDir.getText();
+							String installDirTrim = installDir.getText().trim();
+							if (!installDirText.equals(installDirTrim)) {
+								// the string needs to be trimmed first
+								installDir.setText(installDirTrim);
+							}
+							else { // our job is done
+									// notify previously unhooked listeners
+								for (Listener listener : listeners) {
+									if (listener instanceof TypedListener) {
+										TypedListener typedListener = (TypedListener) listener;
+										if (typedListener.getEventListener() instanceof ModifyListener) {
+											ModifyListener modifyListener = (ModifyListener) typedListener
+													.getEventListener();
+											modifyListener.modifyText(e);
+										}
+									}
+								}
+							}
+						}
+					});
 				}
 			}
 		}
