@@ -130,11 +130,13 @@ public class TcServerTemplateConfigurationFragment extends WizardFragment {
 		templateNameLabel.setText("Enter properties for template " + templateName + ":");
 
 		for (TemplateProperty prop : properties) {
-			Label message = new Label(composite, SWT.NONE);
+			Label message = new Label(composite, SWT.WRAP);
+			GridDataFactory.fillDefaults().grab(true, false).align(SWT.FILL, SWT.BEGINNING).hint(200, SWT.DEFAULT)
+					.applyTo(message);
 			message.setText(prop.getMessage());
 
 			final Text value = new Text(composite, SWT.BORDER);
-			GridDataFactory.fillDefaults().grab(true, false).applyTo(value);
+			GridDataFactory.fillDefaults().grab(true, false).align(SWT.FILL, SWT.TOP).applyTo(value);
 			value.setText(prop.getDefault());
 			value.setData(prop);
 			value.addModifyListener(new ModifyListener() {
