@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 VMware, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -19,13 +19,20 @@ public class DeployedApplication {
 
 	private final String name;
 
-	public DeployedApplication(String name, boolean liveBeansEnabled) {
+	private final String path;
+
+	public DeployedApplication(String name, String path, boolean liveBeansEnabled) {
 		this.liveBeansEnabled = liveBeansEnabled;
 		this.name = name;
+		this.path = path;
 	}
 
 	public String getName() {
 		return name;
+	}
+
+	public String getPath() {
+		return path;
 	}
 
 	public boolean isLiveBeansEnabled() {

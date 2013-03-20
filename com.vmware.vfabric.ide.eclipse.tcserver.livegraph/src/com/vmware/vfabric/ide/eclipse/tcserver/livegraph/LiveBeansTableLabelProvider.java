@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 VMware, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -10,9 +10,15 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.livegraph;
 
+import java.util.Iterator;
+import java.util.List;
+
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.IColorProvider;
 import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jst.server.tomcat.core.internal.TomcatConfiguration;
+import org.eclipse.jst.server.tomcat.core.internal.WebModule;
 import org.eclipse.jst.server.tomcat.ui.internal.TomcatUIPlugin;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
@@ -21,6 +27,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.ui.ServerUICore;
+
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 
 /**
  * @author Leo Dos Santos
@@ -32,10 +40,13 @@ public class LiveBeansTableLabelProvider extends LabelProvider implements IColor
 
 	private final ILabelProvider delegate;
 
+	private final TcServer workingCopy;
+
 	public LiveBeansTableLabelProvider(IServer server) {
 		super();
 		this.server = server;
 		delegate = ServerUICore.getLabelProvider();
+		workingCopy = (TcServer) server.loadAdapter(TcServer.class, null);
 	}
 
 	@Override
@@ -77,7 +88,24 @@ public class LiveBeansTableLabelProvider extends LabelProvider implements IColor
 	@Override
 	public String getText(Object element) {
 		if (element instanceof DeployedApplication) {
-			return ((DeployedApplication) element).getName();
+			DeployedApplication application = (DeployedApplication) element;
+			try {
+				TomcatConfiguration configuration = workingCopy.getTomcatConfiguration();
+				if (configuration != null) {
+					List modules = configuration.getWebModules();
+					Iterator iter = modules.iterator();
+					while (iter.hasNext()) {
+						WebModule module = (WebModule) iter.next();
+						if (application.getPath().equals(module.getPath())) {
+							return module.getDocumentBase();
+						}
+					}
+				}
+			}
+			catch (CoreException e) {
+				// ignore
+			}
+			return application.getName();
 		}
 		return super.getText(element);
 	}
