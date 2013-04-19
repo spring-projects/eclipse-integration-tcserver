@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Spring IDE Developers
+ * Copyright (c) 2012 - 2013 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,7 +14,6 @@ import java.util.Set;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.dialogs.Dialog;
-import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -31,7 +30,7 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer21InstanceCre
 
 /**
  * @author Tomasz Zarna
- *
+ * 
  */
 public class TcServerTemplateConfigurationFragment extends WizardFragment {
 
@@ -51,24 +50,6 @@ public class TcServerTemplateConfigurationFragment extends WizardFragment {
 		Assert.isLegal(!properties.isEmpty());
 		this.templateName = templateName;
 		this.properties = properties;
-		setComplete(checkIfAllPropertiesHaveDefaultValues());
-	}
-
-	private boolean checkIfAllPropertiesHaveDefaultValues() {
-		if (properties != null) {
-			for (TemplateProperty prop : properties) {
-				if (prop.getRawDefault() == null) {
-					return false;
-				}
-			}
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public void enter() {
-		validate();
 	}
 
 	@Override
@@ -90,23 +71,6 @@ public class TcServerTemplateConfigurationFragment extends WizardFragment {
 			}
 			model.templateProperties.add(property);
 		}
-	}
-
-	private void validate() {
-		boolean errorFound = false;
-		for (TemplateProperty prop : properties) {
-			if (prop.getValue() == null || prop.getValue().isEmpty()) {
-				wizardHandle.setMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE_MESSAGE,
-						IMessageProvider.ERROR);
-				errorFound = true;
-				break;
-			}
-		}
-		if (!errorFound) {
-			wizardHandle.setMessage(null, IMessageProvider.NONE);
-		}
-		setComplete(wizardHandle.getMessage() == null);
-		wizardHandle.update();
 	}
 
 	@Override
@@ -142,7 +106,6 @@ public class TcServerTemplateConfigurationFragment extends WizardFragment {
 			value.addModifyListener(new ModifyListener() {
 				public void modifyText(ModifyEvent e) {
 					((TemplateProperty) value.getData()).setValue(value.getText());
-					validate();
 				}
 			});
 		}

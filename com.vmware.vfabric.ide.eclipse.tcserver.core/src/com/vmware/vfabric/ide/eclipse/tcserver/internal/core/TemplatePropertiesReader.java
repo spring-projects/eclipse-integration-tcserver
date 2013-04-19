@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Spring IDE Developers
+ * Copyright (c) 2012 - 2013 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Properties;
 import java.util.Set;
 import java.util.Vector;
@@ -32,7 +32,7 @@ import org.springsource.ide.eclipse.commons.core.FileUtil;
 
 /**
  * @author Tomasz Zarna
- *
+ * 
  */
 public class TemplatePropertiesReader {
 
@@ -125,7 +125,7 @@ public class TemplatePropertiesReader {
 			sslPropertiesContent = FileUtil.readFile(sslPropertiesFile, monitor);
 		}
 
-		Set<TemplateProperty> result = new HashSet<TemplateProperty>(props.size());
+		Set<TemplateProperty> result = new LinkedHashSet<TemplateProperty>(props.size());
 		Enumeration e = props.propertyNames();
 		while (e.hasMoreElements()) {
 			String key = (String) e.nextElement();
