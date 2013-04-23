@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 VMware, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -163,7 +163,7 @@ public class TcServer extends TomcatServer {
 		else {
 			String instanceDir = getInstanceDirectory();
 			if (instanceDir != null) {
-				path = Path.fromOSString(instanceDir);
+				return Path.fromOSString(instanceDir);
 			}
 			String serverName = getAttribute(KEY_SERVER_NAME, (String) null);
 			if (serverName != null) {

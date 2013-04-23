@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 VMware, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -147,8 +147,10 @@ public class TcServer21WizardFragment extends WizardFragment {
 				if (!serverPath.isEmpty() && serverPath.isAbsolute()) {
 					((ServerWorkingCopy) wc).setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR,
 							serverNameCombo.getText());
+					((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_SERVER_NAME, "");
 				}
 				else {
+					((ServerWorkingCopy) wc).setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, (String) null);
 					((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_SERVER_NAME, serverNameCombo.getText());
 				}
 				validate();
@@ -265,7 +267,8 @@ public class TcServer21WizardFragment extends WizardFragment {
 			return Status.OK_STATUS;
 		}
 
-		if (((ServerWorkingCopy) wc).getAttribute(TcServer.KEY_SERVER_NAME, (String) null) == null) {
+		if (((ServerWorkingCopy) wc).getAttribute(TcServer.KEY_SERVER_NAME, (String) null) == null
+				&& ((ServerWorkingCopy) wc).getAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, (String) null) == null) {
 			return new Status(IStatus.INFO, ITcServerConstants.PLUGIN_ID, SELECT_INSTANCE_MESSAGE);
 		}
 
