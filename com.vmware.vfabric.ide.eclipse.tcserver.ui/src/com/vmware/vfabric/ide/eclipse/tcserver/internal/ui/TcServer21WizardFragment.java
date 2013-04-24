@@ -152,6 +152,8 @@ public class TcServer21WizardFragment extends WizardFragment {
 				else {
 					((ServerWorkingCopy) wc).setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, (String) null);
 					((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_SERVER_NAME, serverNameCombo.getText());
+					((ServerWorkingCopy) wc).setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, getInstanceDirectory()
+							.getPath());
 				}
 				validate();
 			}
