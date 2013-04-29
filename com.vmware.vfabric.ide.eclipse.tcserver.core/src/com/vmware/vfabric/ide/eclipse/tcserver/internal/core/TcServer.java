@@ -163,10 +163,10 @@ public class TcServer extends TomcatServer {
 		else {
 			String instanceDir = getInstanceDirectory();
 			if (instanceDir != null) {
-				return Path.fromOSString(instanceDir);
+				path = Path.fromOSString(instanceDir);
 			}
 			String serverName = getAttribute(KEY_SERVER_NAME, (String) null);
-			if (serverName != null) {
+			if (serverName != null && !path.toOSString().endsWith(serverName)) {
 				path = path.append(serverName);
 			}
 			return path;
