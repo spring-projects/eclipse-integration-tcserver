@@ -147,13 +147,11 @@ public class TcServer21WizardFragment extends WizardFragment {
 				if (!serverPath.isEmpty() && serverPath.isAbsolute()) {
 					((ServerWorkingCopy) wc).setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR,
 							serverNameCombo.getText());
-					((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_SERVER_NAME, "");
+					((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_SERVER_NAME, (String) null);
 				}
 				else {
 					((ServerWorkingCopy) wc).setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, (String) null);
 					((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_SERVER_NAME, serverNameCombo.getText());
-					((ServerWorkingCopy) wc).setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, getInstanceDirectory()
-							.getPath());
 				}
 				validate();
 			}

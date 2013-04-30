@@ -309,6 +309,7 @@ public class TcServer extends TomcatServer {
 			setAttribute(TcServer.KEY_ASF_LAYOUT, true);
 
 		}
+		setTestEnvironment(false);
 		getCallback().setDefaults(this, monitor);
 	}
 
