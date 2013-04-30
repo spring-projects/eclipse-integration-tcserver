@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Spring IDE Developers
+ * Copyright (c) 2012 - 2013 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -22,7 +22,7 @@ import org.springsource.ide.eclipse.commons.frameworks.test.util.SWTBotUtils;
  */
 public class DefineNewServerPage extends AbstractTcServerPage {
 
-	static final String VMWARE_VFABRIC_TC_SERVER_V25_V26_V27_V28 = "VMware vFabric tc Server v2.5, v2.6, v2.7, v2.8";
+	static final String VMWARE_VFABRIC_TC_SERVER_LABEL = "VMware vFabric tc Server v2.5 - v2.9";
 
 	DefineNewServerPage(SWTBotShell shell) {
 		super(shell);
@@ -37,13 +37,13 @@ public class DefineNewServerPage extends AbstractTcServerPage {
 		try {
 			// "Server").click();
 			SWTBotUtils.selectChildTreeElement(shell.bot(), "New Server", "VMware",
-					VMWARE_VFABRIC_TC_SERVER_V25_V26_V27_V28);
+					VMWARE_VFABRIC_TC_SERVER_LABEL);
 
 		}
 		catch (Exception e) {
 			// fallback to doing it the "wrong" way.
 			shell.bot().tree().collapseNode("VMware");
-			shell.bot().tree().expandNode("VMware").select(VMWARE_VFABRIC_TC_SERVER_V25_V26_V27_V28).click();
+			shell.bot().tree().expandNode("VMware").select(VMWARE_VFABRIC_TC_SERVER_LABEL).click();
 		}
 	}
 

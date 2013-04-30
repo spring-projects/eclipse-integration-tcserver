@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Spring IDE Developers
+ * Copyright (c) 2012 - 2013 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -41,7 +41,7 @@ public class TcServerTemplatePropertiesReaderTest {
 
 	@BeforeClass
 	public static void beforeClass() throws Exception {
-		server = TcServerFixture.V_2_8.createServer(null);
+		server = TcServerFixture.V_2_9.createServer(null);
 		reader = new TemplatePropertiesReader(server);
 	}
 
@@ -254,7 +254,7 @@ public class TcServerTemplatePropertiesReaderTest {
 		Set<TemplateProperty> props = reader.read("insight", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
-		assertEquals(0, props.size());
+		assertEquals(4, props.size());
 	}
 
 	@Test

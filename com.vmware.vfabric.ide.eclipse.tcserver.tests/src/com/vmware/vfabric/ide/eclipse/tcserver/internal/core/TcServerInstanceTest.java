@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Spring IDE Developers
+ * Copyright (c) 2012 - 2013 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -46,7 +46,7 @@ public class TcServerInstanceTest {
 
 	@Test
 	public void testInstanceDir() throws Exception {
-		handler = TcServerFixture.V_2_8.provisionServer();
+		handler = TcServerFixture.V_2_9.provisionServer();
 		IPath runtimeLocation = new Path(handler.getServerPath());
 		String instanceName = name.getMethodName();
 		String[] arguments = createArgumentsArray();

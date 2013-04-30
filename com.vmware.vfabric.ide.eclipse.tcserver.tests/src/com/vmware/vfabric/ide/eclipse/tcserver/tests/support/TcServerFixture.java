@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 VMware, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -59,13 +59,18 @@ public class TcServerFixture extends TestConfiguration {
 			"vfabric-tc-server-developer-2.8.0.RELEASE",
 			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.8.0.RELEASE.zip");
 
+	public static TcServerFixture V_2_9 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, "com.vmware.server.tc.70",
+			"vfabric-tc-server-developer-2.9.1.RELEASE",
+			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.9.1.RELEASE.zip");
+
 	public static TcServerFixture V_6_0 = new TcServerFixture("com.springsource.tcserver.60", "tcServer-6.0");
 
 	private static TcServerFixture current;
 
-	private static final TcServerFixture DEFAULT = V_2_8;
+	private static final TcServerFixture DEFAULT = V_2_9;
 
-	public static TcServerFixture[] ALL = new TcServerFixture[] { V_6_0, V_2_0, V_2_1, V_2_5, V_2_6, V_2_7, V_2_8 };
+	public static TcServerFixture[] ALL = new TcServerFixture[] { V_6_0, V_2_0, V_2_1, V_2_5, V_2_6, V_2_7, V_2_8,
+			V_2_9 };
 
 	public static TcServerFixture current() {
 		if (current == null) {

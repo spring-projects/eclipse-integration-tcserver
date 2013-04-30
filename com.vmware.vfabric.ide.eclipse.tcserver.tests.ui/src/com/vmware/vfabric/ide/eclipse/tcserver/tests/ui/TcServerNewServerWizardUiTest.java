@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 VMware, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -51,14 +51,14 @@ import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerHarness;
 /**
  * @author Kaitlin Duck Sherwood
  * @author Tomasz Zarna
+ * @author Leo Dos Santos
  */
 public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 	private static final String BASE_INSTANCE = "base-instance";
 
 	// TODO: for now, until STS-2986 gets fixed
-	private static String ARBITRARY_SERVER_NAME = DefineNewServerPage.VMWARE_VFABRIC_TC_SERVER_V25_V26_V27_V28
-			+ " at localhost"; // "TESTasdfSERVERfooDELETE";
+	private static String ARBITRARY_SERVER_NAME = DefineNewServerPage.VMWARE_VFABRIC_TC_SERVER_LABEL + " at localhost"; // "TESTasdfSERVERfooDELETE";
 
 	private static final String ARBITRARY_INSTANCE_NAME = "TESTdiamondsINSTANCEemeraldsIGNORE";
 
@@ -77,7 +77,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		SWTBotUtils.openPerspective(bot, "Java Type Hierarchy");
 		openServersView();
 		if (baseInstallDirectoryPath == null) {
-			fixture = TcServerFixture.V_2_8;
+			fixture = TcServerFixture.V_2_9;
 			harness = fixture.createHarness();
 			server = harness.createServer(BASE_INSTANCE);
 			baseInstallDirectoryPath = ((org.eclipse.wst.server.core.internal.Server) server).getRuntime()
@@ -140,9 +140,9 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		templatePropertiesPage.assertProperties("ajp");
 		templatePropertiesPage.setProperty(
 				"Please enter the port that the AJP connector should listen for requests on:", "");
-		templatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE_MESSAGE);
-		assertFalse(templatePropertiesPage.isNextButtonEnabled());
-		assertFalse(newServerWizard.isFinishEnabled());
+
+		assertTrue(templatePropertiesPage.isNextButtonEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
 
 		templatePropertiesPage.setProperty(
 				"Please enter the port that the AJP connector should listen for requests on:", "8009");
@@ -163,14 +163,14 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		// TODO: replace with TestName rule
 		createInstancePage.setInstanceName("testSelectTemplateWithPropertiesWithoutDefaultValues");
 		createInstancePage.selectTemplate("diagnostics");
-		assertFalse(newServerWizard.isFinishEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
 
 		TcServerTemplatePropertiesPage templatePropertiesPage = createInstancePage
 				.nextToTcServerTemplatePropertiesPage();
 		templatePropertiesPage.assertProperties("diagnostics");
-		templatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE_MESSAGE);
-		assertFalse(templatePropertiesPage.isNextButtonEnabled());
-		assertFalse(newServerWizard.isFinishEnabled());
+
+		assertTrue(templatePropertiesPage.isNextButtonEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
 
 		templatePropertiesPage.setProperties("diagnostics");
 		assertTrue(templatePropertiesPage.isNextButtonEnabled());
@@ -192,20 +192,20 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		// TODO: replace with TestName rule
 		createInstancePage.setInstanceName("testSelectTemplatesWithAndWithoutDefaultValues");
 		createInstancePage.selectTemplate("ajp", "diagnostics");
-		assertFalse(newServerWizard.isFinishEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
 
 		TcServerTemplatePropertiesPage ajpTemplatePropertiesPage = createInstancePage
 				.nextToTcServerTemplatePropertiesPage();
 		ajpTemplatePropertiesPage.assertProperties("ajp");
 		assertTrue(ajpTemplatePropertiesPage.isNextButtonEnabled());
-		assertFalse(newServerWizard.isFinishEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
 
 		TcServerTemplatePropertiesPage diagnosticsTemplatePropertiesPage = ajpTemplatePropertiesPage
 				.nextToTcServerTemplatePropertiesPage();
 		diagnosticsTemplatePropertiesPage.assertProperties("diagnostics");
-		diagnosticsTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE_MESSAGE);
-		assertFalse(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
-		assertFalse(newServerWizard.isFinishEnabled());
+
+		assertTrue(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
 
 		// STS-3097: the error message should disappear after backtracking to
 		// previous template page
@@ -341,25 +341,25 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		// TODO: replace with TestName rule
 		createInstancePage.setInstanceName("testSelectTemplatesWithoutDefaultValues");
 		createInstancePage.selectTemplate("diagnostics", "jmx-ssl");
-		assertFalse(newServerWizard.isFinishEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
 
 		TcServerTemplatePropertiesPage diagnosticsTemplatePropertiesPage = createInstancePage
 				.nextToTcServerTemplatePropertiesPage();
 		diagnosticsTemplatePropertiesPage.assertProperties("diagnostics");
-		diagnosticsTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE_MESSAGE);
-		assertFalse(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
-		assertFalse(newServerWizard.isFinishEnabled());
+
+		assertTrue(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
 
 		diagnosticsTemplatePropertiesPage.setProperties("diagnostics");
 		assertTrue(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
-		assertFalse(newServerWizard.isFinishEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
 
 		TcServerTemplatePropertiesPage jmxSslTemplatePropertiesPage = diagnosticsTemplatePropertiesPage
 				.nextToTcServerTemplatePropertiesPage();
 		jmxSslTemplatePropertiesPage.assertProperties("jmx-ssl");
-		jmxSslTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE_MESSAGE);
-		assertFalse(jmxSslTemplatePropertiesPage.isNextButtonEnabled());
-		assertFalse(newServerWizard.isFinishEnabled());
+
+		assertTrue(jmxSslTemplatePropertiesPage.isNextButtonEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
 
 		jmxSslTemplatePropertiesPage.setProperties("jmx-ssl");
 		assertTrue(jmxSslTemplatePropertiesPage.isNextButtonEnabled());
@@ -380,15 +380,15 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		CreateTcServerInstancePage createInstancePage = configurationPage.nextToCreateTcServerInstancePage();
 		// TODO: replace with TestName rule
 		createInstancePage.setInstanceName("testSelectTemplatesWithNoPropertiesAndWithoutDefaultValues");
-		createInstancePage.selectTemplate("diagnostics", "insight");
-		assertFalse(newServerWizard.isFinishEnabled());
+		createInstancePage.selectTemplate("diagnostics", "async-logger");
+		assertTrue(newServerWizard.isFinishEnabled());
 
 		TcServerTemplatePropertiesPage diagnosticsTemplatePropertiesPage = createInstancePage
 				.nextToTcServerTemplatePropertiesPage();
 		diagnosticsTemplatePropertiesPage.assertProperties("diagnostics");
-		diagnosticsTemplatePropertiesPage.assertErrorMessage(TcServerTemplateConfigurationFragment.ENTER_VALUE_MESSAGE);
-		assertFalse(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
-		assertFalse(newServerWizard.isFinishEnabled());
+
+		assertTrue(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
+		assertTrue(newServerWizard.isFinishEnabled());
 
 		diagnosticsTemplatePropertiesPage.setProperties("diagnostics");
 		assertTrue(diagnosticsTemplatePropertiesPage.isNextButtonEnabled());
