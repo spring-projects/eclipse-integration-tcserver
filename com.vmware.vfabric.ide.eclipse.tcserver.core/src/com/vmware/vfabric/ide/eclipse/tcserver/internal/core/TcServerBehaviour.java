@@ -1,5 +1,5 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 VMware, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 import org.apache.commons.httpclient.HostConfiguration;
 import org.apache.commons.httpclient.HttpClient;
@@ -378,30 +379,23 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 			}
 			setServerState(IServer.STATE_STOPPING);
 
-			// the shutdown command has changed in Tomcat 7 (tc Server 2.5),
-			// hence send a kill command like
-			// the shell script that is shipped with tc Server
-			terminate();
-			stopImpl();
-
 			// fall-back to JMX command
-			// ShutdownTcServerCommand command = new
-			// ShutdownTcServerCommand(this);
-			// try {
-			// command.execute();
-			// // need to kill server unfortunately since the shutdown command
-			// // only stops Catalina but not the Tomcat process itself
-			// terminate();
-			// stopImpl();
-			// }
-			// catch (TimeoutException e) {
-			// // webtools will invoke this method again with and set force to
-			// // true in case of a timeout
-			// }
-			// catch (CoreException e) {
-			// // ignore, already logged in command
-			// super.stop(true);
-			// }
+			ShutdownTcServerCommand command = new ShutdownTcServerCommand(this);
+			try {
+				command.execute();
+				// need to kill server unfortunately since the shutdown command
+				// only stops Catalina but not the Tomcat process itself
+				terminate();
+				stopImpl();
+			}
+			catch (TimeoutException e) {
+				// webtools will invoke this method again with and set force to
+				// true in case of a timeout
+			}
+			catch (CoreException e) {
+				// ignore, already logged in command
+				super.stop(true);
+			}
 		}
 		else {
 			super.stop(force);
