@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SpringSource Tool Suite Insight Tests
 Bundle-SymbolicName: com.vmware.vfabric.ide.eclipse.tcserver.insight.tests;singleton:=true
-Bundle-Version: 3.3.0.qualifier
+Bundle-Version: 3.4.0.qualifier
 Bundle-Vendor: SpringSource
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.core.resources,
