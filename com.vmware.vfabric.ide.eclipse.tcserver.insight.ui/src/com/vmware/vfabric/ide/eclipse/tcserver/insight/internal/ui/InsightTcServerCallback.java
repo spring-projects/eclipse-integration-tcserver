@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 GoPivotal, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
  *  http://www.eclipse.org/legal/epl-v10.html
  *
  *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ *      GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui;
 
@@ -43,6 +43,7 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerCallback;
  * @author Steffen Pingel
  * @author Christian Dupuis
  * @author Kris De Volder
+ * @author Leo Dos Santos
  */
 public class InsightTcServerCallback extends TcServerCallback {
 
@@ -68,13 +69,19 @@ public class InsightTcServerCallback extends TcServerCallback {
 		if (runtimeBaseDirectory != null) {
 			boolean changed = false;
 
+			// looking for insight-bootstrap-tomcat-extlibs on tc v2.9,
+			// looking for insight-bootstrap-tcserver on earlier versions
 			IPath path = runtimeBaseDirectory.append("bin");
-			changed |= addJarToClasspath(launchConfiguration, cp, path, "insight-bootstrap-tcserver", true);
+			changed |= addJarToClasspath(launchConfiguration, cp, path, "insight-bootstrap", true);
 
+			// only add weaver if insight was found
 			if (changed) {
-				// only add weaver if insight was found
-				path = runtimeBaseDirectory.append("lib");
-				changed |= addJarToClasspath(launchConfiguration, cp, path, "aspectjweaver", false);
+				// tc Server v2.9
+				if (!addJarToClasspath(launchConfiguration, cp, path, "insight-weaver", false)) {
+					// fall back for older versions of tc Server
+					path = runtimeBaseDirectory.append("lib");
+					addJarToClasspath(launchConfiguration, cp, path, "aspectjweaver", false);
+				}
 
 				List<String> list = new ArrayList<String>(cp.size());
 				for (IRuntimeClasspathEntry entry : cp) {
@@ -159,11 +166,12 @@ public class InsightTcServerCallback extends TcServerCallback {
 		}
 
 		// add insight jars to classpath
-		if (TcServerInsightUtil.isInsightEnabled(tcServer)) {
-			addInsightToClasspath(tcServer, launchConfiguration);
+		addInsightToClasspath(tcServer, launchConfiguration);
 
+		if (TcServerInsightUtil.isInsightEnabled(tcServer)) {
 			String existingVMArgs = launchConfiguration.getAttribute(
 					IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, (String) null);
+			existingVMArgs = appendArg(existingVMArgs, "-Dinsight.devedition", "-Dinsight.devedition=true");
 			existingVMArgs = appendArg(existingVMArgs, "-Daspectj.overweaving", "-Daspectj.overweaving=true");
 			existingVMArgs = appendArg(existingVMArgs, "-Djava.awt.headless", "-Djava.awt.headless=true");
 			existingVMArgs = appendArg(existingVMArgs, "-Dgemfire.disableShutdownHook",
@@ -174,11 +182,13 @@ public class InsightTcServerCallback extends TcServerCallback {
 		else {
 			String existingVMArgs = launchConfiguration.getAttribute(
 					IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, (String) null);
+			existingVMArgs = existingVMArgs.replace("-Dinsight.devedition=true", "");
 			if (existingVMArgs != null && existingVMArgs.contains("-Daspectj.overweaving")) {
 				existingVMArgs = existingVMArgs.replace("-Daspectj.overweaving=true", "");
 				existingVMArgs = existingVMArgs.replace("-Daspectj.overweaving=false", "");
 				existingVMArgs = existingVMArgs.replace("-Dgemfire.disableShutdownHook=true", "");
 			}
+
 			// insight seems to need this even when disabled
 			existingVMArgs = addInsightBase(tcServer, existingVMArgs);
 			launchConfiguration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, existingVMArgs);
