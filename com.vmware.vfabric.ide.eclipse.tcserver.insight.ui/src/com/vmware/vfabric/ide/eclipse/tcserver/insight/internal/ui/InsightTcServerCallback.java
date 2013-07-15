@@ -37,6 +37,7 @@ import org.springsource.ide.eclipse.commons.ui.UiUtil;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviour;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerCallback;
+import com.vmware.vfabric.ide.eclipse.tcserver.reloading.TcServerReloadingPlugin;
 
 /**
  * Prompts to enable insight the first time tc Server is launched.
@@ -167,6 +168,7 @@ public class InsightTcServerCallback extends TcServerCallback {
 
 		// add insight jars to classpath
 		addInsightToClasspath(tcServer, launchConfiguration);
+		String agentPath = TcServerInsightUtil.getAgentJarPath(tcServer);
 
 		if (TcServerInsightUtil.isInsightEnabled(tcServer)) {
 			String existingVMArgs = launchConfiguration.getAttribute(
@@ -176,6 +178,19 @@ public class InsightTcServerCallback extends TcServerCallback {
 			existingVMArgs = appendArg(existingVMArgs, "-Djava.awt.headless", "-Djava.awt.headless=true");
 			existingVMArgs = appendArg(existingVMArgs, "-Dgemfire.disableShutdownHook",
 					"-Dgemfire.disableShutdownHook=true");
+			if (agentPath != null) {
+				existingVMArgs = appendArg(existingVMArgs, "-javaagent:\"" + agentPath + "\"", "-javaagent:\""
+						+ agentPath + "\"");
+
+				// if springloaded agent is enabled, insight-weaver agent must
+				// be loaded first!!
+				String reloadingAgent = "-javaagent:\"" + TcServerReloadingPlugin.getAgentJarPath() + "\"";
+				if (existingVMArgs.contains(reloadingAgent)) {
+					existingVMArgs = existingVMArgs.replace(reloadingAgent, "");
+					existingVMArgs = appendArg(existingVMArgs, reloadingAgent, reloadingAgent);
+				}
+			}
+
 			existingVMArgs = addVMArgs(tcServer, existingVMArgs);
 			launchConfiguration.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, existingVMArgs);
 		}
@@ -187,6 +202,9 @@ public class InsightTcServerCallback extends TcServerCallback {
 				existingVMArgs = existingVMArgs.replace("-Daspectj.overweaving=true", "");
 				existingVMArgs = existingVMArgs.replace("-Daspectj.overweaving=false", "");
 				existingVMArgs = existingVMArgs.replace("-Dgemfire.disableShutdownHook=true", "");
+			}
+			if (existingVMArgs != null && agentPath != null) {
+				existingVMArgs = existingVMArgs.replace("-javaagent:\"" + agentPath + "\"", "");
 			}
 
 			// insight seems to need this even when disabled

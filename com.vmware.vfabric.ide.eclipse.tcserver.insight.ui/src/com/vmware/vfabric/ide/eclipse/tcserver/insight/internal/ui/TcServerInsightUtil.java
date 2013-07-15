@@ -1,28 +1,33 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 GoPivotal, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
  *  http://www.eclipse.org/legal/epl-v10.html
  *
  *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ *      GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.osgi.service.resolver.VersionRange;
 import org.eclipse.wst.server.core.IServer;
 import org.osgi.framework.Version;
+import org.springsource.ide.eclipse.commons.core.StatusHandler;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 
 /**
  * @author Steffen Pingel
+ * @author Leo Dos Santos
  */
 public class TcServerInsightUtil {
 
@@ -128,6 +133,34 @@ public class TcServerInsightUtil {
 			}
 		}
 		return false;
+	}
+
+	public static String getAgentJarPath(TcServer tcServer) {
+		IPath baseDir = getInsightBase(tcServer);
+		if (baseDir != null) {
+			IPath binPath = baseDir.append("bin");
+			File binDir = binPath.toFile();
+			if (binDir.exists()) {
+				String[] fileNames = binDir.list();
+				if (fileNames != null) {
+					for (String fileName : fileNames) {
+						if (fileName.startsWith("insight-weaver") && fileName.endsWith(".jar")) {
+							File agent = new File(binDir, fileName);
+							if (agent.exists()) {
+								try {
+									return agent.getCanonicalPath();
+								}
+								catch (IOException e) {
+									StatusHandler.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+											"Could not get path to insight-weaver agent.", e));
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 }
