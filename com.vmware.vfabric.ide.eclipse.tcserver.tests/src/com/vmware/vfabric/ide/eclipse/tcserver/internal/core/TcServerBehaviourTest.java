@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 GoPivotal, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
  *  http://www.eclipse.org/legal/epl-v10.html
  *
  *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ *      GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 
@@ -36,6 +36,7 @@ import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
 /**
  * @author Steffen Pingel
  * @author Tomasz Zarna
+ * @author Leo Dos Santos
  */
 public class TcServerBehaviourTest {
 
@@ -61,17 +62,16 @@ public class TcServerBehaviourTest {
 	}
 
 	@Test
-	@Ignore("Ignoring tcServer-6.0 tests.")
 	public void testSetupLaunchConfigurationDefaultArgs() throws Exception {
-		server = TcServerFixture.V_6_0.createServer(null);
+		server = TcServerFixture.current().createServer(null);
 		server.publish(Server.PUBLISH_FULL, null);
 
 		ILaunchConfigurationWorkingCopy wc = createLaunchConfiguration();
 		((Server) server).setupLaunchConfiguration(wc, null);
 		String args = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, (String) null);
-		assertTrue("Expected -Xmx512m -Xss192k in '" + args + "'", args.contains("-Xmx512m -Xss192k"));
+		assertTrue("Expected -Xmx768m -Xss192k in '" + args + "'", args.contains("-Xmx768m -Xss192k"));
 
-		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, args.replace("-Xmx512m", "-Xmx123m"));
+		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, args.replace("-Xmx768m", "-Xmx123m"));
 		((Server) server).setupLaunchConfiguration(wc, null);
 		args = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, (String) null);
 		assertTrue("Expected -Xmx123m -Xss192k in '" + args + "'", args.contains("-Xmx123m -Xss192k"));

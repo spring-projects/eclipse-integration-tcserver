@@ -41,7 +41,7 @@ public class TcServerTemplatePropertiesReaderTest {
 
 	@BeforeClass
 	public static void beforeClass() throws Exception {
-		server = TcServerFixture.V_2_9.createServer(null);
+		server = TcServerFixture.current().createServer(null);
 		reader = new TemplatePropertiesReader(server);
 	}
 

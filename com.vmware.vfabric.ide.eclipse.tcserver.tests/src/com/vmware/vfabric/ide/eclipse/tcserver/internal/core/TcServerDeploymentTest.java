@@ -56,7 +56,7 @@ public class TcServerDeploymentTest {
 			return;
 		}
 
-		server = TcServerFixture.V_2_9.createServer(null);
+		server = TcServerFixture.current().createServer(null);
 		assertNotNull("Expected server configuration", server.getServerConfiguration());
 		server.publish(IServer.PUBLISH_FULL, null);
 

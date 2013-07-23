@@ -1,24 +1,22 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 GoPivotal, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
  *  http://www.eclipse.org/legal/epl-v10.html
  *
  *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ *      GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.tests.support;
 
 import java.io.File;
 import java.net.URI;
 
+import org.junit.Assert;
 import org.springsource.ide.eclipse.commons.core.ZipFileUtil;
 import org.springsource.ide.eclipse.commons.core.ZipFileUtil.PermissionSetter;
 import org.springsource.ide.eclipse.commons.tests.util.DownloadManager;
-
-import junit.framework.Assert;
-
 
 /**
  * @author Steffen Pingel

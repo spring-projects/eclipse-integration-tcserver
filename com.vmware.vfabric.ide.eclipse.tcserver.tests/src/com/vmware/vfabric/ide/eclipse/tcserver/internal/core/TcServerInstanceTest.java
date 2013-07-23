@@ -46,7 +46,7 @@ public class TcServerInstanceTest {
 
 	@Test
 	public void testInstanceDir() throws Exception {
-		handler = TcServerFixture.V_2_9.provisionServer();
+		handler = TcServerFixture.current().provisionServer();
 		IPath runtimeLocation = new Path(handler.getServerPath());
 		String instanceName = name.getMethodName();
 		String[] arguments = createArgumentsArray();
