@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 - 2013 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 GoPivotal, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
  *  http://www.eclipse.org/legal/epl-v10.html
  *
  *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ *      GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.tests.support;
 
@@ -21,11 +21,13 @@ import org.springsource.ide.eclipse.commons.configurator.ServerHandler;
 import org.springsource.ide.eclipse.commons.configurator.ServerHandlerCallback;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer21ServerHandlerCallback;
 
 /**
  * @author Steffen Pingel
  * @author Kris De Volder
  * @author Tomasz Zarna
+ * @author Leo Dos Santos
  */
 public class TcServerFixture extends TestConfiguration {
 
@@ -35,35 +37,35 @@ public class TcServerFixture extends TestConfiguration {
 
 	public static String INST_SEPARATE = "separate-instance";
 
-	public static TcServerFixture V_2_0 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID,
-			"com.springsource.tcserver.60", "springsource-tc-server-developer",
+	public static TcServerFixture V_2_0 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_0,
+			"springsource-tc-server-developer",
 			"http://download.springsource.com/release/TCS/springsource-tc-server-developer-2.0.0.SR01.zip");
 
-	public static TcServerFixture V_2_1 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID,
-			"com.springsource.tcserver.70", "springsource-tc-server-developer",
+	public static TcServerFixture V_2_1 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_1,
+			"springsource-tc-server-developer",
 			"http://download.springsource.com/release/TCS/springsource-tc-server-developer-2.1.0.RELEASE.zip");
 
 	public static TcServerFixture V_2_5 = new TcServerFixture("com.vmware.server.tc.runtime.70",
-			"com.vmware.server.tc.70", "vfabric-tc-server-developer-2.5.2.RELEASE",
+			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.5.2.RELEASE",
 			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.5.2.RELEASE.zip");
 
-	public static TcServerFixture V_2_6 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, "com.vmware.server.tc.70",
+	public static TcServerFixture V_2_6 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_5,
 			"vfabric-tc-server-developer-2.6.1.RELEASE",
 			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.6.1.RELEASE.zip");
 
-	public static TcServerFixture V_2_7 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, "com.vmware.server.tc.70",
+	public static TcServerFixture V_2_7 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_5,
 			"vfabric-tc-server-developer-2.7.0.RC1",
 			"http://download.springsource.com/milestone/TCS/vfabric-tc-server-developer-2.7.0.RC1.zip");
 
-	public static TcServerFixture V_2_8 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, "com.vmware.server.tc.70",
+	public static TcServerFixture V_2_8 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_5,
 			"vfabric-tc-server-developer-2.8.0.RELEASE",
 			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.8.0.RELEASE.zip");
 
-	public static TcServerFixture V_2_9 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, "com.vmware.server.tc.70",
+	public static TcServerFixture V_2_9 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_5,
 			"vfabric-tc-server-developer-2.9.1.RELEASE",
 			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.9.1.RELEASE.zip");
 
-	public static TcServerFixture V_6_0 = new TcServerFixture("com.springsource.tcserver.60", "tcServer-6.0");
+	public static TcServerFixture V_6_0 = new TcServerFixture(TcServer.ID_TC_SERVER_2_0, "tcServer-6.0");
 
 	private static TcServerFixture current;
 
@@ -122,22 +124,28 @@ public class TcServerFixture extends TestConfiguration {
 
 	public IServer createServer(final String instance) throws Exception {
 		ServerHandler handler = provisionServer();
-		return handler.createServer(new NullProgressMonitor(), ServerHandler.ALWAYS_OVERWRITE,
-				new ServerHandlerCallback() {
-					@Override
-					public void configureServer(IServerWorkingCopy wc) throws CoreException {
-						// TODO e3.6 remove casts for setAttribute()
-						if (instance != null) {
-							((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_ASF_LAYOUT, false);
-						}
-						else {
-							((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_ASF_LAYOUT, true);
-						}
-						((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_SERVER_NAME, instance);
-						((ServerWorkingCopy) wc).setAttribute(TcServer.PROPERTY_TEST_ENVIRONMENT, false);
-						((ServerWorkingCopy) wc).importRuntimeConfiguration(wc.getRuntime(), null);
+		ServerHandlerCallback callback;
+		if (TcServer.ID_TC_SERVER_2_5.equals(serverType)) {
+			callback = new TcServer21ServerHandlerCallback();
+		}
+		else {
+			callback = new ServerHandlerCallback() {
+				@Override
+				public void configureServer(IServerWorkingCopy wc) throws CoreException {
+					// TODO e3.6 remove casts for setAttribute()
+					if (instance != null) {
+						((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_ASF_LAYOUT, false);
 					}
-				});
+					else {
+						((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_ASF_LAYOUT, true);
+					}
+					((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_SERVER_NAME, instance);
+					((ServerWorkingCopy) wc).setAttribute(TcServer.PROPERTY_TEST_ENVIRONMENT, false);
+					((ServerWorkingCopy) wc).importRuntimeConfiguration(wc.getRuntime(), null);
+				}
+			};
+		}
+		return handler.createServer(new NullProgressMonitor(), ServerHandler.ALWAYS_OVERWRITE, callback);
 	}
 
 	public ServerHandler getHandler(String path) throws Exception {

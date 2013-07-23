@@ -1,12 +1,12 @@
 /*******************************************************************************
- *  Copyright (c) 2012 VMware, Inc.
+ *  Copyright (c) 2012 - 2013 GoPivotal, Inc.
  *  All rights reserved. This program and the accompanying materials
  *  are made available under the terms of the Eclipse Public License v1.0
  *  which accompanies this distribution, and is available at
  *  http://www.eclipse.org/legal/epl-v10.html
  *
  *  Contributors:
- *      VMware, Inc. - initial API and implementation
+ *      GoPivotal, Inc. - initial API and implementation
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 
@@ -25,7 +25,6 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
@@ -35,6 +34,7 @@ import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerTestPlugin;
 /**
  * @author Steffen Pingel
  * @author Tomasz Zarna
+ * @author Leo Dos Santos
  */
 public class TcServerDeploymentTest {
 
@@ -49,7 +49,6 @@ public class TcServerDeploymentTest {
 	}
 
 	@Test
-	@Ignore(/* TODO */"See STS-3032 for progress on re-enabling the test.")
 	public void testDeployServlet30() throws Exception {
 		if (!StsTestUtil.ECLIPSE_3_6_OR_LATER) {
 			// skip test, the Servlet 3.0 spec is not supported by Eclipse 3.5
@@ -57,12 +56,12 @@ public class TcServerDeploymentTest {
 			return;
 		}
 
-		server = TcServerFixture.V_2_1.createServer(TcServerFixture.INST_SEPARATE);
+		server = TcServerFixture.V_2_9.createServer(null);
 		assertNotNull("Expected server configuration", server.getServerConfiguration());
 		server.publish(IServer.PUBLISH_FULL, null);
 
 		File baseDir = server.getRuntime().getLocation().toFile();
-		File instanceDir = new File(baseDir, TcServerFixture.INST_SEPARATE);
+		File instanceDir = new File(baseDir, TcServer21ServerHandlerCallback.DEFAULT_INSTANCE);
 		File deploymentDir = new File(instanceDir, "wtpwebapps");
 		assertTrue(deploymentDir.exists());
 		File rootApp = new File(deploymentDir, "ROOT");
