@@ -37,6 +37,10 @@ public class TcServerFixture extends TestConfiguration {
 
 	public static String INST_SEPARATE = "separate-instance";
 
+	public static String V_2_8_URL = "http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.8.0.RELEASE.zip";
+
+	public static String V_2_9_URL = "http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.9.1.RELEASE.zip";
+
 	public static TcServerFixture V_2_0 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_0,
 			"springsource-tc-server-developer",
 			"http://download.springsource.com/release/TCS/springsource-tc-server-developer-2.0.0.SR01.zip");
@@ -58,12 +62,10 @@ public class TcServerFixture extends TestConfiguration {
 			"http://download.springsource.com/milestone/TCS/vfabric-tc-server-developer-2.7.0.RC1.zip");
 
 	public static TcServerFixture V_2_8 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_5,
-			"vfabric-tc-server-developer-2.8.0.RELEASE",
-			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.8.0.RELEASE.zip");
+			"vfabric-tc-server-developer-2.8.0.RELEASE", V_2_8_URL);
 
 	public static TcServerFixture V_2_9 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_5,
-			"vfabric-tc-server-developer-2.9.1.RELEASE",
-			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.9.1.RELEASE.zip");
+			"vfabric-tc-server-developer-2.9.1.RELEASE", V_2_9_URL);
 
 	public static TcServerFixture V_6_0 = new TcServerFixture(TcServer.ID_TC_SERVER_2_0, "tcServer-6.0");
 
