@@ -154,6 +154,8 @@ public class InsightPlugin implements Comparable<InsightPlugin> {
 						InputStream in = zipFile.getInputStream(entry);
 						try {
 							XMLReader parser = XMLReaderFactory.createXMLReader();
+							parser.setFeature("http://xml.org/sax/features/external-general-entities", false);
+
 							XmlHandler handler = new XmlHandler();
 							parser.setContentHandler(handler);
 							parser.parse(new InputSource(in));
