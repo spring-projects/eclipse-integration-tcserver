@@ -34,7 +34,7 @@ public class InsightTestFixture extends TcServerFixture {
 			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.8.0.RELEASE", V_2_8_URL);
 
 	public static InsightTestFixture V_2_9 = new InsightTestFixture(TcServerTestPlugin.PLUGIN_ID,
-			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.9.1.RELEASE", V_2_9_URL);
+			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.9.3.RELEASE", V_2_9_URL);
 
 	public InsightTestFixture(String testPlugin, String serverType, String stubPath, String downloadUrl) {
 		super(testPlugin, serverType, stubPath, downloadUrl);
