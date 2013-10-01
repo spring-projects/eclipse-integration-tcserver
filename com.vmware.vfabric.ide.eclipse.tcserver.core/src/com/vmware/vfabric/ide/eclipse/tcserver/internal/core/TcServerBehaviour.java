@@ -289,7 +289,7 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 			argsToAdd.add("-Xmx768m");
 		}
 		if (addXss) {
-			argsToAdd.add("-Xss192k");
+			argsToAdd.add("-Xss256k");
 		}
 		if (addMaxPermSize) {
 			argsToAdd.add("-XX:MaxPermSize=256m");
