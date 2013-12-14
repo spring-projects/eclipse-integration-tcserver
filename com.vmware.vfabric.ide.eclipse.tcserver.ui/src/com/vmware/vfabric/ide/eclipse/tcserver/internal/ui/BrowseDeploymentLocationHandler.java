@@ -60,7 +60,14 @@ public class BrowseDeploymentLocationHandler extends AbstractHandler {
 
 	@Override
 	public void setEnabled(Object evaluationContext) {
-		if (!Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+		try {
+			if (!Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
+				setBaseEnabled(false);
+				return;
+			}
+
+		}
+		catch (UnsupportedOperationException e) {
 			setBaseEnabled(false);
 			return;
 		}
