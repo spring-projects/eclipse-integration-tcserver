@@ -20,7 +20,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.springsource.ide.eclipse.commons.configurator,
  org.springsource.ide.eclipse.commons.core,
  org.apache.commons.lang
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerUiPlugin
 Export-Package: com.vmware.vfabric.ide.eclipse.tcserver.internal.ui

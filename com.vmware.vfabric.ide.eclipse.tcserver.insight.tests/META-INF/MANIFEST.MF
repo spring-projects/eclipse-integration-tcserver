@@ -19,7 +19,7 @@ Require-Bundle: org.eclipse.core.runtime,
  com.vmware.vfabric.ide.eclipse.tcserver.tests,
  org.springsource.ide.eclipse.commons.configurator,
  org.eclipse.jst.server.tomcat.core
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui;x-internal:=true,
  com.vmware.vfabric.ide.eclipse.tcserver.insight.tests;x-internal:=true
 Bundle-ClassPath: .
