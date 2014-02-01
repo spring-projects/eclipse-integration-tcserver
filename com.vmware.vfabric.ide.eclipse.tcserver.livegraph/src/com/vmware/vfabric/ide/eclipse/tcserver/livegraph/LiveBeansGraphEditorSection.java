@@ -51,7 +51,6 @@ import org.eclipse.wst.server.core.ServerEvent;
 import org.eclipse.wst.server.ui.editor.ServerEditorSection;
 import org.springframework.ide.eclipse.beans.ui.livegraph.model.LiveBeansModel;
 import org.springframework.ide.eclipse.beans.ui.livegraph.model.LiveBeansModelGenerator;
-import org.springframework.ide.eclipse.beans.ui.livegraph.views.LiveBeansEditorInput;
 import org.springframework.ide.eclipse.beans.ui.livegraph.views.LiveBeansGraphView;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 
@@ -130,13 +129,6 @@ public class LiveBeansGraphEditorSection extends ServerEditorSection {
 			if (part instanceof LiveBeansGraphView) {
 				((LiveBeansGraphView) part).setInput(model);
 			}
-			
-			PlatformUI
-					.getWorkbench()
-					.getActiveWorkbenchWindow()
-					.getActivePage()
-					.openEditor(new LiveBeansEditorInput(model),
-							"org.springframework.ide.eclipse.beans.ui.livegraph.editor");
 		}
 		catch (PartInitException e) {
 			Status status = new Status(IStatus.INFO, TcServerLiveGraphPlugin.PLUGIN_ID,
