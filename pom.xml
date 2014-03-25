@@ -395,6 +395,16 @@
 						<arch>x86_64</arch>
 					</environment>
 				</environments>
+				<filters>
+					<filter>
+						<type>java-package</type>
+						<id>org.eclipse.core.runtime</id>
+						<restrictTo>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.core.runtime</id>
+						</restrictTo>
+					</filter>
+				</filters>
 			</configuration>
 		</plugin>
         <plugin>
