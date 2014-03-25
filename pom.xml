@@ -360,6 +360,16 @@
 			<artifactId>target-platform-configuration</artifactId>
 			<version>${tycho-version}</version>
 			<configuration>
+				<dependency-resolution>
+					<extraRequirements>
+						<requirement>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.core.runtime</id>
+							<!-- TODO assume versionRange=0.0.0 when no <versionRange> element is present  -->
+							<versionRange>0.0.0</versionRange>
+						</requirement>
+					</extraRequirements>
+				</dependency-resolution>
 				<resolver>p2</resolver>
 				<pomDependencies>consider</pomDependencies>
 				<ignoreTychoRepositories>true</ignoreTychoRepositories>
@@ -395,16 +405,6 @@
 						<arch>x86_64</arch>
 					</environment>
 				</environments>
-				<filters>
-					<filter>
-						<type>java-package</type>
-						<id>org.eclipse.core.runtime</id>
-						<restrictTo>
-							<type>eclipse-plugin</type>
-							<id>org.eclipse.core.runtime</id>
-						</restrictTo>
-					</filter>
-				</filters>
 			</configuration>
 		</plugin>
         <plugin>
