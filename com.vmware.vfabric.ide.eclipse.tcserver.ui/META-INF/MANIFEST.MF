@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SpringSource Tool Suite tc Server Integration (UI)
 Bundle-SymbolicName: com.vmware.vfabric.ide.eclipse.tcserver.ui;singleton:=true
-Bundle-Version: 3.5.0.qualifier
+Bundle-Version: 3.5.1.qualifier
 Bundle-Vendor: Pivotal Software, Inc.
 Require-Bundle: org.eclipse.debug.ui,
  org.eclipse.jdt.debug.ui,
