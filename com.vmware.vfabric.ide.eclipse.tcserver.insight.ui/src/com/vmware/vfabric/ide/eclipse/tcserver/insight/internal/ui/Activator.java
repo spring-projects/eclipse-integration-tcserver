@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012 -2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,6 +15,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPartService;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
@@ -44,29 +45,47 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		Display.getDefault().asyncExec(new Runnable() {
-
-			public void run() {
-				IPartService service = (IPartService) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-						.getService(IPartService.class);
-				service.addPartListener(listener);
-			}
-		});
+		/*
+		 * Check first if there is a valid UI thread available on the workbench
+		 * (could check if workbench is running as alternative) not to add this
+		 * listener in case a headless mode without the workbench UI running
+		 */
+		Display display = PlatformUI.getWorkbench().getDisplay();
+		if (display != null && !display.isDisposed()) {
+			display.asyncExec(new Runnable() {
+				public void run() {
+					IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+					if (workbenchWindow != null) {
+						IPartService service = (IPartService) workbenchWindow.getService(IPartService.class);
+						service.addPartListener(listener);
+					}
+				}
+			});
+		}
 	}
 
 	@Override
 	public void stop(BundleContext context) throws Exception {
+		/*
+		 * Display might be disposed (Workbench has been shut down already) at
+		 * this point since Eclipse Luna
+		 */
+		Display display = PlatformUI.getWorkbench().getDisplay();
+		if (display != null && !display.isDisposed()) {
+			display.asyncExec(new Runnable() {
+				public void run() {
+					IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+					if (workbenchWindow != null) {
+						IPartService service = (IPartService) workbenchWindow.getService(IPartService.class);
+						service.removePartListener(listener);
+					}
+				}
+			});
+		}
+
 		plugin = null;
 		super.stop(context);
 
-		Display.getDefault().asyncExec(new Runnable() {
-
-			public void run() {
-				IPartService service = (IPartService) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-						.getService(IPartService.class);
-				service.removePartListener(listener);
-			}
-		});
 	}
 
 	public static Activator getDefault() {
