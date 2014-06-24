@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -83,12 +83,14 @@ public class TcServerUtil {
 			returnCode = command.execute(arguments);
 		}
 		catch (Exception e) {
-			throw handleResult(runtimeLocation, command, new Status(IStatus.ERROR, ITcServerConstants.PLUGIN_ID,
-					"The instance creation command resulted in an exception", e));
+			throw handleResult(runtimeLocation, command, arguments, new Status(IStatus.ERROR,
+					ITcServerConstants.PLUGIN_ID, "The instance creation command resulted in an exception", e));
 		}
 
 		if (returnCode != 0) {
-			throw handleResult(runtimeLocation, command, null);
+			throw handleResult(runtimeLocation, command, arguments, new Status(IStatus.ERROR,
+					ITcServerConstants.PLUGIN_ID, "The instance creation command failed and returned code "
+							+ returnCode));
 		}
 
 		// verify result
@@ -98,7 +100,7 @@ public class TcServerUtil {
 		}
 		IStatus status = validateInstance(instanceDirectory, true);
 		if (!status.isOK()) {
-			throw handleResult(runtimeLocation, command, status);
+			throw handleResult(runtimeLocation, command, arguments, status);
 		}
 	}
 
@@ -111,13 +113,19 @@ public class TcServerUtil {
 		return null;
 	}
 
-	private static CoreException handleResult(IPath installLocation, ServerInstanceCommand command, IStatus result) {
+	private static CoreException handleResult(IPath installLocation, ServerInstanceCommand command, String[] arguments,
+			IStatus result) {
+		StringBuilder cmdStr = new StringBuilder(command.toString());
+		for (String arg : arguments) {
+			cmdStr.append(' ');
+			cmdStr.append(arg);
+		}
 		MultiStatus status = new MultiStatus(
 				ITcServerConstants.PLUGIN_ID,
 				0,
 				NLS.bind(
-						"Error creating server instance. Check access permission for the directory {0} and its files and subdirectories.",
-						installLocation), null);
+						"Error creating server instance with command:\n \"{0}\". Check access permission for the directory {1} and its files and subdirectories.",
+						new Object[] { cmdStr, installLocation }), null);
 		if (result != null) {
 			status.add(result);
 		}
