@@ -90,7 +90,6 @@
 	<dist.dependencies-version-path>${dist.pathpostfix}</dist.dependencies-version-path>
 
 	<!-- individual version path extensions for all the dependencies -->
-	<dist.eclipse-integration-commons-version>${dist.dependencies-version-path}</dist.eclipse-integration-commons-version>
 	<dist.spring-ide-version>${dist.dependencies-version-path}</dist.spring-ide-version>
 
     <skip.source.check>true</skip.source.check>
@@ -102,29 +101,32 @@
 
     <tycho-version>0.19.0</tycho-version>
 
-    <maven.test.error.ignore>true</maven.test.error.ignore>
-    <maven.test.failure.ignore>true</maven.test.failure.ignore>
+    <maven.test.error.ignore>false</maven.test.error.ignore>
+    <maven.test.failure.ignore>false</maven.test.failure.ignore>
     <maven.compiler.source>1.6</maven.compiler.source>
     <maven.compiler.target>1.6</maven.compiler.target>
     <encoding>UTF-8</encoding>
+    
+    <com.springsource.sts.tests.cache>${user.home}/.sts-test-cache</com.springsource.sts.tests.cache>
   </properties>
 
   <profiles>
 
     <profile>
       <id>e37</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
       <properties>
         <dist.target>e3.7</dist.target>
         <dist.platform.name>Indigo</dist.platform.name>
         <dist.platform.id>indigo</dist.platform.id>		
         <dist.platform.version>3.7</dist.platform.version>
         <package.qualifierPrefix>e37</package.qualifierPrefix>
-        <version.weaving>1.0.0.R3_6_2</version.weaving>
       </properties>
       <repositories>
+		<repository>
+		  <id>mylyn</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/mylyn/releases/3.7</url>
+		</repository>
 		<repository>
 		  <id>platform</id>
 		  <layout>p2</layout>
@@ -139,6 +141,77 @@
 		  <id>swtbot</id>
 		  <layout>p2</layout>
 		  <url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</url>
+		</repository>
+		<repository>
+		  <id>eclipse-integration-commons</id>
+		  <layout>p2</layout>
+		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}/e3.7</url>
+		</repository>
+	  </repositories>
+    </profile>
+    
+    <profile>
+      <id>e43</id>
+      <properties>
+        <dist.target>e4.3</dist.target>
+        <dist.platform.name>Keppler</dist.platform.name>
+        <dist.platform.id>kepler</dist.platform.id>		
+        <dist.platform.version>4.3</dist.platform.version>
+        <package.qualifierPrefix>e43</package.qualifierPrefix>
+      </properties>
+      <repositories>
+		<repository>
+		  <id>platform</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/eclipse/updates/4.3/</url>
+		</repository>
+		<repository>
+		  <id>indigo</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/releases/kepler/</url>
+		</repository>
+		<repository>
+		  <id>swtbot</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+		</repository>
+		<repository>
+		  <id>eclipse-integration-commons</id>
+		  <layout>p2</layout>
+		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}/e3.7</url>
+		</repository>
+	  </repositories>
+    </profile>
+    
+    <profile>
+      <id>e44</id>
+      <properties>
+        <dist.target>e4.4</dist.target>
+        <dist.platform.name>Luna</dist.platform.name>
+        <dist.platform.id>luna</dist.platform.id>		
+        <dist.platform.version>4.4</dist.platform.version>
+        <package.qualifierPrefix>e44</package.qualifierPrefix>
+      </properties>
+      <repositories>
+		<repository>
+		  <id>platform</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/eclipse/updates/4.4/</url>
+		</repository>
+		<repository>
+		  <id>indigo</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/releases/luna/</url>
+		</repository>
+		<repository>
+		  <id>swtbot</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+		</repository>
+		<repository>
+		  <id>eclipse-integration-commons</id>
+		  <layout>p2</layout>
+		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}/e4.4</url>
 		</repository>
 	  </repositories>
     </profile>
@@ -183,21 +256,9 @@
   <repositories>
 
 	<repository>
-	  <id>eclipse-integration-commons</id>
-	  <layout>p2</layout>
-	  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.eclipse-integration-commons-version}/${dist.target}</url>
-	</repository>
-
-	<repository>
 	  <id>spring-ide</id>
 	  <layout>p2</layout>
 	  <url>http://dist.springframework.org/${dist.type}/IDE/${dist.spring-ide-version}</url>
-	</repository>
-
-	<repository>
-	  <id>mylyn</id>
-	  <layout>p2</layout>
-	  <url>http://download.eclipse.org/mylyn/releases/3.7</url>
 	</repository>
 
     <!-- required for Maven and Ant AWS dependency -->
@@ -512,11 +573,9 @@
             <showEclipseLog>true</showEclipseLog>
             <testSuite>${project.artifactId}</testSuite>
             <testClass>${test.class}</testClass>
-            <argLine>
-              -Xmx1024m -XX:MaxPermSize=256m -Djava.io.tmpdir=${project.build.directory} -Duser.home=${project.build.directory} ${test.vmargs}
-            </argLine>
+            <argLine>-Xmx1024m -XX:MaxPermSize=256m -Djava.io.tmpdir=${project.build.directory} -Dcom.springsource.sts.tests.cache=${com.springsource.sts.tests.cache} -Duser.home=${project.build.directory} ${test.vmargs}</argLine>
             <appArgLine>
-              -eclipse.keyring ${project.build.directory}/keystore -eclipse.password ${project.build.directory}/keystore.password
+                -eclipse.keyring ${project.build.directory}/keystore -eclipse.password ${project.build.directory}/keystore.password
             </appArgLine>
           </configuration>
         </plugin>
