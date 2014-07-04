@@ -17,6 +17,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -60,9 +61,14 @@ public class TcServerTemplatePropertiesReaderTest {
 				}
 			}
 		}
-		assertArrayEquals(new String[] { "ajp", "apr", "apr-ssl", "async-logger", "base", "bio", "bio-ssl",
-				"cluster-node", "diagnostics", "insight", "jmx-ssl", "nio", "nio-ssl" },
-				actualTemplates.toArray(new String[actualTemplates.size()]));
+		String[] expecteds = new String[] { "ajp", "apr", "apr-ssl", "async-logger", "base", "bio", "bio-ssl",
+				"cluster-node", "diagnostics", "insight", "jmx-ssl", "nio", "nio-ssl" };
+		String[] actuals = actualTemplates.toArray(new String[actualTemplates.size()]);
+
+		// Must sort because order depends on OS file system implementation.
+		Arrays.sort(expecteds);
+		Arrays.sort(actuals);
+		assertArrayEquals(expecteds, actuals);
 	}
 
 	private boolean isTemplate(File child) {

@@ -14,14 +14,20 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.PropertyWriter;
-
 import junit.framework.TestCase;
+
+import org.springframework.ide.eclipse.uaa.IUaa;
+import org.springframework.ide.eclipse.uaa.UaaPlugin;
 
 /**
  * @author Steffen Pingel
  */
 public class PropertyWriterTest extends TestCase {
+
+	static {
+		System.out.println("Setting UAA privacy level to 'LIMITED_DATA'");
+		UaaPlugin.getUAA().setPrivacyLevel(IUaa.LIMITED_DATA);
+	}
 
 	public void testEmptyProperties() throws IOException {
 		Map<String, String> values = new HashMap<String, String>();
@@ -63,11 +69,11 @@ public class PropertyWriterTest extends TestCase {
 		values.put("key", "new");
 		PropertyWriter writer = new PropertyWriter(values);
 		assertEquals("key=new\n", writer.apply("key=value\n"));
-		assertEquals("#comment\n\n\nvalue\nkey=new\nkey2=value\n", writer
-				.apply("#comment\n\n\nvalue\nkey=value\nkey2=value\n"));
+		assertEquals("#comment\n\n\nvalue\nkey=new\nkey2=value\n",
+				writer.apply("#comment\n\n\nvalue\nkey=value\nkey2=value\n"));
 		values.put("newkey", "new");
-		assertEquals("#comment\n\n\nvalue\nkey=new\nkey2=value\nnewkey=new\n", writer
-				.apply("#comment\n\n\nvalue\nkey=value\nkey2=value\n"));
+		assertEquals("#comment\n\n\nvalue\nkey=new\nkey2=value\nnewkey=new\n",
+				writer.apply("#comment\n\n\nvalue\nkey=value\nkey2=value\n"));
 	}
 
 	public void testTrailingNewLine() throws IOException {

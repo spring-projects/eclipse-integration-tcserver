@@ -11,18 +11,13 @@
   <artifactId>com.vmware.vfabric.ide.eclipse.tcserver.tests</artifactId>
   <packaging>eclipse-test-plugin</packaging>
 
+	<properties>
+	 	<test.useUIHarness>false</test.useUIHarness>
+		<test.suite>com.vmware.vfabric.ide.eclipse.tcserver.tests</test.suite>
+		<test.class>com.vmware.vfabric.ide.eclipse.tcserver.tests.AllTcServerTests</test.class>
+	</properties>
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-surefire-plugin</artifactId>
-				<version>${tycho-version}</version>
-				<configuration>
-					<useUIHarness>false</useUIHarness>
-					<testSuite>com.vmware.vfabric.ide.eclipse.tcserver.tests</testSuite>
-					<testClass>com.vmware.vfabric.ide.eclipse.tcserver.tests.AllTcServerTests</testClass>
-				</configuration>
-			</plugin>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-p2-plugin</artifactId>

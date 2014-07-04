@@ -523,7 +523,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 			corruptInstallFiles();
 		}
 
-		newServerWizard.pressFinish(corruptedFiles, "Error creating server instance. Check access permission .*");
+		newServerWizard.pressFinish(corruptedFiles, "Error creating server instance.*");
 
 		int expectedCount;
 		if (corruptedFiles) {
@@ -792,7 +792,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 
 	/**
 	 * This method will open the preferences dialog.
-	 * 
+	 *
 	 */
 	private void openPreferences() throws CoreException {
 
