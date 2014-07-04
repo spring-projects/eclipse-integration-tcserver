@@ -69,18 +69,18 @@ public class TcServerBehaviourTest {
 		ILaunchConfigurationWorkingCopy wc = createLaunchConfiguration();
 		((Server) server).setupLaunchConfiguration(wc, null);
 		String args = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, (String) null);
-		assertTrue("Expected -Xmx768m -Xss192k in '" + args + "'", args.contains("-Xmx768m -Xss192k"));
+		assertTrue("Expected -Xmx768m -Xss256k in '" + args + "'", args.contains("-Xmx768m -Xss256k"));
 
 		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, args.replace("-Xmx768m", "-Xmx123m"));
 		((Server) server).setupLaunchConfiguration(wc, null);
 		args = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, (String) null);
-		assertTrue("Expected -Xmx123m -Xss192k in '" + args + "'", args.contains("-Xmx123m -Xss192k"));
+		assertTrue("Expected -Xmx123m -Xss256k in '" + args + "'", args.contains("-Xmx123m -Xss256k"));
 
-		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, args.replace("-Xss192k", ""));
+		wc.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, args.replace("-Xss256k", ""));
 		((Server) server).setupLaunchConfiguration(wc, null);
 		args = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, (String) null);
 		assertTrue("Expected -Xmx123m in '" + args + "'", args.contains("-Xmx123m"));
-		assertTrue("Expected -Xss192k in '" + args + "'", args.contains("-Xss192k"));
+		assertTrue("Expected -Xss256k in '" + args + "'", args.contains("-Xss256k"));
 	}
 
 	@Test
