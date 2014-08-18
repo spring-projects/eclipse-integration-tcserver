@@ -8,7 +8,7 @@
             id="com.vmware.vfabric.ide.eclipse.tcserver.livegraph.LiveBeansGraphEditorSection"
             insertionId="org.eclipse.wst.server.editor.overview.right"
             order="20"
-            typeIds="com.springsource.tcserver.*, com.vmware.server.tc.*">
+            typeIds="com.springsource.tcserver.*, com.vmware.server.tc.*,com.pivotal.server.tc.*">
          <enablement>
             <test
                   property="org.eclipse.jst.server.tomcat.ui.hasConfiguration"
