@@ -55,7 +55,8 @@ public class TcServerConfiguratorImporterTest {
 	@Parameters
 	public static Collection<Object[]> data() {
 		Object[][] data = new Object[][] { { new TcServerFixture[] { TcServerFixture.V_2_0, TcServerFixture.V_2_1 } },
-				{ new TcServerFixture[] { TcServerFixture.V_2_7, TcServerFixture.V_2_8, TcServerFixture.V_2_9 } } };
+				{ new TcServerFixture[] { TcServerFixture.V_2_7, TcServerFixture.V_2_8, TcServerFixture.V_2_9 } },
+				{ new TcServerFixture[] { TcServerFixture.V_3_0 } } };
 		return Arrays.asList(data);
 	}
 

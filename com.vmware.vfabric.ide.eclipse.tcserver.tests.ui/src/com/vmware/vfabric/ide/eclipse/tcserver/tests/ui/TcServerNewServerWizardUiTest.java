@@ -77,7 +77,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		SWTBotUtils.openPerspective(bot, "Java Type Hierarchy");
 		openServersView();
 		if (baseInstallDirectoryPath == null) {
-			fixture = TcServerFixture.V_2_9;
+			fixture = TcServerFixture.V_3_0;
 			harness = fixture.createHarness();
 			server = harness.createServer(BASE_INSTANCE);
 			baseInstallDirectoryPath = ((org.eclipse.wst.server.core.internal.Server) server).getRuntime()

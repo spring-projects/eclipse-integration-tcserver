@@ -10,9 +10,9 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -68,7 +68,7 @@ public class TcServerTemplatePropertiesReaderTest {
 		// Must sort because order depends on OS file system implementation.
 		Arrays.sort(expecteds);
 		Arrays.sort(actuals);
-		assertArrayEquals(expecteds, actuals);
+		assertTrue("Does not contain base templates", Arrays.asList(actuals).containsAll(Arrays.asList(expecteds)));
 	}
 
 	private boolean isTemplate(File child) {
