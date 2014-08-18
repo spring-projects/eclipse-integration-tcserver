@@ -32,6 +32,8 @@ import org.springsource.ide.eclipse.commons.core.StatusHandler;
  */
 public class TcServerUtil {
 
+	private static final String TEMPLATE_VARIATION_STR = "-tomcat-";
+
 	public static boolean isSpringSource(IRuntimeWorkingCopy wc) {
 		return wc != null && wc.getRuntimeType() != null && wc.getRuntimeType().getId().startsWith("com.springsource");
 	}
@@ -136,6 +138,16 @@ public class TcServerUtil {
 		StatusHandler.log(status);
 
 		return new CoreException(status);
+	}
+
+	public static String getTemplateName(File templateFolder) {
+		int idx = templateFolder.getName().indexOf(TEMPLATE_VARIATION_STR);
+		if (idx > -1) {
+			return templateFolder.getName().substring(0, idx);
+		}
+		else {
+			return templateFolder.getName();
+		}
 	}
 
 }

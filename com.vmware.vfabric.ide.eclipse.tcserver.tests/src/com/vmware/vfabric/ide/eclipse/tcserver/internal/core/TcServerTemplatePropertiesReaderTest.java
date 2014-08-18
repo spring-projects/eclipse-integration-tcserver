@@ -16,9 +16,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
@@ -48,32 +47,21 @@ public class TcServerTemplatePropertiesReaderTest {
 
 	@Test
 	public void haveTestsForAllTemplates() {
-		List<String> actualTemplates = new ArrayList<String>();
+		Set<String> actualTemplates = new HashSet<String>();
 		IPath runtimePath = server.getRuntime().getLocation();
 		IPath templatePath = runtimePath.append("templates");
 		if (templatePath.toFile().exists()) {
 			File[] children = templatePath.toFile().listFiles();
 			if (children != null) {
 				for (File child : children) {
-					if (isTemplate(child)) {
-						actualTemplates.add(child.getName());
-					}
+					actualTemplates.add(TcServerUtil.getTemplateName(child));
 				}
 			}
 		}
 		String[] expecteds = new String[] { "ajp", "apr", "apr-ssl", "async-logger", "base", "bio", "bio-ssl",
 				"cluster-node", "diagnostics", "insight", "jmx-ssl", "nio", "nio-ssl" };
-		String[] actuals = actualTemplates.toArray(new String[actualTemplates.size()]);
-
-		// Must sort because order depends on OS file system implementation.
-		Arrays.sort(expecteds);
-		Arrays.sort(actuals);
-		assertTrue("Does not contain base templates", Arrays.asList(actuals).containsAll(Arrays.asList(expecteds)));
-	}
-
-	private boolean isTemplate(File child) {
-		return child.isDirectory() && !child.getName().startsWith("base-tomcat-")
-				&& !child.getName().equals("apr-ssl-tomcat-6");
+		assertTrue("Not all basic templates are present in current tc server runtime installation",
+				actualTemplates.containsAll(Arrays.asList(expecteds)));
 	}
 
 	@Test

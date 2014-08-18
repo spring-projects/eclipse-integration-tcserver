@@ -34,9 +34,7 @@ import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.StyledCellLabelProvider;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.jst.server.tomcat.core.internal.ITomcatServer;
 import org.eclipse.osgi.util.NLS;
@@ -94,7 +92,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			SEPARATE, COMBINED
 		};
 
-		private List<File> templates;
+		private Set<String> templates;
 
 		private Layout layout;
 
@@ -104,8 +102,8 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 		private String instanceDir;
 
-		public List<File> getTemplates() {
-			return Collections.unmodifiableList(templates);
+		public Set<String> getTemplates() {
+			return Collections.unmodifiableSet(templates);
 		}
 
 		public Layout getLayout() {
@@ -125,24 +123,9 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		}
 	}
 
-	private class ChildLabelProvider extends StyledCellLabelProvider {
-
-		@Override
-		public void update(ViewerCell cell) {
-
-			Object element = cell.getElement();
-			if (element instanceof File) {
-				String text = ((File) element).getName();
-				cell.setText(text);
-			}
-			super.update(cell);
-		}
-
-	}
-
 	private CheckboxTableViewer templateViewer;
 
-	protected List<File> templates = Collections.emptyList();
+	protected Set<String> templates = Collections.emptySet();
 
 	private Button separateLayoutButton;
 
@@ -160,7 +143,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 	private Label readmeLabel;
 
-	private WizardFragment instancePropertiesPage;
+	// private WizardFragment instancePropertiesPage;
 
 	private Button defaultLocationCheckbox;
 
@@ -232,7 +215,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			}
 		});
 
-		templateViewer.setLabelProvider(new ChildLabelProvider());
+		// templateViewer.setLabelProvider(new ChildLabelProvider());
 
 		templateViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -415,9 +398,9 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 	private InstanceConfiguration initModel() {
 		InstanceConfiguration model = new InstanceConfiguration();
 		model.name = nameText.getText();
-		model.templates = new ArrayList<File>();
+		model.templates = new HashSet<String>();
 		for (Object element : templateViewer.getCheckedElements()) {
-			model.templates.add((File) element);
+			model.templates.add((String) element);
 		}
 		model.layout = (separateLayoutButton.getSelection()) ? Layout.SEPARATE : Layout.COMBINED;
 		if (!defaultLocationCheckbox.getSelection()) {
@@ -455,21 +438,14 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		if (templatePath.toFile().exists()) {
 			File[] children = templatePath.toFile().listFiles();
 			if (children != null) {
-				templates = new ArrayList<File>(children.length);
+				templates = new HashSet<String>(children.length);
 				for (File child : children) {
-					if (isTemplate(child)) {
-						templates.add(child);
-					}
+					templates.add(TcServerUtil.getTemplateName(child));
 				}
 			}
 		}
 		templateViewer.setInput(templates);
 		locationPathField.setText(runtimePath.toOSString());
-	}
-
-	private boolean isTemplate(File child) {
-		return child.isDirectory() && !child.getName().startsWith("base-tomcat-")
-				&& !child.getName().equals("apr-ssl-tomcat-6");
 	}
 
 	@Override
@@ -492,9 +468,9 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			arguments.add("-v");
 			arguments.add(tomcatVersion);
 		}
-		for (File template : model.getTemplates()) {
+		for (String template : model.getTemplates()) {
 			arguments.add("-t");
-			arguments.add(template.getName());
+			arguments.add(template);
 		}
 		for (TemplateProperty prop : model.getTemplateProperties()) {
 			if (!prop.isDefault()) {
@@ -520,11 +496,11 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		TcServerUtil.importRuntimeConfiguration(wc, monitor);
 	}
 
-	private List<String> getCheckedTemplateNames() {
-		List<String> checkedTemplateNames = new ArrayList<String>();
+	private Set<String> getCheckedTemplateNames() {
+		Set<String> checkedTemplateNames = new HashSet<String>();
 		if (templateViewer != null) {
-			for (Object templateFile : templateViewer.getCheckedElements()) {
-				checkedTemplateNames.add(((File) templateFile).getName());
+			for (Object template : templateViewer.getCheckedElements()) {
+				checkedTemplateNames.add((String) template);
 			}
 		}
 		return checkedTemplateNames;
@@ -532,7 +508,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 	@Override
 	protected void createChildFragments(List<WizardFragment> list) {
-		List<String> templateNames = getCheckedTemplateNames();
+		Set<String> templateNames = getCheckedTemplateNames();
 		if (templateNames.isEmpty()) {
 			return;
 		}
