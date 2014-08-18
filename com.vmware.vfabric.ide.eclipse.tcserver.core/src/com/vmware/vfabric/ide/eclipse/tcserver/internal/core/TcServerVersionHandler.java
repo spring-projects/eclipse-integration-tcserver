@@ -180,7 +180,7 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 
 	@Override
 	public IStatus verifyInstallPath(IPath installPath) {
-		if (isVersion_2_5()) {
+		if (isVersion_2_5() || isVersion_3_0()) {
 			return checkResource(VERIFY_SPEC_2_5, installPath);
 		}
 		else {
@@ -215,8 +215,12 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 		return runtimeId.endsWith("70");
 	}
 
+	public boolean isVersion_3_0() {
+		return runtimeId.endsWith("80");
+	}
+
 	public boolean supportsServlet30() {
-		return isVersion_2_5();
+		return isVersion_2_5() || isVersion_3_0();
 	}
 
 	@Override
@@ -225,6 +229,13 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 			String version = module.getModuleType().getVersion();
 			if ("2.2".equals(version) || "2.3".equals(version) || "2.4".equals(version) || "2.5".equals(version)
 					|| "3.0".equals(version)) {
+				return Status.OK_STATUS;
+			}
+		}
+		else if (isVersion_3_0()) {
+			String version = module.getModuleType().getVersion();
+			if ("2.2".equals(version) || "2.3".equals(version) || "2.4".equals(version) || "2.5".equals(version)
+					|| "3.0".equals(version) || "3.1".equals(version)) {
 				return Status.OK_STATUS;
 			}
 		}

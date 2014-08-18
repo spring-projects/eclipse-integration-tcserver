@@ -41,7 +41,7 @@ public class TcServerFixture extends TestConfiguration {
 
 	public static String V_2_9_URL = "http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.9.3.RELEASE.zip";
 
-	public static String V_3_0_URL = "file:///Users/aboyko/Downloads/vfabric-tc-server-developer-3.0.0.RELEASE.zip";
+	public static String V_3_0_URL = "file:///Users/aboyko/Downloads/pivotal-tc-server-developer-3.0.0.RELEASE.zip";
 
 	public static TcServerFixture V_2_0 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_0,
 			"springsource-tc-server-developer",
@@ -69,8 +69,8 @@ public class TcServerFixture extends TestConfiguration {
 	public static TcServerFixture V_2_9 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_5,
 			"vfabric-tc-server-developer-2.9.3.RELEASE", V_2_9_URL);
 
-	public static TcServerFixture V_3_0 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_5,
-			"vfabric-tc-server-developer-3.0.0.RELEASE", V_3_0_URL);
+	public static TcServerFixture V_3_0 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_3_0,
+			"pivotal-tc-server-developer-3.0.0.RELEASE", V_3_0_URL);
 
 	public static TcServerFixture V_6_0 = new TcServerFixture(TcServer.ID_TC_SERVER_2_0, "tcServer-6.0");
 
@@ -132,7 +132,7 @@ public class TcServerFixture extends TestConfiguration {
 	public IServer createServer(final String instance) throws Exception {
 		ServerHandler handler = provisionServer();
 		ServerHandlerCallback callback;
-		if (TcServer.ID_TC_SERVER_2_5.equals(serverType)) {
+		if (TcServer.ID_TC_SERVER_2_5.equals(serverType) || TcServer.ID_TC_SERVER_3_0.equals(serverType)) {
 			callback = new TcServer21ServerHandlerCallback();
 		}
 		else {

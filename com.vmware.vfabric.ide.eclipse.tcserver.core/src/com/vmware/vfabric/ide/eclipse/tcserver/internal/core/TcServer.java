@@ -52,6 +52,8 @@ public class TcServer extends TomcatServer {
 
 	public static String ID_TC_SERVER_2_5 = "com.vmware.server.tc.70";
 
+	public static String ID_TC_SERVER_3_0 = "com.pivotal.server.tc.80";
+
 	public static final String DEFAULT_DEPLOYER_HOST = "localhost";
 
 	public static final String DEFAULT_DEPLOYER_SERVICE = "Catalina";
