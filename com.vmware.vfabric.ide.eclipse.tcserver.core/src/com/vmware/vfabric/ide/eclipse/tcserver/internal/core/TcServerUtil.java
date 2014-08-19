@@ -22,7 +22,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
-import org.eclipse.wst.server.core.internal.Runtime;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 
@@ -31,6 +30,8 @@ import org.springsource.ide.eclipse.commons.core.StatusHandler;
  * @author Tomasz Zarna
  */
 public class TcServerUtil {
+
+	public static final String TEMPLATES_FOLDER = "templates";
 
 	private static final String TEMPLATE_VARIATION_STR = "-tomcat-";
 
@@ -43,7 +44,10 @@ public class TcServerUtil {
 	}
 
 	public static String getServerVersion(IRuntime runtime) {
-		String directory = ((Runtime) runtime).getAttribute(TcServerRuntime.KEY_SERVER_VERSION, (String) null);
+		// String directory = ((Runtime)
+		// runtime).getAttribute(TcServerRuntime.KEY_SERVER_VERSION, (String)
+		// null);
+		String directory = TcServerRuntime.getTomcatLocation(runtime).lastSegment();
 		return (directory != null && directory.startsWith("tomcat-")) ? directory.substring(7) : directory;
 	}
 
@@ -155,6 +159,32 @@ public class TcServerUtil {
 			}
 		}
 		return null;
+	}
+
+	public static File getTemplateFolder(IRuntime runtime, String templateName) {
+		StringBuilder templatePath = new StringBuilder();
+		templatePath.append(runtime.getLocation());
+		templatePath.append(File.separator);
+		templatePath.append(TEMPLATES_FOLDER);
+		templatePath.append(File.separator);
+		templatePath.append(templateName);
+		File templateFolder = new File(templatePath.toString());
+		if (!templateFolder.exists() || !templateFolder.isDirectory()) {
+			templateFolder = null;
+			String serverVersion = getServerVersion(runtime);
+			if (serverVersion != null && !serverVersion.isEmpty()) {
+				templateFolder = null;
+				int idx = serverVersion.indexOf('.');
+				String majorVersion = idx > -1 ? serverVersion.substring(0, idx) : serverVersion;
+				templatePath.append(TEMPLATE_VARIATION_STR);
+				templatePath.append(majorVersion);
+				templateFolder = new File(templatePath.toString());
+				if (!templateFolder.exists() && !templateFolder.isDirectory()) {
+					templateFolder = null;
+				}
+			}
+		}
+		return templateFolder;
 	}
 
 }

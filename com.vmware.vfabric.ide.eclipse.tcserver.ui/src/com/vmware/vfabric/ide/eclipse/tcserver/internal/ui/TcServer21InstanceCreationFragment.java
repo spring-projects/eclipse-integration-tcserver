@@ -223,10 +223,11 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 				ISelection selection = event.getSelection();
 				if (selection instanceof StructuredSelection) {
-					Object file = ((StructuredSelection) selection).getFirstElement();
+					Object obj = ((StructuredSelection) selection).getFirstElement();
+					File templateDir = obj instanceof String ? TcServerUtil.getTemplateFolder(runtime, (String) obj)
+							: null;
 
-					if (file instanceof File) {
-						File templateDir = (File) file;
+					if (templateDir != null && templateDir.exists() && templateDir.isDirectory()) {
 						readmeLabel.setText("Information for template " + templateDir.getName() + ": ");
 						File readmeFile = new File(templateDir.getPath().concat("/README.txt"));
 						try {
@@ -239,6 +240,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 									templateDir.getName(), readmeFile));
 						}
 						updateChildFragments();
+
 					}
 					else {
 						readmeText.setText("");
@@ -434,7 +436,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		}
 
 		IPath runtimePath = runtime.getLocation();
-		IPath templatePath = runtimePath.append("templates");
+		IPath templatePath = runtimePath.append(TcServerUtil.TEMPLATES_FOLDER);
 		if (templatePath.toFile().exists()) {
 			File[] children = templatePath.toFile().listFiles();
 			if (children != null) {

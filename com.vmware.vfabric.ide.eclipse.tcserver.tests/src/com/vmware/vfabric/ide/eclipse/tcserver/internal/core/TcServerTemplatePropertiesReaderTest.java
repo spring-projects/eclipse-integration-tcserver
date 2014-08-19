@@ -49,7 +49,7 @@ public class TcServerTemplatePropertiesReaderTest {
 	public void haveTestsForAllTemplates() {
 		Set<String> actualTemplates = new HashSet<String>();
 		IPath runtimePath = server.getRuntime().getLocation();
-		IPath templatePath = runtimePath.append("templates");
+		IPath templatePath = runtimePath.append(TcServerUtil.TEMPLATES_FOLDER);
 		if (templatePath.toFile().exists()) {
 			File[] children = templatePath.toFile().listFiles();
 			if (children != null) {
@@ -375,7 +375,7 @@ public class TcServerTemplatePropertiesReaderTest {
 	}
 
 	private void assertPropsEquals(TemplateProperty actual, String... expected) {
-		assertEquals(expected[0], actual.getTemplate());
+		assertTrue("Template id doesn't match", actual.getTemplate().startsWith(expected[0]));
 		assertEquals(expected[1], actual.getKey());
 		assertEquals(expected[2], actual.getMessage());
 		if (expected.length == 4) {
