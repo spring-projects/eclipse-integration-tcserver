@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -56,6 +56,8 @@ public class TcServerRuntime extends TomcatRuntime {
 
 	public static String ID_TC_SERVER_2_5 = "com.vmware.server.tc.runtime.70";
 
+	public static String ID_TC_SERVER_3_0 = "com.pivotal.server.tc.runtime.80";
+
 	public static final String KEY_SERVER_VERSION = "com.springsource.tcserver.version";
 
 	public static List<File> getTomcatVersions(File location) {
@@ -94,7 +96,7 @@ public class TcServerRuntime extends TomcatRuntime {
 	/**
 	 * Returns the <code>catalina.home</code> directory for <code>runtime</code>
 	 * .
-	 * 
+	 *
 	 * @return the path or null
 	 */
 	public static IPath getTomcatLocation(IRuntime runtime) {
@@ -130,7 +132,7 @@ public class TcServerRuntime extends TomcatRuntime {
 	}
 
 	public boolean supportsServlet30() {
-		return TcServer.isVersion25(getRuntime());
+		return TcServer.isVersion25(getRuntime()) || TcServer.isVersion30(getRuntime());
 	}
 
 	@Override

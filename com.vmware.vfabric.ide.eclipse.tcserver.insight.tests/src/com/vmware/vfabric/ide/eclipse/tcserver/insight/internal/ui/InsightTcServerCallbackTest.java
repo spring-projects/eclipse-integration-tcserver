@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -108,6 +108,23 @@ public class InsightTcServerCallbackTest extends TestCase {
 		assertTrue("Expected " + agentArgument + " in '" + args + "'", args.contains(agentArgument));
 	}
 
+	public void testLaunchConfigurationArgs30() throws Exception {
+		server = InsightTestFixture.V_3_0.createServer(null);
+		server.publish(Server.PUBLISH_FULL, null);
+
+		ILaunchConfigurationWorkingCopy wc = createLaunchConfiguration();
+		((Server) server).setupLaunchConfiguration(wc, null);
+		String args = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, (String) null);
+		assertTrue("Expected -Xmx1024m in '" + args + "'", args.contains("-Xmx1024m"));
+
+		TcServer tcServer = (TcServer) server.loadAdapter(TcServer.class, null);
+		String agentPath = TcServerInsightUtil.getAgentJarPath(tcServer);
+		assertNotNull("Expected to find a path to insight-weaver agent", agentPath);
+
+		String agentArgument = "-javaagent:\"" + agentPath + "\"";
+		assertTrue("Expected " + agentArgument + " in '" + args + "'", args.contains(agentArgument));
+	}
+
 	public void testInsightClasspath28() throws Exception {
 		server = InsightTestFixture.V_2_8.createServer(null);
 		server.publish(Server.PUBLISH_FULL, null);
@@ -134,6 +151,30 @@ public class InsightTcServerCallbackTest extends TestCase {
 
 	public void testInsightClasspath29() throws Exception {
 		server = InsightTestFixture.V_2_9.createServer(null);
+		server.publish(Server.PUBLISH_FULL, null);
+
+		ILaunchConfigurationWorkingCopy wc = createLaunchConfiguration();
+		((Server) server).setupLaunchConfiguration(wc, null);
+		List args = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_CLASSPATH, (List) null);
+
+		boolean hasBootstrap = false;
+		boolean hasWeaver = false;
+		for (Object obj : args) {
+			String entry = (String) obj;
+			if (entry.contains("insight-bootstrap")) {
+				hasBootstrap = true;
+			}
+			if (entry.contains("insight-weaver")) {
+				hasWeaver = true;
+			}
+		}
+
+		assertTrue("Expected to find insight-bootstrap jar on the classpath, but none was found.", hasBootstrap);
+		assertTrue("Expected to find insight-weaver jar on the classpath, but none was found.", hasWeaver);
+	}
+
+	public void testInsightClasspath30() throws Exception {
+		server = InsightTestFixture.V_3_0.createServer(null);
 		server.publish(Server.PUBLISH_FULL, null);
 
 		ILaunchConfigurationWorkingCopy wc = createLaunchConfiguration();

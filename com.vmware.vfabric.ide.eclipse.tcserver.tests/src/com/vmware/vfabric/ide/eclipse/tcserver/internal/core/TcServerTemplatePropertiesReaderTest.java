@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Spring IDE Developers
+ * Copyright (c) 2012 - 2014 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,15 +10,14 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 
-import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.eclipse.core.runtime.IPath;
@@ -48,32 +47,24 @@ public class TcServerTemplatePropertiesReaderTest {
 
 	@Test
 	public void haveTestsForAllTemplates() {
-		List<String> actualTemplates = new ArrayList<String>();
+		Set<String> actualTemplates = new HashSet<String>();
 		IPath runtimePath = server.getRuntime().getLocation();
-		IPath templatePath = runtimePath.append("templates");
+		IPath templatePath = runtimePath.append(TcServerUtil.TEMPLATES_FOLDER);
 		if (templatePath.toFile().exists()) {
 			File[] children = templatePath.toFile().listFiles();
 			if (children != null) {
 				for (File child : children) {
-					if (isTemplate(child)) {
-						actualTemplates.add(child.getName());
+					String template = TcServerUtil.getTemplateName(child);
+					if (template != null) {
+						actualTemplates.add(template);
 					}
 				}
 			}
 		}
 		String[] expecteds = new String[] { "ajp", "apr", "apr-ssl", "async-logger", "base", "bio", "bio-ssl",
 				"cluster-node", "diagnostics", "insight", "jmx-ssl", "nio", "nio-ssl" };
-		String[] actuals = actualTemplates.toArray(new String[actualTemplates.size()]);
-
-		// Must sort because order depends on OS file system implementation.
-		Arrays.sort(expecteds);
-		Arrays.sort(actuals);
-		assertArrayEquals(expecteds, actuals);
-	}
-
-	private boolean isTemplate(File child) {
-		return child.isDirectory() && !child.getName().startsWith("base-tomcat-")
-				&& !child.getName().equals("apr-ssl-tomcat-6");
+		assertTrue("Not all basic templates are present in current tc server runtime installation",
+				actualTemplates.containsAll(Arrays.asList(expecteds)));
 	}
 
 	@Test
@@ -373,6 +364,41 @@ public class TcServerTemplatePropertiesReaderTest {
 				"Please enter the password that the SSL keystore protects itself with:");
 	}
 
+	@Test
+	public void redisSessionManager() throws Exception {
+		Set<TemplateProperty> props = reader.read("redis-session-manager", new NullProgressMonitor());
+		Assume.assumeNotNull(props);
+
+		assertEquals(5, props.size());
+		assertPropsEquals(props, "redis-session-manager", "poolTimeout",
+				"Please specify the timeout for the Redis connection pool:", "2000");
+		assertPropsEquals(props, "redis-session-manager", "connectionPoolSize",
+				"Please specify the size of the Redis connection pool:", "-1");
+		assertPropsEquals(props, "redis-session-manager", "databaseIndex", "Please specify the Redis database index:",
+				"0");
+		assertPropsEquals(props, "redis-session-manager", "host", "Please specify the Redis host name:", "localhost");
+		assertPropsEquals(props, "redis-session-manager", "port", "Please specify the Redis port number:", "6379");
+	}
+
+	@Test
+	public void redisSessionManagerAuth() throws Exception {
+		Set<TemplateProperty> props = reader.read("redis-session-manager-auth", new NullProgressMonitor());
+		Assume.assumeNotNull(props);
+
+		assertEquals(6, props.size());
+		assertPropsEquals(props, "redis-session-manager-auth", "poolTimeout",
+				"Please specify the timeout for the Redis connection pool:", "2000");
+		assertPropsEquals(props, "redis-session-manager-auth", "connectionPoolSize",
+				"Please specify the size of the Redis connection pool:", "-1");
+		assertPropsEquals(props, "redis-session-manager-auth", "databaseIndex",
+				"Please specify the Redis database index:", "0");
+		assertPropsEquals(props, "redis-session-manager-auth", "host", "Please specify the Redis host name:",
+				"localhost");
+		assertPropsEquals(props, "redis-session-manager-auth", "port", "Please specify the Redis port number:", "6379");
+		assertPropsEquals(props, "redis-session-manager-auth", "password",
+				"Please specify the password for the Redis authentication:");
+	}
+
 	private void assertPropsEquals(Set<TemplateProperty> actual, String... expected) {
 		for (TemplateProperty prop : actual) {
 			if (prop.getKey().equals(expected[1])) {
@@ -384,7 +410,7 @@ public class TcServerTemplatePropertiesReaderTest {
 	}
 
 	private void assertPropsEquals(TemplateProperty actual, String... expected) {
-		assertEquals(expected[0], actual.getTemplate());
+		assertTrue("Template id doesn't match", actual.getTemplate().startsWith(expected[0]));
 		assertEquals(expected[1], actual.getKey());
 		assertEquals(expected[2], actual.getMessage());
 		if (expected.length == 4) {

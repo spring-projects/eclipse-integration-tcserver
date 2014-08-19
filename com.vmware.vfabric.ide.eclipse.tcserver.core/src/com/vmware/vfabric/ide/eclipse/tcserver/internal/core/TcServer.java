@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -51,6 +51,8 @@ public class TcServer extends TomcatServer {
 	public static String ID_TC_SERVER_2_1 = "com.springsource.tcserver.70";
 
 	public static String ID_TC_SERVER_2_5 = "com.vmware.server.tc.70";
+
+	public static String ID_TC_SERVER_3_0 = "com.pivotal.server.tc.80";
 
 	public static final String DEFAULT_DEPLOYER_HOST = "localhost";
 
@@ -301,7 +303,7 @@ public class TcServer extends TomcatServer {
 		// setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, (String) null);
 		// setAttribute(ITomcatServer.PROPERTY_TEST_ENVIRONMENT, false);
 		// ASF layout is only supported by tc Server 2.0 and earlier
-		if (isVersion25(getServer().getRuntime())) {
+		if (isVersion25(getServer().getRuntime()) || isVersion30(getServer().getRuntime())) {
 			setAttribute(TcServer.KEY_ASF_LAYOUT, false);
 			setAttribute(ITomcatServer.PROPERTY_SAVE_SEPARATE_CONTEXT_FILES, true);
 		}
@@ -382,6 +384,10 @@ public class TcServer extends TomcatServer {
 
 	public static boolean isVersion25(IRuntime runtime) {
 		return runtime.getRuntimeType().getId().endsWith("70");
+	}
+
+	public static boolean isVersion30(IRuntime runtime) {
+		return runtime.getRuntimeType().getId().endsWith("80");
 	}
 
 	public static String substitute(String value, Properties properties) {

@@ -12,6 +12,8 @@
 							property="org.eclipse.wst.server.ui.serverType" value="com.springsource.tcserver.*" />
 						<test forcePluginActivation="true"
 							property="org.eclipse.wst.server.ui.serverType" value="com.vmware.server.tc.*" />							
+						<test forcePluginActivation="true"
+							property="org.eclipse.wst.server.ui.serverType" value="com.pivotal.server.tc.*" />							
 					</or>
 					<test forcePluginActivation="true"
 						property="com.springsource.sts.server.insight.ui.tcServer.hasInsight" value="true" />
@@ -46,7 +48,7 @@
             id="com.springsource.sts.server.tc.editor.insight"
             insertionId="com.springsource.sts.server.insight.ui.left"
             order="1"
-            typeIds="com.springsource.tcserver.*,com.vmware.server.tc.*">
+            typeIds="com.springsource.tcserver.*,com.vmware.server.tc.*,com.pivotal.server.tc.*">
          <enablement>
             <and>
                <test
@@ -63,7 +65,7 @@
             id="com.springsource.sts.server.tc.editor.insight.plugins"
             insertionId="com.springsource.sts.server.insight.ui.left"
             order="2"
-            typeIds="com.springsource.tcserver.*,com.vmware.server.tc.*">
+            typeIds="com.springsource.tcserver.*,com.vmware.server.tc.*,com.pivotal.server.tc.*">
          <enablement>
             <and>
                <test
@@ -83,7 +85,7 @@
             id="com.springsource.sts.server.tc.editor.insight.actions"
             insertionId="com.springsource.sts.server.insight.ui.disabled"
             order="1"
-            typeIds="com.springsource.tcserver.*,com.vmware.server.tc.*">
+            typeIds="com.springsource.tcserver.*,com.vmware.server.tc.*,com.pivotal.server.tc.*">
          <enablement>
             <and>
                <test
@@ -113,7 +115,7 @@
           insertionIds="com.springsource.sts.server.insight.ui.left,com.springsource.sts.server.insight.ui.right"
           name="Insight"
           order="2"
-          typeIds="com.springsource.tcserver.*,com.vmware.server.tc.*">
+          typeIds="com.springsource.tcserver.*,com.vmware.server.tc.*,com.pivotal.server.tc.*,com.pivotal.server.tc.*">
        <enablement>
           <and>
              <test

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,11 @@
  *     Pivotal Software, Inc. - initial API and implementation
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -29,8 +34,17 @@ public class TcServer21ServerHandlerCallback extends ServerHandlerCallback {
 		// Create a default instance in case that one is missing
 		IPath installLocation = server.getRuntime().getLocation();
 		if (!installLocation.append(DEFAULT_INSTANCE).toFile().exists()) {
-			String[] arguments = new String[] { "create", DEFAULT_INSTANCE, "-t", "base", "--force" };
-			TcServerUtil.executeInstanceCreation(installLocation, DEFAULT_INSTANCE, arguments);
+			List<String> arguments = new ArrayList<String>(Arrays.asList(new String[] { "create", DEFAULT_INSTANCE,
+					"-t", "base", "--force" }));
+			List<File> tomcatFolders = TcServerRuntime.getTomcatVersions(installLocation.toFile());
+			if (tomcatFolders != null && !tomcatFolders.isEmpty()) {
+				String tomcatVersion = TcServerUtil.getServerVersion(tomcatFolders.get(0).getName());
+				arguments.add("-v");
+				arguments.add(tomcatVersion);
+				((ServerWorkingCopy) server).setAttribute(TcServerRuntime.KEY_SERVER_VERSION, tomcatVersion);
+			}
+			TcServerUtil.executeInstanceCreation(installLocation, DEFAULT_INSTANCE,
+					arguments.toArray(new String[arguments.size()]));
 		}
 
 		// TODO e3.6 remove casts for setAttribute()

@@ -22,7 +22,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
-import org.eclipse.wst.server.core.internal.Runtime;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 
@@ -32,13 +31,29 @@ import org.springsource.ide.eclipse.commons.core.StatusHandler;
  */
 public class TcServerUtil {
 
+	public static final String TEMPLATES_FOLDER = "templates";
+
+	private static final String TEMPLATE_VARIATION_STR = "-tomcat-";
+
 	public static boolean isSpringSource(IRuntimeWorkingCopy wc) {
 		return wc != null && wc.getRuntimeType() != null && wc.getRuntimeType().getId().startsWith("com.springsource");
 	}
 
+	public static boolean isVMWare(IRuntimeWorkingCopy wc) {
+		return wc != null && wc.getRuntimeType() != null && wc.getRuntimeType().getId().startsWith("com.vmware");
+	}
+
 	public static String getServerVersion(IRuntime runtime) {
-		String directory = ((Runtime) runtime).getAttribute(TcServerRuntime.KEY_SERVER_VERSION, (String) null);
-		return (directory != null && directory.startsWith("tomcat-")) ? directory.substring(7) : directory;
+		// String directory = ((Runtime)
+		// runtime).getAttribute(TcServerRuntime.KEY_SERVER_VERSION, (String)
+		// null);
+		String directory = TcServerRuntime.getTomcatLocation(runtime).lastSegment();
+		return getServerVersion(directory);
+	}
+
+	public static String getServerVersion(String tomcatFolerName) {
+		return (tomcatFolerName != null && tomcatFolerName.startsWith("tomcat-")) ? tomcatFolerName.substring(7)
+				: tomcatFolerName;
 	}
 
 	public static void importRuntimeConfiguration(IServerWorkingCopy wc, IProgressMonitor monitor) throws CoreException {
@@ -136,6 +151,45 @@ public class TcServerUtil {
 		StatusHandler.log(status);
 
 		return new CoreException(status);
+	}
+
+	public static String getTemplateName(File templateFolder) {
+		if (templateFolder.isDirectory()) {
+			int idx = templateFolder.getName().indexOf(TEMPLATE_VARIATION_STR);
+			if (idx > -1) {
+				return templateFolder.getName().substring(0, idx);
+			}
+			else {
+				return templateFolder.getName();
+			}
+		}
+		return null;
+	}
+
+	public static File getTemplateFolder(IRuntime runtime, String templateName) {
+		StringBuilder templatePath = new StringBuilder();
+		templatePath.append(runtime.getLocation());
+		templatePath.append(File.separator);
+		templatePath.append(TEMPLATES_FOLDER);
+		templatePath.append(File.separator);
+		templatePath.append(templateName);
+		File templateFolder = new File(templatePath.toString());
+		if (!templateFolder.exists() || !templateFolder.isDirectory()) {
+			templateFolder = null;
+			String serverVersion = getServerVersion(runtime);
+			if (serverVersion != null && !serverVersion.isEmpty()) {
+				templateFolder = null;
+				int idx = serverVersion.indexOf('.');
+				String majorVersion = idx > -1 ? serverVersion.substring(0, idx) : serverVersion;
+				templatePath.append(TEMPLATE_VARIATION_STR);
+				templatePath.append(majorVersion);
+				templateFolder = new File(templatePath.toString());
+				if (!templateFolder.exists() && !templateFolder.isDirectory()) {
+					templateFolder = null;
+				}
+			}
+		}
+		return templateFolder;
 	}
 
 }

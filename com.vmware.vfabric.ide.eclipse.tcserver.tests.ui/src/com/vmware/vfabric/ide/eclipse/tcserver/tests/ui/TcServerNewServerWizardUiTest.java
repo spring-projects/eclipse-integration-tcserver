@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -77,7 +77,7 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		SWTBotUtils.openPerspective(bot, "Java Type Hierarchy");
 		openServersView();
 		if (baseInstallDirectoryPath == null) {
-			fixture = TcServerFixture.V_2_9;
+			fixture = TcServerFixture.V_3_0;
 			harness = fixture.createHarness();
 			server = harness.createServer(BASE_INSTANCE);
 			baseInstallDirectoryPath = ((org.eclipse.wst.server.core.internal.Server) server).getRuntime()

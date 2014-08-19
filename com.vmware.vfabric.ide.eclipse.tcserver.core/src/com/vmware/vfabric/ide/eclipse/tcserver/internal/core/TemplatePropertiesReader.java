@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Spring IDE Developers
+ * Copyright (c) 2012 - 2014 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -32,13 +31,15 @@ import org.springsource.ide.eclipse.commons.core.FileUtil;
 
 /**
  * @author Tomasz Zarna
- * 
+ *
  */
 public class TemplatePropertiesReader {
 
 	private static final String CONFIGURATION_PROMPTS_PROPERTIES = "configuration-prompts.properties";
 
 	private static final String SERVER_FRAGMENT_XML = "conf/server-fragment.xml";
+
+	private static final String CONTEXT_FRAGMENT_XML = "conf/context-fragment.xml";
 
 	private static final String SSL_PROPERTIES = "conf/ssl.properties";
 
@@ -78,23 +79,11 @@ public class TemplatePropertiesReader {
 	}
 
 	public Set<TemplateProperty> read(String templateName, IProgressMonitor monitor) throws CoreException {
-		IPath runtimePath = serverAttributes.getRuntime().getLocation();
-		IPath templatePath = runtimePath.append("templates");
-		if (templatePath.toFile().exists()) {
-			File[] children = templatePath.toFile().listFiles();
-			if (children != null) {
-				for (File child : children) {
-					if (isTemplate(child) && templateName.equals(child.getName())) {
-						return read(child, monitor);
-					}
-				}
-			}
+		File templateDir = TcServerUtil.getTemplateFolder(serverAttributes.getRuntime(), templateName);
+		if (templateDir.exists()) {
+			return read(templateDir, monitor);
 		}
 		return null;
-	}
-
-	private boolean isTemplate(File child) {
-		return child.isDirectory() && !child.getName().startsWith("base-tomcat-");
 	}
 
 	private Set<TemplateProperty> read(File templateDir, IProgressMonitor monitor) throws CoreException {
@@ -116,8 +105,11 @@ public class TemplatePropertiesReader {
 			return Collections.emptySet();
 		}
 
-		File serverFragmentFile = new File(templateDir, SERVER_FRAGMENT_XML);
-		String serverFragmentContent = FileUtil.readFile(serverFragmentFile, monitor);
+		File fragmentXmlFile = new File(templateDir, SERVER_FRAGMENT_XML);
+		if (!fragmentXmlFile.exists() || !fragmentXmlFile.isFile()) {
+			fragmentXmlFile = new File(templateDir, CONTEXT_FRAGMENT_XML);
+		}
+		String serverFragmentContent = FileUtil.readFile(fragmentXmlFile, monitor);
 
 		File sslPropertiesFile = new File(templateDir, SSL_PROPERTIES);
 		String sslPropertiesContent = null;
@@ -192,7 +184,7 @@ public class TemplatePropertiesReader {
 	}
 
 	private static String findDefaultValue(String key, String serverFragmentContent) {
-		Pattern pattern = Pattern.compile("\\$\\{" + key + ":(.+)\\}");
+		Pattern pattern = Pattern.compile("\\$\\{" + key + ":([^=]+)\\}");
 		Matcher matcher = pattern.matcher(serverFragmentContent);
 		if (matcher.find()) {
 			return matcher.group(1);
