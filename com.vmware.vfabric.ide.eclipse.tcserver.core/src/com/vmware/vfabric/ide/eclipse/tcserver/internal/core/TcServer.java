@@ -303,7 +303,7 @@ public class TcServer extends TomcatServer {
 		// setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, (String) null);
 		// setAttribute(ITomcatServer.PROPERTY_TEST_ENVIRONMENT, false);
 		// ASF layout is only supported by tc Server 2.0 and earlier
-		if (isVersion25(getServer().getRuntime())) {
+		if (isVersion25(getServer().getRuntime()) || isVersion30(getServer().getRuntime())) {
 			setAttribute(TcServer.KEY_ASF_LAYOUT, false);
 			setAttribute(ITomcatServer.PROPERTY_SAVE_SEPARATE_CONTEXT_FILES, true);
 		}
@@ -384,6 +384,10 @@ public class TcServer extends TomcatServer {
 
 	public static boolean isVersion25(IRuntime runtime) {
 		return runtime.getRuntimeType().getId().endsWith("70");
+	}
+
+	public static boolean isVersion30(IRuntime runtime) {
+		return runtime.getRuntimeType().getId().endsWith("80");
 	}
 
 	public static String substitute(String value, Properties properties) {

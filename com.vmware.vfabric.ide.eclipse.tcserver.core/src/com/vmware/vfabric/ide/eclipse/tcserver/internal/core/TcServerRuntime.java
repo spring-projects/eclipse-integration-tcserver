@@ -132,7 +132,7 @@ public class TcServerRuntime extends TomcatRuntime {
 	}
 
 	public boolean supportsServlet30() {
-		return TcServer.isVersion25(getRuntime());
+		return TcServer.isVersion25(getRuntime()) || TcServer.isVersion30(getRuntime());
 	}
 
 	@Override
