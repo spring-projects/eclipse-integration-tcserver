@@ -38,6 +38,10 @@ public class TcServerUtil {
 		return wc != null && wc.getRuntimeType() != null && wc.getRuntimeType().getId().startsWith("com.springsource");
 	}
 
+	public static boolean isVMWare(IRuntimeWorkingCopy wc) {
+		return wc != null && wc.getRuntimeType() != null && wc.getRuntimeType().getId().startsWith("com.vmware");
+	}
+
 	public static String getServerVersion(IRuntime runtime) {
 		String directory = ((Runtime) runtime).getAttribute(TcServerRuntime.KEY_SERVER_VERSION, (String) null);
 		return (directory != null && directory.startsWith("tomcat-")) ? directory.substring(7) : directory;
@@ -141,13 +145,16 @@ public class TcServerUtil {
 	}
 
 	public static String getTemplateName(File templateFolder) {
-		int idx = templateFolder.getName().indexOf(TEMPLATE_VARIATION_STR);
-		if (idx > -1) {
-			return templateFolder.getName().substring(0, idx);
+		if (templateFolder.isDirectory()) {
+			int idx = templateFolder.getName().indexOf(TEMPLATE_VARIATION_STR);
+			if (idx > -1) {
+				return templateFolder.getName().substring(0, idx);
+			}
+			else {
+				return templateFolder.getName();
+			}
 		}
-		else {
-			return templateFolder.getName();
-		}
+		return null;
 	}
 
 }

@@ -76,8 +76,11 @@ public class TcServerRuntimeWizardFragment extends TomcatRuntimeWizardFragment {
 		if (TcServerUtil.isSpringSource(wc)) {
 			wizard.setTitle("SpringSource tc Server");
 		}
-		else {
+		else if (TcServerUtil.isVMWare(wc)) {
 			wizard.setTitle("VMware vFabric tc Server");
+		}
+		else {
+			wizard.setTitle("Pivotal tc Server");
 		}
 		wizard.setImageDescriptor(TcServerImages.WIZB_SERVER);
 		if (composite instanceof TomcatRuntimeComposite) {

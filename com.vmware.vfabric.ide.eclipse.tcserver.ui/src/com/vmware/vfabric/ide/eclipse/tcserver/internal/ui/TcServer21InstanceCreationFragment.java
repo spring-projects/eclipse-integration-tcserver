@@ -440,7 +440,10 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			if (children != null) {
 				templates = new HashSet<String>(children.length);
 				for (File child : children) {
-					templates.add(TcServerUtil.getTemplateName(child));
+					String template = TcServerUtil.getTemplateName(child);
+					if (template != null) {
+						templates.add(template);
+					}
 				}
 			}
 		}

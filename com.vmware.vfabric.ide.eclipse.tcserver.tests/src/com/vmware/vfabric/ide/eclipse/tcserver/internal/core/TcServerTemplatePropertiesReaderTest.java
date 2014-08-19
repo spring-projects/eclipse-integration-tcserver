@@ -54,7 +54,10 @@ public class TcServerTemplatePropertiesReaderTest {
 			File[] children = templatePath.toFile().listFiles();
 			if (children != null) {
 				for (File child : children) {
-					actualTemplates.add(TcServerUtil.getTemplateName(child));
+					String template = TcServerUtil.getTemplateName(child);
+					if (template != null) {
+						actualTemplates.add(template);
+					}
 				}
 			}
 		}
