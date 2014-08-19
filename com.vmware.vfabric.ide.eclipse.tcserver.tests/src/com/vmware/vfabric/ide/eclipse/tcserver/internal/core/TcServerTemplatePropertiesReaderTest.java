@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Spring IDE Developers
+ * Copyright (c) 2012 - 2014 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -362,6 +362,41 @@ public class TcServerTemplatePropertiesReaderTest {
 				"Please enter the password that the SSL keystore should protect itself with:", "RANDOM");
 		assertPropsEquals(props, "nio-ssl", "ssl.keystore.password.input",
 				"Please enter the password that the SSL keystore protects itself with:");
+	}
+
+	@Test
+	public void redisSessionManager() throws Exception {
+		Set<TemplateProperty> props = reader.read("redis-session-manager", new NullProgressMonitor());
+		Assume.assumeNotNull(props);
+
+		assertEquals(5, props.size());
+		assertPropsEquals(props, "redis-session-manager", "poolTimeout",
+				"Please specify the timeout for the Redis connection pool:", "2000");
+		assertPropsEquals(props, "redis-session-manager", "connectionPoolSize",
+				"Please specify the size of the Redis connection pool:", "-1");
+		assertPropsEquals(props, "redis-session-manager", "databaseIndex", "Please specify the Redis database index:",
+				"0");
+		assertPropsEquals(props, "redis-session-manager", "host", "Please specify the Redis host name:", "localhost");
+		assertPropsEquals(props, "redis-session-manager", "port", "Please specify the Redis port number:", "6379");
+	}
+
+	@Test
+	public void redisSessionManagerAuth() throws Exception {
+		Set<TemplateProperty> props = reader.read("redis-session-manager-auth", new NullProgressMonitor());
+		Assume.assumeNotNull(props);
+
+		assertEquals(6, props.size());
+		assertPropsEquals(props, "redis-session-manager-auth", "poolTimeout",
+				"Please specify the timeout for the Redis connection pool:", "2000");
+		assertPropsEquals(props, "redis-session-manager-auth", "connectionPoolSize",
+				"Please specify the size of the Redis connection pool:", "-1");
+		assertPropsEquals(props, "redis-session-manager-auth", "databaseIndex",
+				"Please specify the Redis database index:", "0");
+		assertPropsEquals(props, "redis-session-manager-auth", "host", "Please specify the Redis host name:",
+				"localhost");
+		assertPropsEquals(props, "redis-session-manager-auth", "port", "Please specify the Redis port number:", "6379");
+		assertPropsEquals(props, "redis-session-manager-auth", "password",
+				"Please specify the password for the Redis authentication:");
 	}
 
 	private void assertPropsEquals(Set<TemplateProperty> actual, String... expected) {

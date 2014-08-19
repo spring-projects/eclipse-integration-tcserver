@@ -48,7 +48,12 @@ public class TcServerUtil {
 		// runtime).getAttribute(TcServerRuntime.KEY_SERVER_VERSION, (String)
 		// null);
 		String directory = TcServerRuntime.getTomcatLocation(runtime).lastSegment();
-		return (directory != null && directory.startsWith("tomcat-")) ? directory.substring(7) : directory;
+		return getServerVersion(directory);
+	}
+
+	public static String getServerVersion(String tomcatFolerName) {
+		return (tomcatFolerName != null && tomcatFolerName.startsWith("tomcat-")) ? tomcatFolerName.substring(7)
+				: tomcatFolerName;
 	}
 
 	public static void importRuntimeConfiguration(IServerWorkingCopy wc, IProgressMonitor monitor) throws CoreException {

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Spring IDE Developers
+ * Copyright (c) 2012, 2014 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,6 +9,9 @@
  *    Spring IDE Developers - initial API and implementation
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author Tomasz Zarna
@@ -39,8 +42,10 @@ public class TemplateProperty {
 	}
 
 	private String removeDefaultPlaceholderIfExists(String message) {
-		if (message.endsWith(". Default '${default}':")) {
-			return message.replace(". Default '${default}':", ":");
+		Pattern pattern = Pattern.compile("(\\.[^\\.]*\\$\\{default\\}[^\\.]*(\\.|:))");
+		Matcher matcher = pattern.matcher(message);
+		if (matcher.find()) {
+			return message.replace(matcher.group(1), ":");
 		}
 		return message;
 	}
