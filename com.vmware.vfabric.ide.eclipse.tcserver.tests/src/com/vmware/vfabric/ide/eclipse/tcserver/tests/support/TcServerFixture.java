@@ -41,7 +41,7 @@ public class TcServerFixture extends TestConfiguration {
 
 	public static String V_2_9_URL = "http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.9.3.RELEASE.zip";
 
-	public static String V_3_0_URL = "file:///Users/aboyko/Downloads/pivotal-tc-server-developer-3.0.0.RELEASE.zip";
+	public static String V_3_0_URL = "http://download.pivotal.com.s3.amazonaws.com/tcserver/3.0.0/pivotal-tc-server-developer-3.0.0.RELEASE.zip";
 
 	public static TcServerFixture V_2_0 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_0,
 			"springsource-tc-server-developer",
