@@ -15,6 +15,7 @@
 	  <test.suite>com.vmware.vfabric.ide.eclipse.tcserver.tests.ui</test.suite>
 	  <test.class>com.vmware.vfabric.ide.eclipse.tcserver.tests.ui.AllTcServerUiTests</test.class>
 	  <test.useUIThread>false</test.useUIThread>
+	  <test.skip>true</test.skip>
 	</properties>
 
 	<build>
