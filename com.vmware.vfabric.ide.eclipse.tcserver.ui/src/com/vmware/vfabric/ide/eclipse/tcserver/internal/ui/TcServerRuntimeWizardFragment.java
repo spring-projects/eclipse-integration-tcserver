@@ -72,7 +72,8 @@ public class TcServerRuntimeWizardFragment extends TomcatRuntimeWizardFragment {
 	public Composite createComposite(Composite parent, IWizardHandle wizard) {
 		this.wizard = wizard;
 
-		Composite composite = super.createComposite(parent, wizard);
+		comp = new TcRuntimeComposite(parent, wizard);
+
 		if (TcServerUtil.isSpringSource(wc)) {
 			wizard.setTitle("SpringSource tc Server");
 		}
@@ -83,63 +84,24 @@ public class TcServerRuntimeWizardFragment extends TomcatRuntimeWizardFragment {
 			wizard.setTitle("Pivotal tc Server");
 		}
 		wizard.setImageDescriptor(TcServerImages.WIZB_SERVER);
-		if (composite instanceof TomcatRuntimeComposite) {
-			Control[] children = composite.getChildren();
-			if (children.length > 3) {
-				Control control = children[2];
-				if (control instanceof Label) {
-					((Label) control).setText("Installation &directory:");
-				}
-				control = children[3];
-				if (control instanceof Text) {
-					final Text installDir = ((Text) control);
-					final Listener[] listeners = installDir.getListeners(SWT.Modify);
-					for (Listener listener : listeners) {
-						installDir.removeListener(SWT.Modify, listener);
-					}
-					installDir.addModifyListener(new ModifyListener() {
-						public void modifyText(ModifyEvent e) {
-							String installDirText = installDir.getText();
-							String installDirTrim = installDir.getText().trim();
-							if (!installDirText.equals(installDirTrim)) {
-								// the string needs to be trimmed first
-								installDir.setText(installDirTrim);
-							}
-							else { // our job is done
-									// notify previously unhooked listeners
-								for (Listener listener : listeners) {
-									if (listener instanceof TypedListener) {
-										TypedListener typedListener = (TypedListener) listener;
-										if (typedListener.getEventListener() instanceof ModifyListener) {
-											ModifyListener modifyListener = (ModifyListener) typedListener
-													.getEventListener();
-											modifyListener.modifyText(e);
-										}
-									}
-								}
-							}
-						}
-					});
-				}
-			}
-		}
 
-		Label label = new Label(composite, SWT.NONE);
+		Label label = new Label(comp, SWT.NONE);
 		label.setText("Version:");
 		GridData data = new GridData();
 		data.horizontalSpan = 2;
 		label.setLayoutData(data);
 
-		serverVersionCombo = new Combo(composite, SWT.BORDER);
+		serverVersionCombo = new Combo(comp, SWT.BORDER);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		serverVersionCombo.setLayoutData(data);
 		serverVersionCombo.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
 				(wc).setAttribute(TcServerRuntime.KEY_SERVER_VERSION, serverVersionCombo.getText());
+				((TcRuntimeComposite) comp).forceValidation();
 			}
 		});
 
-		return composite;
+		return comp;
 	}
 
 	@Override
@@ -196,6 +158,56 @@ public class TcServerRuntimeWizardFragment extends TomcatRuntimeWizardFragment {
 	public void performFinish(IProgressMonitor monitor) throws CoreException {
 		super.performFinish(monitor);
 		this.setComplete(false);
+	}
+
+	private class TcRuntimeComposite extends TomcatRuntimeComposite {
+
+		protected TcRuntimeComposite(Composite parent, IWizardHandle wizard) {
+			super(parent, wizard);
+			Control[] children = getChildren();
+			if (children.length > 3) {
+				Control control = children[2];
+				if (control instanceof Label) {
+					((Label) control).setText("Installation &directory:");
+				}
+				control = children[3];
+				if (control instanceof Text) {
+					final Text installDir = ((Text) control);
+					final Listener[] listeners = installDir.getListeners(SWT.Modify);
+					for (Listener listener : listeners) {
+						installDir.removeListener(SWT.Modify, listener);
+					}
+					installDir.addModifyListener(new ModifyListener() {
+						public void modifyText(ModifyEvent e) {
+							String installDirText = installDir.getText();
+							String installDirTrim = installDir.getText().trim();
+							if (!installDirText.equals(installDirTrim)) {
+								// the string needs to be trimmed first
+								installDir.setText(installDirTrim);
+							}
+							else { // our job is done
+									// notify previously unhooked listeners
+								for (Listener listener : listeners) {
+									if (listener instanceof TypedListener) {
+										TypedListener typedListener = (TypedListener) listener;
+										if (typedListener.getEventListener() instanceof ModifyListener) {
+											ModifyListener modifyListener = (ModifyListener) typedListener
+													.getEventListener();
+											modifyListener.modifyText(e);
+										}
+									}
+								}
+							}
+						}
+					});
+				}
+			}
+		}
+
+		public void forceValidation() {
+			validate();
+		}
+
 	}
 
 }

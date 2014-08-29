@@ -21,6 +21,9 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.launching.IVMInstall;
+import org.eclipse.jdt.launching.IVMInstallType;
+import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jst.server.tomcat.core.internal.Messages;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatPlugin;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatRuntime;
@@ -131,6 +134,28 @@ public class TcServerRuntime extends TomcatRuntime {
 		return installPath;
 	}
 
+	public static IVMInstall getVM(IRuntime runtime) {
+		String vmInstallTypeId = ((Runtime) runtime).getAttribute(PROP_VM_INSTALL_TYPE_ID, (String) null);
+		if (vmInstallTypeId == null) {
+			return JavaRuntime.getDefaultVMInstall();
+		}
+		try {
+			IVMInstallType vmInstallType = JavaRuntime.getVMInstallType(vmInstallTypeId);
+			IVMInstall[] vmInstalls = vmInstallType.getVMInstalls();
+			String id = ((Runtime) runtime).getAttribute(PROP_VM_INSTALL_ID, (String) null);
+			int size = vmInstalls.length;
+			for (int i = 0; i < size; i++) {
+				if (id.equals(vmInstalls[i].getId())) {
+					return vmInstalls[i];
+				}
+			}
+		}
+		catch (Exception e) {
+			// ignore
+		}
+		return null;
+	}
+
 	public boolean supportsServlet30() {
 		return TcServer.isVersion25(getRuntime()) || TcServer.isVersion30(getRuntime());
 	}
@@ -168,6 +193,18 @@ public class TcServerRuntime extends TomcatRuntime {
 			else {
 				return new Status(status.getSeverity(), ITcServerConstants.PLUGIN_ID, status.getMessage().replace(
 						"Tomcat version 7.0", "tc Server v2.5 or later"));
+			}
+		}
+
+		if (ID_TC_SERVER_3_0.equals(getRuntime().getRuntimeType().getId())) {
+			if (!status.isOK() && status.getMessage().contains("8.0") && status.getMessage().contains("Java SE 7")) {
+				String tomcatStr = getAttribute(TcServerRuntime.KEY_SERVER_VERSION, (String) null);
+				if (tomcatStr != null) {
+					String version = TcServerUtil.getServerVersion(tomcatStr);
+					if (version.startsWith("7")) {
+						return Status.OK_STATUS;
+					}
+				}
 			}
 		}
 		return status;

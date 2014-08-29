@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jdt.launching.IVMInstall;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -64,6 +65,7 @@ import org.springsource.ide.eclipse.commons.core.FileUtil;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntime;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerUtil;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TemplatePropertiesReader;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TemplateProperty;
@@ -488,6 +490,12 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		if (instanceDir != null) {
 			arguments.add("-i");
 			arguments.add(instanceDir);
+		}
+
+		IVMInstall vmInstall = TcServerRuntime.getVM(runtime);
+		if (vmInstall != null) {
+			arguments.add("--java-home");
+			arguments.add(vmInstall.getInstallLocation().getPath());
 		}
 
 		TcServerUtil.executeInstanceCreation(runtimeLocation, model.getName(),
