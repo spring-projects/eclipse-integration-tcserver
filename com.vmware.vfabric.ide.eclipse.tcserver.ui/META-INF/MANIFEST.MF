@@ -18,7 +18,8 @@ Require-Bundle: org.eclipse.debug.ui,
  org.springsource.ide.eclipse.commons.ui,
  org.springsource.ide.eclipse.commons.configurator,
  org.springsource.ide.eclipse.commons.core,
- org.apache.commons.lang
+ org.apache.commons.lang,
+ org.eclipse.jdt.launching
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerUiPlugin
