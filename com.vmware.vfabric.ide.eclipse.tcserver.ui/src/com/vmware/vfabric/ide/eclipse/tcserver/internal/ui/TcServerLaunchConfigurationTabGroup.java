@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -32,7 +32,8 @@ public class TcServerLaunchConfigurationTabGroup extends AbstractLaunchConfigura
 
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
 		ILaunchConfigurationTab[] tabs = new ILaunchConfigurationTab[6];
-		tabs[0] = new ServerLaunchConfigurationTab(new String[] { "com.springsource.tcserver", "com.vmware.server.tc" });
+		tabs[0] = new ServerLaunchConfigurationTab(new String[] { "com.springsource.tcserver", "com.vmware.server.tc",
+				"com.pivotal.server.tc" });
 		tabs[0].setLaunchConfigurationDialog(dialog);
 		tabs[1] = new JavaArgumentsTab();
 		tabs[1].setLaunchConfigurationDialog(dialog);
