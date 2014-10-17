@@ -149,18 +149,18 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 	}
 
 	private String mapToTomcatServerId(IPath tomcatLocation, String id) {
-		if (id.equals(TcServer.ID_TC_SERVER_2_0)) {
+		// if (id.equals(TcServer.ID_TC_SERVER_2_0)) {
+		// return TomcatPlugin.TOMCAT_60;
+		// }
+		// else {
+		if (tomcatLocation.lastSegment().startsWith("tomcat-6")) {
+			// catalina.base points to Tomcat 6 runtime
 			return TomcatPlugin.TOMCAT_60;
 		}
 		else {
-			if (tomcatLocation.lastSegment().startsWith("tomcat-6")) {
-				// catalina.base points to Tomcat 6 runtime
-				return TomcatPlugin.TOMCAT_60;
-			}
-			else {
-				return TomcatPlugin.TOMCAT_70;
-			}
+			return TomcatPlugin.TOMCAT_70;
 		}
+		// }
 	}
 
 	private String mapToTomcatRuntimeId(IPath tomcatLocation, String id) {

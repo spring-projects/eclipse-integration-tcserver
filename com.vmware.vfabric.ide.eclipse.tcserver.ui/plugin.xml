@@ -6,10 +6,6 @@
       <image 
          id="com.springsource.tcserver" 
          icon="icons/full/obj16/springsource_obj.png"
-         typeIds="com.springsource.tcserver.60,com.springsource.tcserver.70,com.springsource.tcserver.runtime.60,com.springsource.tcserver.runtime.70" />
-      <image 
-         id="com.springsource.tcserver" 
-         icon="icons/full/obj16/springsource_obj.png"
          typeIds="com.vmware.server.tc.70,com.vmware.server.tc.runtime.70" />
       <image 
          id="com.springsource.tcserver" 
@@ -19,22 +15,14 @@
 
    <extension point="org.eclipse.wst.common.project.facet.ui.images">
 	  <image 
-         runtime-component-type="com.springsource.tcserver"
-         path="icons/full/obj16/springsource_obj.png" />
-	  <image 
          runtime-component-type="com.vmware.server.tc"
          path="icons/full/obj16/springsource_obj.png" />
-   <image
+      <image
          path="icons/full/obj16/springsource_obj.png"
          runtime-component-type="com.pivotal.server.tc">
-   </image>
+      </image>
    </extension>
    <extension point="org.eclipse.wst.common.project.facet.core.runtimes">
-      <adapter>
-	      <runtime-component id="com.springsource.tcserver"/>
-	      <factory class="org.eclipse.wst.server.ui.FacetRuntimeComponentLabelProvider"/>
-	      <type class="org.eclipse.wst.common.project.facet.ui.IRuntimeComponentLabelProvider"/>
-	  </adapter>
       <adapter>
 	      <runtime-component id="com.vmware.server.tc"/>
 	      <factory class="org.eclipse.wst.server.ui.FacetRuntimeComponentLabelProvider"/>
@@ -47,194 +35,6 @@
 	  </adapter>
     </extension>
 	
-   <!-- SpringSource tc server -->
-   <extension point="org.eclipse.wst.server.ui.editorPages">
-      <page
-         id="com.springsource.sts.server.tc.editor.webmodule"
-         order="20"
-         name="Modules"
-         typeIds="com.springsource.tcserver.*"
-         class="org.eclipse.jst.server.tomcat.ui.internal.editor.ConfigurationWebModuleEditorPart">
-         <enablement>
-           <test property="org.eclipse.jst.server.tomcat.ui.hasConfiguration" value="true"/>
-         </enablement>
-      </page>
-   </extension>
-
-   <extension point="org.eclipse.wst.server.ui.editorPageSections">
-      <section
-         id="com.springsource.sts.server.tc.editor.instance"
-         order="0"
-         insertionId="org.eclipse.wst.server.editor.overview.left"
-         typeIds="com.springsource.tcserver.*"
-         class="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerLocationEditorSection"/>
-      <section
-            class="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerInfoEditorSection"
-            id="com.springsource.sts.server.tc.editor.general"
-            insertionId="org.eclipse.wst.server.editor.overview.left"
-            order="3"
-            typeIds="com.springsource.tcserver.*">
-      </section>
-      <!--
-      <section
-            class="com.springsource.sts.internal.server.tc.ui.ServicabilityEditorSection"
-            id="com.springsource.sts.server.tc.editor.jmx"
-            insertionId="org.eclipse.wst.server.editor.overview.left"
-            order="4"
-            typeIds="com.springsource.tcserver.*">
-         <enablement>
-            <test
-                  property="org.eclipse.jst.server.tomcat.ui.hasConfiguration"
-                  value="true">
-            </test>
-         </enablement>
-      </section>
-      -->
-      <section
-         id="com.springsource.sts.server.tc.editor.general"
-         order="5"
-         insertionId="org.eclipse.wst.server.editor.overview.left"
-         typeIds="com.springsource.tcserver.*"
-         class="org.eclipse.jst.server.tomcat.ui.internal.editor.ServerGeneralEditorSection"/>
-      <section
-            class="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerPortSection"
-            id="com.springsource.sts.server.tc.editor.port"
-            insertionId="org.eclipse.wst.server.editor.overview.right"
-            order="10"
-            typeIds="com.springsource.tcserver.*">
-         <enablement>
-            <test
-                  property="org.eclipse.jst.server.tomcat.ui.hasConfiguration"
-                  value="true">
-            </test>
-         </enablement>
-      </section>
-      <section
-            class="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.PropertiesSection"
-            id="com.springsource.sts.server.tc.editor.properties"
-            insertionId="org.eclipse.wst.server.editor.overview.right"
-            order="11"
-            typeIds="com.springsource.tcserver.*">
-         <enablement>
-            <test
-                  property="org.eclipse.jst.server.tomcat.ui.hasConfiguration"
-                  value="true">
-            </test>
-         </enablement>
-      </section>
-      <section
-            class="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.ExtendedTcStaticResourcesEditorSection"
-            id="com.springsource.sts.server.tc.editor.resources"
-            insertionId="org.eclipse.wst.server.editor.overview.right"
-            order="4"
-            typeIds="com.springsource.tcserver.*">
-         <enablement>
-            <test
-                  property="org.eclipse.jst.server.tomcat.ui.hasConfiguration"
-                  value="true">
-            </test>
-         </enablement>
-      </section>
-      <section
-         id="com.springsource.sts.server.tc.editor.mime"
-         order="20"
-         insertionId="org.eclipse.wst.server.editor.overview.right"
-         typeIds="com.springsource.tcserver.*"
-         class="org.eclipse.jst.server.tomcat.ui.internal.editor.ConfigurationMimeEditorSection">
-         <enablement>
-           <test property="org.eclipse.jst.server.tomcat.ui.hasConfiguration" value="true"/>
-         </enablement>
-      </section>
-   </extension>
-   
-   <extension point="org.eclipse.wst.server.ui.wizardFragments">
-      <fragment
-         id="com.springsource.tcserver.runtime"
-         class="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerRuntimeWizardFragment"
-         typeIds="com.springsource.tcserver.runtime.60,com.springsource.tcserver.runtime.70"/>
-      <fragment
-         id="com.springsource.tcserver.60"
-         class="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer20WizardFragment"
-         typeIds="com.springsource.tcserver.60"/>
-      <fragment
-         id="com.springsource.tcserver.70"
-         class="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer21WizardFragment"
-         typeIds="com.springsource.tcserver.70"/>
-   </extension>
-
-  <extension point="org.eclipse.ui.popupMenus">
-    <objectContribution
-      adaptable="true"
-      id="org.eclipse.jst.server.tomcat.ui.serveractions"
-      objectClass="org.eclipse.wst.server.core.IServer">
-      <visibility>
-        <objectState name="serverType" value="com.springsource.tcserver.*"/>
-      </visibility>
-      <action 
-        class="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.CleanTcServerWorkDirAction"
-        enablesFor="1"
-        id="org.eclipse.jst.server.tomcat.ui.cleanserverworkdir"
-        label="Clean tc Server Work Directory...">
-      </action>
-    </objectContribution>
-    <objectContribution
-      adaptable="true"
-      id="org.eclipse.jst.server.tomcat.ui.serveractions"
-      objectClass="org.eclipse.wst.server.ui.internal.view.servers.ModuleServer">
-      <visibility>
-        <and>
-          <objectState name="serverType" value="com.springsource.tcserver.*"/>
-          <objectState name="moduleType" value="jst.web"/>
-        </and>
-      </visibility>
-      <action
-        class="org.eclipse.jst.server.tomcat.ui.internal.actions.CleanWorkDirAction"
-        enablesFor="1"
-        id="org.eclipse.jst.server.tomcat.ui.cleanmoduleworkdir"
-        label="Clean tc Server Work Directory...">
-      </action>
-       <action
-             class="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.OpenHomePageAction"
-             enablesFor="1"
-             id="com.springsource.sts.server.tc.ui.action.OpenModule"
-             label="Open Home Page">
-       </action>
-    </objectContribution>
-  </extension>
-  
-  	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
-		<launchConfigurationTypeImage 
-			icon="icons/full/obj16/springsource_obj.png"
-			configTypeID="com.springsource.tcserver.launchConfiguration" 
-			id="com.springsource.tcserver.launchimage">
-		</launchConfigurationTypeImage>
-	</extension>
-
-	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
-		<launchConfigurationTabGroup
-			id="com.springsource.tcserver.launchConfigurationTabGroup" 
-			type="com.springsource.tcserver.launchConfiguration"
-			class="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerLaunchConfigurationTabGroup">
-		</launchConfigurationTabGroup>
-	</extension>
-	<!--
-	<extension point="org.eclipse.ui.popupMenus">
-    	<objectContribution
-      		adaptable="true"
-      		id="org.eclipse.jst.server.tomcat.ui.serveractions"
-      		objectClass="org.eclipse.wst.server.core.IServer">
-      		<visibility>
-        		<objectState name="serverType" value="com.springsource.tcserver.70"/>
-      		</visibility>
-      		<action 
-        		class="com.springsource.sts.internal.server.tc.ui.CreateTcServerInstanceAction"
-        		enablesFor="1"
-        		id="com.springsource.sts.server.tc.ui.CreateTcServerInstanceAction"
-        		label="Create Instance...">
-      		</action>
-    	</objectContribution>
-	</extension>
-    -->
 
    <!-- VMware vFabric and Pivotal tc server -->
    <extension point="org.eclipse.wst.server.ui.editorPages">

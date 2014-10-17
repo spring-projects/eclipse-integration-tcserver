@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Spring IDE Developers
+ * Copyright (c) 2012, 2014 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ public class VMwareVFabricTcServerPage extends AbstractTcServerPage {
 
 	VMwareVFabricTcServerPage(SWTBotShell shell) {
 		super(shell);
-		shell.bot().waitUntil(Conditions.waitForWidget(withText("VMware vFabric tc Server")));
+		shell.bot().waitUntil(Conditions.waitForWidget(withText("Pivotal tc Server")));
 	}
 
 	TcServerConfigurationPage nextToTcServerConfigurationPage() {

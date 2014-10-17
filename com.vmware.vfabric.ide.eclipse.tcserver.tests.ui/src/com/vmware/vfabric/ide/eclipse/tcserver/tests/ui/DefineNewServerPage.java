@@ -22,7 +22,7 @@ import org.springsource.ide.eclipse.commons.frameworks.test.util.SWTBotUtils;
  */
 public class DefineNewServerPage extends AbstractTcServerPage {
 
-	static final String VMWARE_VFABRIC_TC_SERVER_LABEL = "VMware vFabric tc Server v2.5 - v2.9";
+	static final String VMWARE_VFABRIC_TC_SERVER_LABEL = "Pivotal tc Server v2.5 - v2.9";
 
 	DefineNewServerPage(SWTBotShell shell) {
 		super(shell);
@@ -36,8 +36,7 @@ public class DefineNewServerPage extends AbstractTcServerPage {
 		// the "right" way to do this sometimes fails
 		try {
 			// "Server").click();
-			SWTBotUtils.selectChildTreeElement(shell.bot(), "New Server", "VMware",
-					VMWARE_VFABRIC_TC_SERVER_LABEL);
+			SWTBotUtils.selectChildTreeElement(shell.bot(), "New Server", "VMware", VMWARE_VFABRIC_TC_SERVER_LABEL);
 
 		}
 		catch (Exception e) {

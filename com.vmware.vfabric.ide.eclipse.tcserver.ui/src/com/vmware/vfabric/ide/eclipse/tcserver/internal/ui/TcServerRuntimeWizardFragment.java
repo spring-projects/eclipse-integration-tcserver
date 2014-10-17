@@ -35,7 +35,6 @@ import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntime;
-import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerUtil;
 
 /**
  * @author Steffen Pingel
@@ -74,15 +73,7 @@ public class TcServerRuntimeWizardFragment extends TomcatRuntimeWizardFragment {
 
 		comp = new TcRuntimeComposite(parent, wizard);
 
-		if (TcServerUtil.isSpringSource(wc)) {
-			wizard.setTitle("SpringSource tc Server");
-		}
-		else if (TcServerUtil.isVMWare(wc)) {
-			wizard.setTitle("VMware vFabric tc Server");
-		}
-		else {
-			wizard.setTitle("Pivotal tc Server");
-		}
+		wizard.setTitle("Pivotal tc Server");
 		wizard.setImageDescriptor(TcServerImages.WIZB_SERVER);
 
 		Label label = new Label(comp, SWT.NONE);

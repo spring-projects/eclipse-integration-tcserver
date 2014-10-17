@@ -20,7 +20,6 @@ import org.eclipse.jdt.core.IClasspathEntry;
 import org.eclipse.wst.server.core.IServer;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
@@ -48,7 +47,7 @@ public class TcServerRuntimeClasspathProviderTest {
 	}
 
 	@Test
-	@Ignore("Ignoring tcServer-6.0 tests")
+	// @Ignore("Ignoring tcServer-6.0 tests")
 	public void testResolveClasspathAsf60() throws Exception {
 		server = TcServerFixture.V_6_0.createServer(null);
 		IClasspathEntry[] cp = classPathProvider.resolveClasspathContainer(null, server.getRuntime());
@@ -70,18 +69,22 @@ public class TcServerRuntimeClasspathProviderTest {
 
 	}
 
-	@Test
-	public void testResolveClasspathSeparate20() throws Exception {
-		server = TcServerFixture.V_2_0.createServer(TcServerFixture.INST_INSIGHT);
-		IClasspathEntry[] cp = classPathProvider.resolveClasspathContainer(null, server.getRuntime());
-		assertHasServletApi(server.getRuntime().getLocation(), cp);
-	}
-
-	@Test
-	public void testResolveClasspathSeparate21() throws Exception {
-		server = TcServerFixture.V_2_1.createServer(TcServerFixture.INST_SEPARATE);
-		IClasspathEntry[] cp = classPathProvider.resolveClasspathContainer(null, server.getRuntime());
-		assertHasServletApi(server.getRuntime().getLocation(), cp);
-	}
+	// @Test
+	// public void testResolveClasspathSeparate20() throws Exception {
+	// server =
+	// TcServerFixture.V_2_0.createServer(TcServerFixture.INST_INSIGHT);
+	// IClasspathEntry[] cp = classPathProvider.resolveClasspathContainer(null,
+	// server.getRuntime());
+	// assertHasServletApi(server.getRuntime().getLocation(), cp);
+	// }
+	//
+	// @Test
+	// public void testResolveClasspathSeparate21() throws Exception {
+	// server =
+	// TcServerFixture.V_2_1.createServer(TcServerFixture.INST_SEPARATE);
+	// IClasspathEntry[] cp = classPathProvider.resolveClasspathContainer(null,
+	// server.getRuntime());
+	// assertHasServletApi(server.getRuntime().getLocation(), cp);
+	// }
 
 }

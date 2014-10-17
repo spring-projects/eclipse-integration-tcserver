@@ -47,7 +47,7 @@ public class TcServerRuntimeTest {
 	}
 
 	@Test
-	@Ignore("Ignoring tcServer-6.0 tests")
+	// @Ignore("Ignoring tcServer-6.0 tests")
 	public void testTomcatLocationAsfLayout60() throws Exception {
 		server = TcServerFixture.V_6_0.createServer(null);
 		TcServerRuntime runtime = (TcServerRuntime) server.getRuntime().loadAdapter(TcServerRuntime.class, null);
@@ -57,17 +57,8 @@ public class TcServerRuntimeTest {
 	}
 
 	@Test
-	public void testTomcatLocationSeparateLayout20() throws Exception {
-		server = TcServerFixture.V_2_0.createServer(TcServerFixture.INST_INSIGHT);
-		TcServerRuntime runtime = (TcServerRuntime) server.getRuntime().loadAdapter(TcServerRuntime.class, null);
-		TcServer tcServer = (TcServer) server.loadAdapter(TcServer.class, null);
-		assertEquals(Layout.SEPARATE, tcServer.getLayout());
-		System.err.println(runtime.getRuntimeClasspath());
-	}
-
-	@Test
-	public void testTomcatLocationSeparateLayout21() throws Exception {
-		server = TcServerFixture.V_2_1.createServer(TcServerFixture.INST_SEPARATE);
+	public void testTomcatLocationSeparateLayout() throws Exception {
+		server = TcServerFixture.V_6_0.createServer(TcServerFixture.INST_INSIGHT);
 		TcServerRuntime runtime = (TcServerRuntime) server.getRuntime().loadAdapter(TcServerRuntime.class, null);
 		TcServer tcServer = (TcServer) server.loadAdapter(TcServer.class, null);
 		assertEquals(Layout.SEPARATE, tcServer.getLayout());
@@ -76,8 +67,8 @@ public class TcServerRuntimeTest {
 
 	@Test
 	@Ignore("Layout.COMBINED javadoc says it's supported by v2.5 and later only.")
-	public void testTomcatLocationCombinedLayout21() throws Exception {
-		server = TcServerFixture.V_2_1.createServer(TcServerFixture.INST_COMBINED);
+	public void testTomcatLocationCombinedLayout() throws Exception {
+		server = TcServerFixture.V_6_0.createServer(TcServerFixture.INST_COMBINED);
 		TcServerRuntime runtime = (TcServerRuntime) server.getRuntime().loadAdapter(TcServerRuntime.class, null);
 		TcServer tcServer = (TcServer) server.loadAdapter(TcServer.class, null);
 		assertEquals(Layout.COMBINED, tcServer.getLayout());
@@ -85,15 +76,20 @@ public class TcServerRuntimeTest {
 	}
 
 	@Test
-	public void testValidate20() throws Exception {
-		handler = TcServerFixture.V_2_0.provisionServer();
+	public void testValidate() throws Exception {
+		handler = TcServerFixture.V_6_0.provisionServer();
 		IServer server = handler.createServer(new NullProgressMonitor(), ServerHandler.ALWAYS_OVERWRITE);
 		assertEquals(Status.OK_STATUS, server.getRuntime().validate(null));
 	}
 
 	@Test
-	public void testValidate20With21() throws Exception {
-		handler = TcServerFixture.V_2_0.getHandler(TcServerFixture.V_2_1.createHarness().provisionServer()
+	@Ignore("Ignoring SpringSource server test")
+	/*
+	 * TODO: 7.0 runtime currently validates 3.0 tc server successfully. Need to
+	 * force validation to fail somehow to include this test
+	 */
+	public void testValidateOldestWithLatest() throws Exception {
+		handler = TcServerFixture.V_6_0.getHandler(TcServerFixture.V_3_0.createHarness().provisionServer()
 				.getServerPath());
 		try {
 			handler.createServer(new NullProgressMonitor(), ServerHandler.ALWAYS_OVERWRITE);
@@ -105,15 +101,13 @@ public class TcServerRuntimeTest {
 	}
 
 	@Test
-	public void testValidate21() throws Exception {
-		handler = TcServerFixture.V_2_1.provisionServer();
-		IServer server = handler.createServer(new NullProgressMonitor(), ServerHandler.ALWAYS_OVERWRITE);
-		assertEquals(Status.OK_STATUS, server.getRuntime().validate(null));
-	}
-
-	@Test
-	public void testValidate21With20() throws Exception {
-		handler = TcServerFixture.V_2_1.getHandler(TcServerFixture.V_2_0.createHarness().provisionServer()
+	@Ignore("Ignoring SpringSource server test")
+	/*
+	 * TODO: 3.0 runtime currently validates 2.5.x tc server successfully. Need
+	 * to force validation to fail somehow to include this test
+	 */
+	public void testValidateLatestWithOldest() throws Exception {
+		handler = TcServerFixture.V_3_0.getHandler(TcServerFixture.V_6_0.createHarness().provisionServer()
 				.getServerPath());
 		try {
 			handler.createServer(new NullProgressMonitor(), ServerHandler.ALWAYS_OVERWRITE);

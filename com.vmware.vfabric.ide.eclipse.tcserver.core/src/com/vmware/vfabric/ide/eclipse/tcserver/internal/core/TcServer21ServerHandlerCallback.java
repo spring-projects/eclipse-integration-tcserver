@@ -38,7 +38,9 @@ public class TcServer21ServerHandlerCallback extends ServerHandlerCallback {
 					"-t", "base", "--force" }));
 			List<File> tomcatFolders = TcServerRuntime.getTomcatVersions(installLocation.toFile());
 			if (tomcatFolders != null && !tomcatFolders.isEmpty()) {
-				String tomcatVersion = TcServerUtil.getServerVersion(tomcatFolders.get(0).getName());
+				String tomcatVersion = ((ServerWorkingCopy) server).getAttribute(TcServerRuntime.KEY_SERVER_VERSION,
+						TcServerUtil.getServerVersion(TcServerRuntime.getTomcatLocation(server.getRuntime())
+								.lastSegment()));
 				arguments.add("-v");
 				arguments.add(tomcatVersion);
 				((ServerWorkingCopy) server).setAttribute(TcServerRuntime.KEY_SERVER_VERSION, tomcatVersion);
