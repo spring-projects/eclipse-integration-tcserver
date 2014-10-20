@@ -28,7 +28,6 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.internal.Server;
 import org.eclipse.wst.server.core.internal.ServerType;
 import org.junit.After;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
@@ -43,21 +42,21 @@ public class TcServerBehaviourTest {
 	private IServer server;
 
 	@Test
-	@Ignore("Ignoring tcServer-6.0 tests.")
+	// @Ignore("Ignoring tcServer-6.0 tests.")
 	public void testRuntimeVMArgumentsAsf60() throws Exception {
-		runtimeVMArguments(TcServerFixture.V_6_0, null, "tomcat-6.0.19.A", "tomcat-6.0.19.A");
+		runtimeVMArguments(TcServerFixture.V_6_0, null, "tomcat-6.0.33.A.RELEASE", "tomcat-6.0.33.A.RELEASE");
 	}
 
 	@Test
-	@Ignore("Layout.COMBINED javadoc says it's supported by v2.5 and later only.")
+	// @Ignore("Layout.COMBINED javadoc says it's supported by v2.5 and later only.")
 	public void testRuntimeVMArgumentsCombined21() throws Exception {
-		runtimeVMArguments(TcServerFixture.V_2_1, TcServerFixture.INST_COMBINED, TcServerFixture.INST_COMBINED,
+		runtimeVMArguments(TcServerFixture.V_6_0, TcServerFixture.INST_COMBINED, "tomcat-6.0.33.A.RELEASE",
 				TcServerFixture.INST_COMBINED);
 	}
 
 	@Test
-	public void testRuntimeVMArgumentsSeparate20() throws Exception {
-		runtimeVMArguments(TcServerFixture.V_2_0, TcServerFixture.INST_INSIGHT, "tomcat-6.0.25.A-SR01",
+	public void testRuntimeVMArgumentsSeparate60() throws Exception {
+		runtimeVMArguments(TcServerFixture.V_6_0, TcServerFixture.INST_INSIGHT, "tomcat-6.0.33.A.RELEASE",
 				TcServerFixture.INST_INSIGHT);
 	}
 
@@ -84,7 +83,7 @@ public class TcServerBehaviourTest {
 	}
 
 	@Test
-	@Ignore("Ignoring tcServer-6.0 tests.")
+	// @Ignore("Ignoring tcServer-6.0 tests.")
 	public void testTomcatLocationAsfLayout60() throws Exception {
 		server = TcServerFixture.V_6_0.createServer(null);
 		server.publish(Server.PUBLISH_FULL, null);
@@ -94,19 +93,20 @@ public class TcServerBehaviourTest {
 		((Server) server).setupLaunchConfiguration(wc, null);
 		String args = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, (String) null);
 		assertTrue("Expected -Xmx123m in '" + args + "'", args.contains("-Xmx123m"));
-		assertTrue("Expected -Xss192k in '" + args + "'", args.contains("-Xss192k"));
+		assertTrue("Expected -Xss256k in '" + args + "'", args.contains("-Xss256k"));
 	}
 
 	private ILaunchConfigurationWorkingCopy createLaunchConfiguration() throws CoreException {
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType launchConfigType = ((ServerType) server.getServerType()).getLaunchConfigurationType();
 
-		String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom("Tc Server Launch");
+		String launchName = launchManager.generateLaunchConfigurationName("Tc Server Launch");
 		ILaunchConfigurationWorkingCopy wc = launchConfigType.newInstance(null, launchName);
 		return wc;
 	}
 
 	private List<String> expectedArgs(String runtime, String instance) {
+		instance = instance == null ? TcServer21ServerHandlerCallback.DEFAULT_INSTANCE : instance;
 		List<String> args = new ArrayList<String>();
 		IPath location = server.getRuntime().getLocation();
 		args.add("-Dcatalina.base=\"" + location.append(instance).toOSString() + "\"");

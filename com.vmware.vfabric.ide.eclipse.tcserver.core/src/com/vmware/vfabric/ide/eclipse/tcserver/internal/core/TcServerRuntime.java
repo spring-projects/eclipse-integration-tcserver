@@ -53,10 +53,6 @@ public class TcServerRuntime extends TomcatRuntime {
 
 	}
 
-	public static String ID_TC_SERVER_2_0 = "com.springsource.tcserver.runtime.60";
-
-	public static String ID_TC_SERVER_2_1 = "com.springsource.tcserver.runtime.70";
-
 	public static String ID_TC_SERVER_2_5 = "com.vmware.server.tc.runtime.70";
 
 	public static String ID_TC_SERVER_3_0 = "com.pivotal.server.tc.runtime.80";
@@ -185,15 +181,8 @@ public class TcServerRuntime extends TomcatRuntime {
 			return Status.OK_STATUS;
 		}
 		if (status.getMessage().contains("7.0") && status.getMessage().contains("Java SE 6")) {
-			if (ID_TC_SERVER_2_1.equals(getRuntime().getRuntimeType().getId())) {
-				// ignore warning about Java 6 requirement since tc Server 2.1
-				// does not include Tomcat 7 and hence does not require Java 1.6
-				return Status.OK_STATUS;
-			}
-			else {
-				return new Status(status.getSeverity(), ITcServerConstants.PLUGIN_ID, status.getMessage().replace(
-						"Tomcat version 7.0", "tc Server v2.5 or later"));
-			}
+			return new Status(status.getSeverity(), ITcServerConstants.PLUGIN_ID, status.getMessage().replace(
+					"Tomcat version 7.0", "tc Server v2.5 or later"));
 		}
 
 		if (ID_TC_SERVER_3_0.equals(getRuntime().getRuntimeType().getId())) {

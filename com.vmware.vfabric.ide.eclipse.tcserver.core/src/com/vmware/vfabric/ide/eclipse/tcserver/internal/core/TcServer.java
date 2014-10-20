@@ -46,10 +46,6 @@ import org.eclipse.wst.server.core.ServerUtil;
  */
 public class TcServer extends TomcatServer {
 
-	public static String ID_TC_SERVER_2_0 = "com.springsource.tcserver.60";
-
-	public static String ID_TC_SERVER_2_1 = "com.springsource.tcserver.70";
-
 	public static String ID_TC_SERVER_2_5 = "com.vmware.server.tc.70";
 
 	public static String ID_TC_SERVER_3_0 = "com.pivotal.server.tc.80";

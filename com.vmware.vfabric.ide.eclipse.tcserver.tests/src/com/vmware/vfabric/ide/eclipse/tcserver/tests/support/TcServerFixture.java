@@ -10,18 +10,25 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.tests.support;
 
+import java.io.File;
+import java.util.List;
+
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
+import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.springsource.ide.eclipse.commons.configurator.ServerHandler;
 import org.springsource.ide.eclipse.commons.configurator.ServerHandlerCallback;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer21ServerHandlerCallback;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntime;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerUtil;
 
 /**
  * @author Steffen Pingel
@@ -42,14 +49,6 @@ public class TcServerFixture extends TestConfiguration {
 	public static String V_2_9_URL = "http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.9.3.RELEASE.zip";
 
 	public static String V_3_0_URL = "http://download.pivotal.com.s3.amazonaws.com/tcserver/3.0.0/pivotal-tc-server-developer-3.0.0.RELEASE.zip";
-
-	public static TcServerFixture V_2_0 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_0,
-			"springsource-tc-server-developer",
-			"http://download.springsource.com/release/TCS/springsource-tc-server-developer-2.0.0.SR01.zip");
-
-	public static TcServerFixture V_2_1 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_1,
-			"springsource-tc-server-developer",
-			"http://download.springsource.com/release/TCS/springsource-tc-server-developer-2.1.0.RELEASE.zip");
 
 	public static TcServerFixture V_2_5 = new TcServerFixture("com.vmware.server.tc.runtime.70",
 			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.5.2.RELEASE",
@@ -72,14 +71,15 @@ public class TcServerFixture extends TestConfiguration {
 	public static TcServerFixture V_3_0 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_3_0,
 			"pivotal-tc-server-developer-3.0.0.RELEASE", V_3_0_URL);
 
-	public static TcServerFixture V_6_0 = new TcServerFixture(TcServer.ID_TC_SERVER_2_0, "tcServer-6.0");
+	public static TcServerFixture V_6_0 = new TcServerFixture("com.vmware.server.tc.runtime.70",
+			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.5.2.RELEASE",
+			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.5.2.RELEASE.zip", "6", true);
 
 	private static TcServerFixture current;
 
 	private static final TcServerFixture DEFAULT = V_3_0;
 
-	public static TcServerFixture[] ALL = new TcServerFixture[] { V_6_0, V_2_0, V_2_1, V_2_5, V_2_6, V_2_7, V_2_8,
-			V_2_9, V_3_0 };
+	public static TcServerFixture[] ALL = new TcServerFixture[] { V_6_0, V_2_5, V_2_6, V_2_7, V_2_8, V_2_9, V_3_0 };
 
 	public static TcServerFixture current() {
 		if (current == null) {
@@ -105,6 +105,10 @@ public class TcServerFixture extends TestConfiguration {
 
 	private final String testPluginId;
 
+	private String tomcatVersion = null;
+
+	private boolean legacyTests = false;
+
 	public TcServerFixture(String serverType, String stubPath) {
 		this(TcServerTestPlugin.PLUGIN_ID, serverType, stubPath);
 	}
@@ -124,6 +128,17 @@ public class TcServerFixture extends TestConfiguration {
 		setDownloadUrl(downloadUrl);
 	}
 
+	public TcServerFixture(String testPlugin, String serverType, String stubPath, String downloadUrl,
+			String tomcatVersion, boolean createDefault) {
+		super(stubPath);
+		this.testPluginId = testPlugin;
+		this.serverType = serverType;
+		this.stubPath = stubPath;
+		this.tomcatVersion = tomcatVersion;
+		this.legacyTests = createDefault;
+		setDownloadUrl(downloadUrl);
+	}
+
 	@Override
 	public TcServerHarness createHarness() {
 		return new TcServerHarness(this);
@@ -132,26 +147,38 @@ public class TcServerFixture extends TestConfiguration {
 	public IServer createServer(final String instance) throws Exception {
 		ServerHandler handler = provisionServer();
 		ServerHandlerCallback callback;
-		if (TcServer.ID_TC_SERVER_2_5.equals(serverType) || TcServer.ID_TC_SERVER_3_0.equals(serverType)) {
-			callback = new TcServer21ServerHandlerCallback();
-		}
-		else {
-			callback = new ServerHandlerCallback() {
-				@Override
-				public void configureServer(IServerWorkingCopy wc) throws CoreException {
-					// TODO e3.6 remove casts for setAttribute()
+		callback = new TcServer21ServerHandlerCallback() {
+
+			@Override
+			public void configureServer(IServerWorkingCopy server) throws CoreException {
+				super.configureServer(server);
+				if (tomcatVersion != null) {
+					IPath installLocation = server.getRuntime().getLocation();
+					List<File> tomcatFolders = TcServerRuntime.getTomcatVersions(installLocation.toFile());
+					for (File tomcatFolder : tomcatFolders) {
+						String version = TcServerUtil.getServerVersion(tomcatFolder.getName());
+						if (version.startsWith(tomcatVersion)) {
+							RuntimeWorkingCopy wc = (RuntimeWorkingCopy) server.getRuntime().createWorkingCopy();
+							wc.setAttribute(TcServerRuntime.KEY_SERVER_VERSION, tomcatFolder.getName());
+							wc.save(true, new NullProgressMonitor());
+							break;
+						}
+					}
+				}
+				if (legacyTests) {
 					if (instance != null) {
-						((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_ASF_LAYOUT, false);
+						((ServerWorkingCopy) server).setAttribute(TcServer.KEY_ASF_LAYOUT, false);
 					}
 					else {
-						((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_ASF_LAYOUT, true);
+						((ServerWorkingCopy) server).setAttribute(TcServer.KEY_ASF_LAYOUT, true);
 					}
-					((ServerWorkingCopy) wc).setAttribute(TcServer.KEY_SERVER_NAME, instance);
-					((ServerWorkingCopy) wc).setAttribute(TcServer.PROPERTY_TEST_ENVIRONMENT, false);
-					((ServerWorkingCopy) wc).importRuntimeConfiguration(wc.getRuntime(), null);
+					((ServerWorkingCopy) server).setAttribute(TcServer.KEY_SERVER_NAME, instance);
+					((ServerWorkingCopy) server).setAttribute(TcServer.PROPERTY_TEST_ENVIRONMENT, false);
 				}
-			};
-		}
+				((ServerWorkingCopy) server).importRuntimeConfiguration(server.getRuntime(), null);
+			}
+
+		};
 		return handler.createServer(new NullProgressMonitor(), ServerHandler.ALWAYS_OVERWRITE, callback);
 	}
 

@@ -35,10 +35,12 @@ public class TcServerUtil {
 
 	private static final String TEMPLATE_VARIATION_STR = "-tomcat-";
 
+	@Deprecated
 	public static boolean isSpringSource(IRuntimeWorkingCopy wc) {
 		return wc != null && wc.getRuntimeType() != null && wc.getRuntimeType().getId().startsWith("com.springsource");
 	}
 
+	@Deprecated
 	public static boolean isVMWare(IRuntimeWorkingCopy wc) {
 		return wc != null && wc.getRuntimeType() != null && wc.getRuntimeType().getId().startsWith("com.vmware");
 	}

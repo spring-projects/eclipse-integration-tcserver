@@ -20,9 +20,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
@@ -54,7 +52,7 @@ public class TcServerConfiguratorImporterTest {
 
 	@Parameters
 	public static Collection<Object[]> data() {
-		Object[][] data = new Object[][] { { new TcServerFixture[] { TcServerFixture.V_2_0, TcServerFixture.V_2_1 } },
+		Object[][] data = new Object[][] {
 				{ new TcServerFixture[] { TcServerFixture.V_2_7, TcServerFixture.V_2_8, TcServerFixture.V_2_9 } },
 				{ new TcServerFixture[] { TcServerFixture.V_3_0 } } };
 		return Arrays.asList(data);
@@ -89,12 +87,6 @@ public class TcServerConfiguratorImporterTest {
 		for (TcServerFixture fixture : fixtures) {
 			ServerHandler serverHandler = fixture.provisionServer();
 			File target = new File(destination, fixture.getDescription());
-			// special case for v2.0 and v2.1, zipped folder has no version
-			// info, so derive it from the zip file
-			if (TcServerFixture.V_2_0.equals(fixture) || TcServerFixture.V_2_1.equals(fixture)) {
-				IPath path = new Path(fixture.getDownloadUrl());
-				target = new File(destination, path.removeFileExtension().lastSegment());
-			}
 			StsTestUtil.copyDirectory(new File(serverHandler.getServerPath()), target);
 		}
 	}

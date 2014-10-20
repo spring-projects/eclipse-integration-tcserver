@@ -40,6 +40,8 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 
 	private static String ID_TOMCAT_RUNTIME_70 = "org.eclipse.jst.server.tomcat.runtime.70";
 
+	private static String ID_TOMCAT_RUNTIME_80 = "org.eclipse.jst.server.tomcat.runtime.80";
+
 	private final String runtimeId;
 
 	public TcServerVersionHandler(String runtimeId) {
@@ -149,32 +151,28 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 	}
 
 	private String mapToTomcatServerId(IPath tomcatLocation, String id) {
-		if (id.equals(TcServer.ID_TC_SERVER_2_0)) {
+		if (tomcatLocation.lastSegment().startsWith("tomcat-6")) {
+			// catalina.base points to Tomcat 6 runtime
 			return TomcatPlugin.TOMCAT_60;
 		}
+		else if (tomcatLocation.lastSegment().startsWith("tomcat-7")) {
+			return TomcatPlugin.TOMCAT_70;
+		}
 		else {
-			if (tomcatLocation.lastSegment().startsWith("tomcat-6")) {
-				// catalina.base points to Tomcat 6 runtime
-				return TomcatPlugin.TOMCAT_60;
-			}
-			else {
-				return TomcatPlugin.TOMCAT_70;
-			}
+			return TomcatPlugin.TOMCAT_80;
 		}
 	}
 
 	private String mapToTomcatRuntimeId(IPath tomcatLocation, String id) {
-		if (id.equals(TcServerRuntime.ID_TC_SERVER_2_0)) {
+		if (tomcatLocation.lastSegment().startsWith("tomcat-6")) {
+			// catalina.base points to Tomcat 6 runtime
 			return ID_TOMCAT_RUNTIME_60;
 		}
+		else if (tomcatLocation.lastSegment().startsWith("tomcat-7")) {
+			return ID_TOMCAT_RUNTIME_70;
+		}
 		else {
-			if (tomcatLocation.lastSegment().startsWith("tomcat-6")) {
-				// catalina.base points to Tomcat 6 runtime
-				return ID_TOMCAT_RUNTIME_60;
-			}
-			else {
-				return ID_TOMCAT_RUNTIME_70;
-			}
+			return ID_TOMCAT_RUNTIME_80;
 		}
 	}
 

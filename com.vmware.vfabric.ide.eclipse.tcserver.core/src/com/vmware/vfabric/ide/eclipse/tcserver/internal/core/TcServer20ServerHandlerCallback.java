@@ -16,11 +16,12 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.springsource.ide.eclipse.commons.configurator.ServerHandlerCallback;
 
-
 /**
  * @author Steffen Pingel
  * @author Christian Dupuis
+ * @deprecated
  */
+@Deprecated
 public class TcServer20ServerHandlerCallback extends ServerHandlerCallback {
 
 	public void configureServer(IServerWorkingCopy server) throws CoreException {
