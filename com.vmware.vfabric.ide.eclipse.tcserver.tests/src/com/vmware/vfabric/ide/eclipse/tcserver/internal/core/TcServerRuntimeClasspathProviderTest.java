@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -69,22 +69,18 @@ public class TcServerRuntimeClasspathProviderTest {
 
 	}
 
-	// @Test
-	// public void testResolveClasspathSeparate20() throws Exception {
-	// server =
-	// TcServerFixture.V_2_0.createServer(TcServerFixture.INST_INSIGHT);
-	// IClasspathEntry[] cp = classPathProvider.resolveClasspathContainer(null,
-	// server.getRuntime());
-	// assertHasServletApi(server.getRuntime().getLocation(), cp);
-	// }
-	//
-	// @Test
-	// public void testResolveClasspathSeparate21() throws Exception {
-	// server =
-	// TcServerFixture.V_2_1.createServer(TcServerFixture.INST_SEPARATE);
-	// IClasspathEntry[] cp = classPathProvider.resolveClasspathContainer(null,
-	// server.getRuntime());
-	// assertHasServletApi(server.getRuntime().getLocation(), cp);
-	// }
+	@Test
+	public void testResolveClasspathSeparate29() throws Exception {
+		server = TcServerFixture.V_2_9.createServer(TcServerFixture.INST_INSIGHT);
+		IClasspathEntry[] cp = classPathProvider.resolveClasspathContainer(null, server.getRuntime());
+		assertHasServletApi(server.getRuntime().getLocation(), cp);
+	}
+
+	@Test
+	public void testResolveClasspathSeparate30() throws Exception {
+		server = TcServerFixture.V_3_0.createServer(TcServerFixture.INST_SEPARATE);
+		IClasspathEntry[] cp = classPathProvider.resolveClasspathContainer(null, server.getRuntime());
+		assertHasServletApi(server.getRuntime().getLocation(), cp);
+	}
 
 }

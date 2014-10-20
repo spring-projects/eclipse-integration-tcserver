@@ -54,12 +54,11 @@ public class TcServerBehaviourTest {
 				TcServerFixture.INST_COMBINED);
 	}
 
-	// @Test
-	// public void testRuntimeVMArgumentsSeparate20() throws Exception {
-	// runtimeVMArguments(TcServerFixture.V_2_0, TcServerFixture.INST_INSIGHT,
-	// "tomcat-6.0.25.A-SR01",
-	// TcServerFixture.INST_INSIGHT);
-	// }
+	@Test
+	public void testRuntimeVMArgumentsSeparate60() throws Exception {
+		runtimeVMArguments(TcServerFixture.V_6_0, TcServerFixture.INST_INSIGHT, "tomcat-6.0.33.A.RELEASE",
+				TcServerFixture.INST_INSIGHT);
+	}
 
 	@Test
 	public void testSetupLaunchConfigurationDefaultArgs() throws Exception {
@@ -101,7 +100,7 @@ public class TcServerBehaviourTest {
 		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		ILaunchConfigurationType launchConfigType = ((ServerType) server.getServerType()).getLaunchConfigurationType();
 
-		String launchName = launchManager.generateUniqueLaunchConfigurationNameFrom("Tc Server Launch");
+		String launchName = launchManager.generateLaunchConfigurationName("Tc Server Launch");
 		ILaunchConfigurationWorkingCopy wc = launchConfigType.newInstance(null, launchName);
 		return wc;
 	}
