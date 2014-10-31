@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jst.server.core.IWebModule;
 import org.eclipse.jst.server.tomcat.core.internal.PublishOperation2;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatServerBehaviour;
 import org.eclipse.jst.server.tomcat.core.internal.WebModule;
@@ -56,82 +55,6 @@ import org.springframework.util.AntPathMatcher;
  */
 public class TcPublisher extends PublishOperation2 {
 
-	private class DeployerInfo {
-
-		private final String service;
-
-		private final String host;
-
-		private final String contextPath;
-
-		private final TcServer tcServer;
-
-		private final TcServerBehaviour tcServerBehaviour;
-
-		private boolean local;
-
-		public DeployerInfo() throws CoreException {
-			tcServer = (TcServer) server.getServer().loadAdapter(TcServer.class, null);
-			tcServerBehaviour = (TcServerBehaviour) server.getServer().loadAdapter(TcServerBehaviour.class, null);
-			IModule module2 = module[0];
-			ServerInstance serverInstance = tcServer.getTomcatConfiguration().getServerInstance();
-			if (serverInstance != null) {
-				local = true;
-				service = serverInstance.getService().getName();
-				host = serverInstance.getHost().getName();
-				WebModule webModule = tcServer.getTomcatConfiguration().getWebModule(module2);
-				if (webModule != null) {
-					contextPath = webModule.getPath();
-				}
-				else {
-					contextPath = computeContextPath(module2);
-				}
-			}
-			else {
-				// server has no local configuration, re-deploy application
-				local = false;
-				service = tcServer.getDeployerService();
-				host = tcServer.getDeployerHost();
-				contextPath = computeContextPath(module2);
-			}
-		}
-
-		public String getContextPath() {
-			return contextPath;
-		}
-
-		public String getHost() {
-			return host;
-		}
-
-		public String getService() {
-			return service;
-		}
-
-		public TcServer getTcServer() {
-			return tcServer;
-		}
-
-		public TcServerBehaviour getTcServerBehaviour() {
-			return tcServerBehaviour;
-		}
-
-		public boolean isLocal() {
-			return local;
-		}
-
-		private String computeContextPath(IModule module) {
-			IWebModule webModule = (IWebModule) module.loadAdapter(IWebModule.class, null);
-			if (webModule != null) {
-				String contextRoot = webModule.getContextRoot();
-				if (contextRoot != null && contextRoot.length() > 0) {
-					return !contextRoot.startsWith("/") ? "/" + contextRoot : contextRoot;
-				}
-			}
-			return "/" + module.getName();
-		}
-	}
-
 	public static final String DEFAULT_NAMESPACE_URI = "http://www.springframework.org/schema/beans";
 
 	private final IModule module2;
@@ -152,7 +75,7 @@ public class TcPublisher extends PublishOperation2 {
 		}
 
 		// determine if module needs to be reloaded
-		DeployerInfo deployer = new DeployerInfo();
+		DeployInfo deployer = new DeployInfo(server, module);
 
 		if (deltaKind == ServerBehaviourDelegate.REMOVED || server.getTomcatServer().isServeModulesWithoutPublish()) {
 			if (!deployer.isLocal()) {
@@ -291,7 +214,7 @@ public class TcPublisher extends PublishOperation2 {
 		}
 	}
 
-	private void reload(DeployerInfo deployer, IProgressMonitor monitor) throws CoreException {
+	private void reload(DeployInfo deployer, IProgressMonitor monitor) throws CoreException {
 		if (server.getServer().getServerState() != IServer.STATE_STARTED) {
 			return;
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -200,6 +201,10 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 	@Override
 	public void setupLaunch(ILaunch launch, String launchMode, IProgressMonitor monitor) throws CoreException {
 		super.setupLaunch(launch, launchMode, monitor);
+
+		for (IModule[] module : getAllModules()) {
+			setModuleState(module, IServer.STATE_STARTING);
+		}
 
 		// transfer VM arguments to launch to make them accessible for later use
 		launch.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, launch.getLaunchConfiguration()
@@ -378,6 +383,12 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 			if (state == IServer.STATE_STOPPED || state == IServer.STATE_STOPPING) {
 				return;
 			}
+			for (IModule[] module : getAllModules()) {
+				int currentState = getServer().getModuleState(module);
+				if (currentState < IServer.STATE_STOPPING) {
+					setModuleState(module, IServer.STATE_STOPPING);
+				}
+			}
 			setServerState(IServer.STATE_STOPPING);
 
 			// fall-back to JMX command
@@ -401,6 +412,17 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 		else {
 			super.stop(force);
 		}
+	}
+
+	@Override
+	protected void stopImpl() {
+		/*
+		 * Set the stopped state for all modules
+		 */
+		for (IModule[] module : getAllModules()) {
+			setModuleState(module, IServer.STATE_STOPPED);
+		}
+		super.stopImpl();
 	}
 
 	/**
@@ -542,4 +564,61 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 
 		setServerPublishState(IServer.PUBLISH_STATE_NONE);
 	}
+
+	@Override
+	public boolean canRestartModule(IModule[] module) {
+		return true;
+	}
+
+	@Override
+	public boolean canPublishModule(IModule[] module) {
+		return true;
+	}
+
+	@Override
+	public void startModule(IModule[] module, IProgressMonitor monitor) throws CoreException {
+		int currentState = getServer().getModuleState(module);
+		if (currentState == IServer.STATE_STOPPED || currentState == IServer.STATE_UNKNOWN) {
+			monitor.beginTask("Starting Module", 1);
+			try {
+				setModuleState(module, IServer.STATE_STARTING);
+				new StartModuleCommand(this, module).execute();
+				setModuleState(module, IServer.STATE_STARTED);
+				monitor.worked(1);
+			}
+			catch (TimeoutException e) {
+				setModuleState(module, IServer.STATE_UNKNOWN);
+				throw new CoreException(new Status(IStatus.ERROR, TcServerCorePlugin.PLUGIN_ID, "Cannot start module '"
+						+ module[0].getName() + "'", e));
+			}
+		}
+	}
+
+	@Override
+	public void stopModule(IModule[] module, IProgressMonitor monitor) throws CoreException {
+		int currentState = getServer().getModuleState(module);
+		if (currentState < IServer.STATE_STOPPING) {
+			monitor.beginTask("Stopping Modules", 1);
+			try {
+				setModuleState(module, IServer.STATE_STOPPING);
+				new StopModuleCommand(this, module).execute();
+				setModuleState(module, IServer.STATE_STOPPED);
+				monitor.worked(1);
+			}
+			catch (TimeoutException e) {
+				setModuleState(module, IServer.STATE_UNKNOWN);
+				throw new CoreException(new Status(IStatus.ERROR, TcServerCorePlugin.PLUGIN_ID, "Cannot start module '"
+						+ module[0].getName() + "'", e));
+			}
+		}
+	}
+
+	@Override
+	protected void setServerStarted() {
+		super.setServerStarted();
+		for (IModule[] module : getAllModules()) {
+			setModuleState(module, IServer.STATE_STARTED);
+		}
+	}
+
 }

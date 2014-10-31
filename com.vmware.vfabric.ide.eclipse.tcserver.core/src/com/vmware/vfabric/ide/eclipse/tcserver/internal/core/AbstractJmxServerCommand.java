@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -59,7 +59,8 @@ public abstract class AbstractJmxServerCommand<T> {
 		this.logStatus = logStatusErrors;
 	}
 
-	protected abstract T doOperation(MBeanServerConnection beanServerConnection) throws IOException, JMException;
+	protected abstract T doOperation(MBeanServerConnection beanServerConnection) throws IOException, JMException,
+			CoreException;
 
 	@SuppressWarnings("unchecked")
 	public final T execute() throws TimeoutException, CoreException {
