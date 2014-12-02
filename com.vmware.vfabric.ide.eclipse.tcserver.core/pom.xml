@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.vmware.vfabric.ide.eclipse.tcserver</groupId>
     <artifactId>com.vmware.vfabric.ide.eclipse.tcserver.parent</artifactId>
-    <version>3.6.3-SNAPSHOT</version>
+    <version>3.6.4-SNAPSHOT</version>
   </parent>
   <artifactId>com.vmware.vfabric.ide.eclipse.tcserver.core</artifactId>
   <packaging>eclipse-plugin</packaging>
