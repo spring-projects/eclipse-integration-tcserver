@@ -272,6 +272,8 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 		boolean addXss = true;
 		boolean addGrailsGspEnable = true;
 		boolean addMaxPermSize = true;
+		boolean addLogManager = true;
+		boolean addLogConfigFile = true;
 
 		// check if arguments are already present
 		if (parsedVMArgs != null) {
@@ -287,6 +289,12 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 				}
 				else if (parsedVMArg.startsWith("-Dgrails.gsp.enable.reload=")) {
 					addGrailsGspEnable = false;
+				}
+				else if (parsedVMArg.startsWith("-Djava.util.logging.manager")) {
+					addLogManager = false;
+				}
+				else if (parsedVMArg.startsWith("-Djava.util.logging.config.file")) {
+					addLogConfigFile = false;
 				}
 			}
 		}
@@ -304,6 +312,17 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 			if (addGrailsGspEnable) {
 				argsToAdd.add("-Dgrails.gsp.enable.reload=true");
 			}
+		}
+
+		if (addLogManager) {
+			argsToAdd
+					.add("-Djava.util.logging.manager=com.springsource.tcserver.serviceability.logging.TcServerLogManager");
+		}
+
+		if (addLogConfigFile) {
+			argsToAdd.add("-Djava.util.logging.config.file="
+					+ getTomcatServer().getInstanceBase(getServer().getRuntime()).append("conf")
+							.append("logging.properties"));
 		}
 
 		argsToAdd.addAll(getTomcatServer().getAddExtraVmArgs());
