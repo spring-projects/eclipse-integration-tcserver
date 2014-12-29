@@ -80,6 +80,14 @@ public class TcServerBehaviourTest {
 		args = wc.getAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, (String) null);
 		assertTrue("Expected -Xmx123m in '" + args + "'", args.contains("-Xmx123m"));
 		assertTrue("Expected -Xss256k in '" + args + "'", args.contains("-Xss256k"));
+		assertTrue(
+				"Expected -Djava.util.logging.manager=com.springsource.tcserver.serviceability.logging.TcServerLogManager in '"
+						+ args + "'",
+				args.contains("-Djava.util.logging.manager=com.springsource.tcserver.serviceability.logging.TcServerLogManager"));
+		TcServer tcServer = (TcServer) server.getAdapter(TcServer.class);
+		String logConfFileArg = "-Djava.util.logging.config.file="
+				+ tcServer.getInstanceBase(server.getRuntime()).append("conf").append("logging.properties");
+		assertTrue("Expected " + logConfFileArg + " in '" + args + "'", args.contains(logConfFileArg));
 	}
 
 	@Test
