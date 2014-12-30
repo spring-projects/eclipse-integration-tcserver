@@ -30,6 +30,7 @@ import org.eclipse.wst.server.core.IServer.IOperationListener;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.junit.After;
+import org.junit.Test;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
@@ -52,7 +53,7 @@ public class TcServerDeploymentTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void testDeployServlet30() throws Exception {
 		if (!StsTestUtil.ECLIPSE_3_6_OR_LATER) {
 			// skip test, the Servlet 3.0 spec is not supported by Eclipse 3.5
