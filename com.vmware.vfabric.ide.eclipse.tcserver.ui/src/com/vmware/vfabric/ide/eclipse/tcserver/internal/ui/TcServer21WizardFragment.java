@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.ui;
 
 import java.io.File;
+import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.core.runtime.CoreException;
@@ -60,6 +61,12 @@ public class TcServer21WizardFragment extends WizardFragment {
 	public static final String SPECIFY_TC_SERVER_INSTANCE_MESSAGE = "Specify the tc Server instance.";
 
 	public static final String SERVER_DOES_NOT_EXIST_MESSAGE = "The specified server does not exist.";
+
+	private static final String ILNVALID_SERVER_RUNTIME_SELECTED = "Invalid Server Runtime selected: unable to determine Tomcat version of the tc Server Runtime.";
+
+	private static final String UNKNOWN_INSTANCE_TOMCAT_VERSION = "Cannot determine Tomcat version of the tc Server Insttance located at '{0}'. This tc Server Instance may experience random problems due to possible Tomcat version mismatch";
+
+	private static final String TOMCAT_VERSION_MISMATCH = "Errors may occur due to mismatched Tomcat versions. Runtime Tomcat version is {0}. Instance Tomcat version is {1}.";
 
 	private static final String SERVER_PATH = ".";
 
@@ -272,10 +279,25 @@ public class TcServer21WizardFragment extends WizardFragment {
 			return new Status(IStatus.INFO, ITcServerConstants.PLUGIN_ID, SELECT_INSTANCE_MESSAGE);
 		}
 
+		String tomcatVersion = TcServerUtil.getServerVersion(wc.getRuntime());
+		if (tomcatVersion == null) {
+			return new Status(IStatus.ERROR, ITcServerConstants.PLUGIN_ID, ILNVALID_SERVER_RUNTIME_SELECTED);
+		}
+
 		File file = getInstanceDirectory();
 		if (file != null && file.exists()) {
-			return TcServerUtil.validateInstance(file, true);
+			IStatus status = TcServerUtil.validateInstance(file, true);
+			String instanceTomcatVersion = TcServerUtil.getInstanceTomcatVersion(file);
+			if (status.isOK() && instanceTomcatVersion == null) {
+				status = new Status(IStatus.WARNING, ITcServerConstants.PLUGIN_ID, UNKNOWN_INSTANCE_TOMCAT_VERSION);
+			}
+			if (status.isOK() && !tomcatVersion.equals(instanceTomcatVersion)) {
+				status = new Status(IStatus.WARNING, ITcServerConstants.PLUGIN_ID, MessageFormat.format(
+						TOMCAT_VERSION_MISMATCH, tomcatVersion, instanceTomcatVersion));
+			}
+			return status;
 		}
+
 		return new Status(IStatus.ERROR, ITcServerConstants.PLUGIN_ID, SERVER_DOES_NOT_EXIST_MESSAGE);
 	}
 

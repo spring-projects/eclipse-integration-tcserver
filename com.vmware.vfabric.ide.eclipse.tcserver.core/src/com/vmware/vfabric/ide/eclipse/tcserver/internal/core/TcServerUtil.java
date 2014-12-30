@@ -11,6 +11,8 @@
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -192,6 +194,28 @@ public class TcServerUtil {
 			}
 		}
 		return templateFolder;
+	}
+
+	public static String getInstanceTomcatVersion(File instanceFolder) {
+		File tomcatVersionFile = new File(new File(instanceFolder, "conf"), "tomcat.version");
+		Scanner scanner = null;
+		try {
+			if (tomcatVersionFile.exists()) {
+				scanner = new Scanner(tomcatVersionFile);
+				return scanner.useDelimiter("\\Z").next().trim();
+			}
+			else {
+				return null;
+			}
+		}
+		catch (FileNotFoundException e) {
+			return null;
+		}
+		finally {
+			if (scanner != null) {
+				scanner.close();
+			}
+		}
 	}
 
 }
