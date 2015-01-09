@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2014 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2015 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jst.server.tomcat.core.internal.TomcatServer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
@@ -216,6 +217,30 @@ public class TcServerUtil {
 				scanner.close();
 			}
 		}
+	}
+
+	public static File getInstanceDirectory(ServerWorkingCopy wc) {
+		if (wc != null) {
+			String instanceDir = wc.getAttribute(TomcatServer.PROPERTY_INSTANCE_DIR, (String) null);
+			if (instanceDir != null) {
+				File file = new File(instanceDir);
+				if (file.exists()) {
+					return file;
+				}
+			}
+			String serverName = wc.getAttribute(TcServer.KEY_SERVER_NAME, (String) null);
+			if (serverName != null) {
+				IPath path = wc.getRuntime().getLocation();
+				File directory = path.toFile();
+				if (directory.exists()) {
+					File file = new File(directory, serverName);
+					if (file.exists()) {
+						return file;
+					}
+				}
+			}
+		}
+		return null;
 	}
 
 }

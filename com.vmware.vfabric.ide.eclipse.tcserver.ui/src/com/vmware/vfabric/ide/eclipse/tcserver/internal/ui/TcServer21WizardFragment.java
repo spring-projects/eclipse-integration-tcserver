@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2015 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jst.server.tomcat.core.internal.ITomcatServer;
-import org.eclipse.jst.server.tomcat.core.internal.TomcatServer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -63,12 +62,6 @@ public class TcServer21WizardFragment extends WizardFragment {
 	public static final String SERVER_DOES_NOT_EXIST_MESSAGE = "The specified server does not exist.";
 
 	private static final String ILNVALID_SERVER_RUNTIME_SELECTED = "Invalid Server Runtime selected: unable to determine Tomcat version of the tc Server Runtime.";
-
-	private static final String UNKNOWN_INSTANCE_TOMCAT_VERSION = "Cannot determine Tomcat version of the tc Server Insttance located at '{0}'. This tc Server Instance may experience random problems due to possible Tomcat version mismatch";
-
-	private static final String TOMCAT_VERSION_MISMATCH = "Errors may occur due to mismatched Tomcat versions. Runtime Tomcat version is {0}. Instance Tomcat version is {1}.";
-
-	private static final String SERVER_PATH = ".";
 
 	private Label descriptionLabel;
 
@@ -244,38 +237,14 @@ public class TcServer21WizardFragment extends WizardFragment {
 		return true;
 	}
 
-	private File getInstanceDirectory() {
-		if (wc != null) {
-			String instanceDir = ((ServerWorkingCopy) wc).getAttribute(TomcatServer.PROPERTY_INSTANCE_DIR,
-					(String) null);
-			if (instanceDir != null) {
-				File file = new File(instanceDir);
-				if (file.exists()) {
-					return file;
-				}
-			}
-			String serverName = ((ServerWorkingCopy) wc).getAttribute(TcServer.KEY_SERVER_NAME, (String) null);
-			if (serverName != null) {
-				IPath path = wc.getRuntime().getLocation();
-				File directory = new File(path.toFile(), SERVER_PATH);
-				if (directory.exists()) {
-					File file = new File(directory, serverName);
-					if (file.exists()) {
-						return file;
-					}
-				}
-			}
-		}
-		return null;
-	}
-
 	private IStatus doValidate() {
 		if (newInstanceButton != null && newInstanceButton.getSelection()) {
 			return Status.OK_STATUS;
 		}
 
-		if (((ServerWorkingCopy) wc).getAttribute(TcServer.KEY_SERVER_NAME, (String) null) == null
-				&& ((ServerWorkingCopy) wc).getAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, (String) null) == null) {
+		ServerWorkingCopy workingCopy = (ServerWorkingCopy) wc;
+		if (workingCopy.getAttribute(TcServer.KEY_SERVER_NAME, (String) null) == null
+				&& workingCopy.getAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, (String) null) == null) {
 			return new Status(IStatus.INFO, ITcServerConstants.PLUGIN_ID, SELECT_INSTANCE_MESSAGE);
 		}
 
@@ -284,16 +253,17 @@ public class TcServer21WizardFragment extends WizardFragment {
 			return new Status(IStatus.ERROR, ITcServerConstants.PLUGIN_ID, ILNVALID_SERVER_RUNTIME_SELECTED);
 		}
 
-		File file = getInstanceDirectory();
+		File file = TcServerUtil.getInstanceDirectory(workingCopy);
 		if (file != null && file.exists()) {
 			IStatus status = TcServerUtil.validateInstance(file, true);
 			String instanceTomcatVersion = TcServerUtil.getInstanceTomcatVersion(file);
 			if (status.isOK() && instanceTomcatVersion == null) {
-				status = new Status(IStatus.WARNING, ITcServerConstants.PLUGIN_ID, UNKNOWN_INSTANCE_TOMCAT_VERSION);
+				status = new Status(IStatus.ERROR, ITcServerConstants.PLUGIN_ID,
+						Messages.UNKNOWN_INSTANCE_TOMCAT_VERSION);
 			}
 			if (status.isOK() && !tomcatVersion.equals(instanceTomcatVersion)) {
 				status = new Status(IStatus.WARNING, ITcServerConstants.PLUGIN_ID, MessageFormat.format(
-						TOMCAT_VERSION_MISMATCH, tomcatVersion, instanceTomcatVersion));
+						Messages.TOMCAT_VERSION_MISMATCH, tomcatVersion, instanceTomcatVersion));
 			}
 			return status;
 		}
@@ -307,7 +277,7 @@ public class TcServer21WizardFragment extends WizardFragment {
 			// add all directories that have a server configuration
 			serverNameCombo.removeAll();
 			IPath path = wc.getRuntime().getLocation();
-			File file = new File(path.toFile(), SERVER_PATH);
+			File file = path.toFile();
 			if (file.exists()) {
 				File[] serverDirectories = file.listFiles();
 				if (serverDirectories != null) {
@@ -324,7 +294,7 @@ public class TcServer21WizardFragment extends WizardFragment {
 
 	private void updateDescription(IStatus status) {
 		if (status.isOK() && existingInstanceButton != null && existingInstanceButton.getSelection()) {
-			File directory = getInstanceDirectory();
+			File directory = TcServerUtil.getInstanceDirectory((ServerWorkingCopy) wc);
 			if (directory != null) {
 				File libDirectory = new File(directory, "lib");
 				if (new File(libDirectory, "catalina.jar").exists()) {
@@ -363,7 +333,7 @@ public class TcServer21WizardFragment extends WizardFragment {
 		}
 		else if (status.getSeverity() == IStatus.WARNING) {
 			wizard.setMessage(status.getMessage(), IMessageProvider.WARNING);
-			setComplete(false);
+			setComplete(true);
 		}
 		else {
 			wizard.setMessage(status.getMessage(), IMessageProvider.ERROR);
