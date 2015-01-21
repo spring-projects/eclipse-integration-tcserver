@@ -16,13 +16,6 @@
 	<category-def name="Core / Eclipse Integration vFabric tc Server" label="Core / Eclipse Integration vFabric tc Server"/>
 	<category-def name="Resources / Eclipse Integration vFabric tc Server" label="Resources / Eclipse Integration vFabric tc Server"/>
 
-	<!-- UAA -->
-	<feature
-		url="org.springframework.ide.eclipse.uaa.feature_3.6.4.qualifier.jar"
-		id="org.springframework.ide.eclipse.uaa.feature" version="3.6.4.qualifier">
-		<category name="Core / Eclipse Integration vFabric tc Server" />
-	</feature>
-	
 	<feature 
 		url="features/org.springsource.ide.eclipse.commons_3.6.4.qualifier.jar" 
 		id="org.springsource.ide.eclipse.commons" version="3.6.4.qualifier">

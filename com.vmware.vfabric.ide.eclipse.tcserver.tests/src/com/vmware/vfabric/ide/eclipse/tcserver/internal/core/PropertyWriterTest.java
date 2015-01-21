@@ -16,18 +16,10 @@ import java.util.Map;
 
 import junit.framework.TestCase;
 
-import org.springframework.ide.eclipse.uaa.IUaa;
-import org.springframework.ide.eclipse.uaa.UaaPlugin;
-
 /**
  * @author Steffen Pingel
  */
 public class PropertyWriterTest extends TestCase {
-
-	static {
-		System.out.println("Setting UAA privacy level to 'LIMITED_DATA'");
-		UaaPlugin.getUAA().setPrivacyLevel(IUaa.LIMITED_DATA);
-	}
 
 	public void testEmptyProperties() throws IOException {
 		Map<String, String> values = new HashMap<String, String>();

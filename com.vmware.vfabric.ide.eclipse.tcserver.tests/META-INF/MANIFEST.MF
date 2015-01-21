@@ -21,8 +21,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.commons.lang,
  org.eclipse.jdt.core,
  org.eclipse.jst.jee.web,
- org.eclipse.jst.ejb.ui,
- org.springframework.ide.eclipse.uaa
+ org.eclipse.jst.ejb.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.vmware.vfabric.ide.eclipse.tcserver.internal.core;x-internal:=true,
  com.vmware.vfabric.ide.eclipse.tcserver.tests;x-internal:=true,
