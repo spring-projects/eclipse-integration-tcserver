@@ -215,6 +215,13 @@ public class TcServerFixture extends TestConfiguration {
 		current = this;
 	}
 
+	/**
+	 * Checks whether current fixture is after the argument fixture in terms of
+	 * order in ALL array. To be used as version check before/after.
+	 * @param fixture
+	 * @return <code>true</code> if server version is newer than the argument's
+	 * server version.
+	 */
 	public boolean after(TcServerFixture fixture) {
 		boolean foundMyself = false;
 		for (TcServerFixture s : ALL) {
