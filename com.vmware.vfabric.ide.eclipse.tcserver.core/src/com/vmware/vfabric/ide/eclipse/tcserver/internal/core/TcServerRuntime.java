@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2014 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2015 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -56,6 +60,12 @@ public class TcServerRuntime extends TomcatRuntime {
 	public static String ID_TC_SERVER_2_5 = "com.vmware.server.tc.runtime.70";
 
 	public static String ID_TC_SERVER_3_0 = "com.pivotal.server.tc.runtime.80";
+
+	private static final String TEMPLATES_FOLDER = "templates";
+
+	private static final String TEMPLATE_VARIATION_STR = "-tomcat-";
+
+	private static final Pattern TEMPLATE_PATTERN = Pattern.compile("(.*)-tomcat-(.*)");
 
 	public static final String KEY_SERVER_VERSION = "com.springsource.tcserver.version";
 
@@ -197,6 +207,70 @@ public class TcServerRuntime extends TomcatRuntime {
 			}
 		}
 		return status;
+	}
+
+	/**
+	 * Returns a set of templates for the current runtime
+	 *
+	 * @return set of template strings
+	 */
+	public Set<String> getTemplates() {
+		Set<String> templates = new HashSet<String>();
+		IPath runtimePath = getRuntime().getLocation();
+		IPath templatePath = runtimePath.append(TEMPLATES_FOLDER);
+		if (templatePath.toFile().exists()) {
+			File[] children = templatePath.toFile().listFiles();
+			if (children != null) {
+				for (File child : children) {
+					if (child.isDirectory()) {
+						Matcher matcher = TEMPLATE_PATTERN.matcher(child.getName());
+						if (matcher.matches()) {
+							String template = matcher.group(1);
+							String version = matcher.group(2);
+							if (TcServerUtil.getServerVersion(getRuntime()).startsWith(version)) {
+								templates.add(template);
+							}
+						}
+						else {
+							templates.add(child.getName());
+						}
+					}
+				}
+			}
+		}
+		return templates;
+	}
+
+	/**
+	 * Returns the folder for the template
+	 *
+	 * @param templateName
+	 * @return template's folder
+	 */
+	public File getTemplateFolder(String templateName) {
+		StringBuilder templatePath = new StringBuilder();
+		templatePath.append(getRuntime().getLocation());
+		templatePath.append(File.separator);
+		templatePath.append(TEMPLATES_FOLDER);
+		templatePath.append(File.separator);
+		templatePath.append(templateName);
+		File templateFolder = new File(templatePath.toString());
+		if (!templateFolder.exists() || !templateFolder.isDirectory()) {
+			templateFolder = null;
+			String serverVersion = TcServerUtil.getServerVersion(getRuntime());
+			if (serverVersion != null && !serverVersion.isEmpty()) {
+				templateFolder = null;
+				int idx = serverVersion.indexOf('.');
+				String majorVersion = idx > -1 ? serverVersion.substring(0, idx) : serverVersion;
+				templatePath.append(TEMPLATE_VARIATION_STR);
+				templatePath.append(majorVersion);
+				templateFolder = new File(templatePath.toString());
+				if (!templateFolder.exists() && !templateFolder.isDirectory()) {
+					templateFolder = null;
+				}
+			}
+		}
+		return templateFolder;
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2015 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -50,6 +50,8 @@ public class TcServerFixture extends TestConfiguration {
 
 	public static String V_3_0_URL = "http://download.pivotal.com.s3.amazonaws.com/tcserver/3.0.1/pivotal-tc-server-developer-3.0.1.RELEASE.zip";
 
+	public static String V_3_1_URL = "http://dist.springsource.com.s3.amazonaws.com/release/TCS/pivotal-tc-server-developer-3.1.0.RELEASE.zip";
+
 	public static TcServerFixture V_2_5 = new TcServerFixture("com.vmware.server.tc.runtime.70",
 			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.5.2.RELEASE",
 			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.5.2.RELEASE.zip");
@@ -71,6 +73,9 @@ public class TcServerFixture extends TestConfiguration {
 	public static TcServerFixture V_3_0 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_3_0,
 			"pivotal-tc-server-developer-3.0.1.RELEASE", V_3_0_URL);
 
+	public static TcServerFixture V_3_1 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_3_0,
+			"pivotal-tc-server-developer-3.1.0.RELEASE", V_3_1_URL);
+
 	public static TcServerFixture V_6_0 = new TcServerFixture("com.vmware.server.tc.runtime.70",
 			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.5.2.RELEASE",
 			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.5.2.RELEASE.zip", "6", true);
@@ -79,7 +84,8 @@ public class TcServerFixture extends TestConfiguration {
 
 	private static final TcServerFixture DEFAULT = V_3_0;
 
-	public static TcServerFixture[] ALL = new TcServerFixture[] { V_6_0, V_2_5, V_2_6, V_2_7, V_2_8, V_2_9, V_3_0 };
+	public static TcServerFixture[] ALL = new TcServerFixture[] { V_6_0, V_2_5, V_2_6, V_2_7, V_2_8, V_2_9, V_3_0,
+			V_3_1 };
 
 	public static TcServerFixture current() {
 		if (current == null) {
@@ -207,6 +213,19 @@ public class TcServerFixture extends TestConfiguration {
 	@Override
 	public void activate() {
 		current = this;
+	}
+
+	public boolean after(TcServerFixture fixture) {
+		boolean foundMyself = false;
+		for (TcServerFixture s : ALL) {
+			if (s == this) {
+				foundMyself = true;
+			}
+			if (s == fixture) {
+				return !foundMyself;
+			}
+		}
+		return false;
 	}
 
 }

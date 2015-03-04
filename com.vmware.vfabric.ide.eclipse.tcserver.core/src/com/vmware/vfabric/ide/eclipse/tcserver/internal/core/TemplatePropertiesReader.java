@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2014 Spring IDE Developers
+ * Copyright (c) 2012 - 2015 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -79,9 +79,13 @@ public class TemplatePropertiesReader {
 	}
 
 	public Set<TemplateProperty> read(String templateName, IProgressMonitor monitor) throws CoreException {
-		File templateDir = TcServerUtil.getTemplateFolder(serverAttributes.getRuntime(), templateName);
-		if (templateDir.exists()) {
-			return read(templateDir, monitor);
+		TcServerRuntime tcRuntime = (TcServerRuntime) serverAttributes.getRuntime().loadAdapter(TcServerRuntime.class,
+				monitor);
+		if (tcRuntime != null) {
+			File templateDir = tcRuntime.getTemplateFolder(templateName);
+			if (templateDir.exists()) {
+				return read(templateDir, monitor);
+			}
 		}
 		return null;
 	}

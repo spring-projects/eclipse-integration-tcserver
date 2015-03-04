@@ -23,7 +23,7 @@
     </runtimeType>
     <runtimeType
        id="com.pivotal.server.tc.runtime.80"
-       name="Pivotal tc Server v3.0"
+       name="Pivotal tc Server v3.0 - v3.1"
        description="Pivotal tc Server 3.0 support J2EE 1.2, 1.3, 1.4, Java EE 5, 6 and 7 Web modules."
        vendor="Pivotal"
        version="8.0"
@@ -74,7 +74,7 @@
      </serverType>
      <serverType
        id="com.pivotal.server.tc.80"
-       name="Pivotal tc Server v3.0"
+       name="Pivotal tc Server v3.0 - v3.1"
        description="Publishes and runs J2EE and Java EE Web projects and server configurations to a local tc Server instance."
        supportsRemoteHosts="false"
        runtime="true"
@@ -297,6 +297,20 @@
            runtimeName="Pivotal tc Server Developer Edition (Runtime) v3.0"
            runtimeTypeId="com.pivotal.server.tc.runtime.80"
            serverName="Pivotal tc Server Developer Edition v3.0"
+           serverTypeId="com.pivotal.server.tc.80"
+           versionRange="[3.0.0,4.0.0)">
+     </runtime>
+     <runtime
+           archivePath="pivotal-tc-server-developer"
+           bundleId="com.springsource.server.tc.bundle"
+           callback="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer21ServerHandlerCallback"
+           description="Pivotal tc Server is an enterprise version of Apache Tomcat that provides developers with the lightweight server they want paired with the operational management, advanced diagnostics, and mission-critical support capabilities businesses need."
+           id="com.springsource.sts.ide.configurator.server.TcServer31"
+           installPath="pivotal-tc-server-developer"
+           name="Pivotal tc Server Developer Edition"
+           runtimeName="Pivotal tc Server Developer Edition (Runtime) v3.1"
+           runtimeTypeId="com.pivotal.server.tc.runtime.80"
+           serverName="Pivotal tc Server Developer Edition v3.1"
            serverTypeId="com.pivotal.server.tc.80"
            versionRange="[3.0.0,4.0.0)">
      </runtime>

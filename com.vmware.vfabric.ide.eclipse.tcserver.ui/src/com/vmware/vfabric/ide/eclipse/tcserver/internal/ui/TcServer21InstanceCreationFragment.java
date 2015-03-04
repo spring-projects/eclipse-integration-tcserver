@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2014 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2015 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -224,10 +224,11 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 				validate();
 
 				ISelection selection = event.getSelection();
-				if (selection instanceof StructuredSelection) {
+				TcServerRuntime tcRuntime = (TcServerRuntime) runtime.loadAdapter(TcServerRuntime.class,
+						new NullProgressMonitor());
+				if (selection instanceof StructuredSelection && tcRuntime != null) {
 					Object obj = ((StructuredSelection) selection).getFirstElement();
-					File templateDir = obj instanceof String ? TcServerUtil.getTemplateFolder(runtime, (String) obj)
-							: null;
+					File templateDir = obj instanceof String ? tcRuntime.getTemplateFolder((String) obj) : null;
 
 					if (templateDir != null && templateDir.exists() && templateDir.isDirectory()) {
 						readmeLabel.setText("Information for template " + templateDir.getName() + ": ");
@@ -437,22 +438,16 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			separateLayoutButton.setSelection(true);
 		}
 
-		IPath runtimePath = runtime.getLocation();
-		IPath templatePath = runtimePath.append(TcServerUtil.TEMPLATES_FOLDER);
-		if (templatePath.toFile().exists()) {
-			File[] children = templatePath.toFile().listFiles();
-			if (children != null) {
-				templates = new HashSet<String>(children.length);
-				for (File child : children) {
-					String template = TcServerUtil.getTemplateName(child);
-					if (template != null) {
-						templates.add(template);
-					}
-				}
-			}
+		TcServerRuntime tcRuntime = (TcServerRuntime) runtime.loadAdapter(TcServerRuntime.class,
+				new NullProgressMonitor());
+		if (tcRuntime != null) {
+			templates = tcRuntime.getTemplates();
+		}
+		else {
+			templates = Collections.emptySet();
 		}
 		templateViewer.setInput(templates);
-		locationPathField.setText(runtimePath.toOSString());
+		locationPathField.setText(runtime.getLocation().toOSString());
 	}
 
 	@Override

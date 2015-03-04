@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2014 Spring IDE Developers
+ * Copyright (c) 2012 - 2015 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,12 +15,10 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Collections;
 import java.util.Set;
 
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IServer;
 import org.junit.AfterClass;
@@ -47,21 +45,15 @@ public class TcServerTemplatePropertiesReaderTest {
 
 	@Test
 	public void haveTestsForAllTemplates() {
-		Set<String> actualTemplates = new HashSet<String>();
-		IPath runtimePath = server.getRuntime().getLocation();
-		IPath templatePath = runtimePath.append(TcServerUtil.TEMPLATES_FOLDER);
-		if (templatePath.toFile().exists()) {
-			File[] children = templatePath.toFile().listFiles();
-			if (children != null) {
-				for (File child : children) {
-					String template = TcServerUtil.getTemplateName(child);
-					if (template != null) {
-						actualTemplates.add(template);
-					}
-				}
-			}
+		Set<String> actualTemplates = Collections.emptySet();
+		TcServerRuntime tcRuntime = (TcServerRuntime) server.getRuntime().loadAdapter(TcServerRuntime.class,
+				new NullProgressMonitor());
+		if (tcRuntime != null) {
+			actualTemplates = tcRuntime.getTemplates();
 		}
-		String[] expecteds = new String[] { "ajp", "apr", "apr-ssl", "async-logger", "base", "bio", "bio-ssl",
+		String[] expecteds = TcServerFixture.current().after(TcServerFixture.V_3_0) ? new String[] { "ajp", "apr",
+				"apr-ssl", "base", "bio", "bio-ssl", "cluster-node", "diagnostics", "insight", "jmx-ssl", "nio",
+				"nio-ssl" } : new String[] { "ajp", "apr", "apr-ssl", "async-logger", "base", "bio", "bio-ssl",
 				"cluster-node", "diagnostics", "insight", "jmx-ssl", "nio", "nio-ssl" };
 		assertTrue("Not all basic templates are present in current tc server runtime installation",
 				actualTemplates.containsAll(Arrays.asList(expecteds)));
@@ -135,10 +127,22 @@ public class TcServerTemplatePropertiesReaderTest {
 
 	@Test
 	public void asyncLoggerTemplate() throws Exception {
-		Set<TemplateProperty> props = reader.read("async-logger", new NullProgressMonitor());
-		Assume.assumeNotNull(props);
-
-		assertEquals(0, props.size());
+		if (TcServerFixture.current().after(TcServerFixture.V_3_0)) {
+			TcServerRuntime tcRuntime = (TcServerRuntime) server.getRuntime().loadAdapter(TcServerRuntime.class,
+					new NullProgressMonitor());
+			if (tcRuntime != null) {
+				assertNull("async-logger template is available but is not expected",
+						tcRuntime.getTemplateFolder("async-logger"));
+			}
+			else {
+				fail("Tc Server runtime not found for current server!");
+			}
+		}
+		else {
+			Set<TemplateProperty> props = reader.read("async-logger", new NullProgressMonitor());
+			Assume.assumeNotNull(props);
+			assertEquals(0, props.size());
+		}
 	}
 
 	@Test
@@ -173,7 +177,7 @@ public class TcServerTemplatePropertiesReaderTest {
 		Set<TemplateProperty> props = reader.read("bio-ssl", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
-		assertEquals(17, props.size());
+		assertEquals(TcServerFixture.current().after(TcServerFixture.V_3_0) ? 19 : 17, props.size());
 		assertPropsEquals(props, "bio-ssl", "https.port",
 				"Please enter the port that the BIO connector should listen for HTTPS requests on:", "8443");
 		assertPropsEquals(
@@ -259,7 +263,7 @@ public class TcServerTemplatePropertiesReaderTest {
 		Set<TemplateProperty> props = reader.read("jmx-ssl", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
-		assertEquals(16, props.size());
+		assertEquals(TcServerFixture.current().after(TcServerFixture.V_3_0) ? 18 : 16, props.size());
 		assertPropsEquals(
 				props,
 				"jmx-ssl",
@@ -319,7 +323,7 @@ public class TcServerTemplatePropertiesReaderTest {
 		Set<TemplateProperty> props = reader.read("nio-ssl", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
-		assertEquals(17, props.size());
+		assertEquals(TcServerFixture.current().after(TcServerFixture.V_3_0) ? 19 : 17, props.size());
 		assertPropsEquals(props, "nio-ssl", "https.port",
 				"Please enter the port that the NIO connector should listen for HTTPS requests on:", "8443");
 		assertPropsEquals(

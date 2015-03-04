@@ -34,10 +34,6 @@ import org.springsource.ide.eclipse.commons.core.StatusHandler;
  */
 public class TcServerUtil {
 
-	public static final String TEMPLATES_FOLDER = "templates";
-
-	private static final String TEMPLATE_VARIATION_STR = "-tomcat-";
-
 	@Deprecated
 	public static boolean isSpringSource(IRuntimeWorkingCopy wc) {
 		return wc != null && wc.getRuntimeType() != null && wc.getRuntimeType().getId().startsWith("com.springsource");
@@ -156,45 +152,6 @@ public class TcServerUtil {
 		StatusHandler.log(status);
 
 		return new CoreException(status);
-	}
-
-	public static String getTemplateName(File templateFolder) {
-		if (templateFolder.isDirectory()) {
-			int idx = templateFolder.getName().indexOf(TEMPLATE_VARIATION_STR);
-			if (idx > -1) {
-				return templateFolder.getName().substring(0, idx);
-			}
-			else {
-				return templateFolder.getName();
-			}
-		}
-		return null;
-	}
-
-	public static File getTemplateFolder(IRuntime runtime, String templateName) {
-		StringBuilder templatePath = new StringBuilder();
-		templatePath.append(runtime.getLocation());
-		templatePath.append(File.separator);
-		templatePath.append(TEMPLATES_FOLDER);
-		templatePath.append(File.separator);
-		templatePath.append(templateName);
-		File templateFolder = new File(templatePath.toString());
-		if (!templateFolder.exists() || !templateFolder.isDirectory()) {
-			templateFolder = null;
-			String serverVersion = getServerVersion(runtime);
-			if (serverVersion != null && !serverVersion.isEmpty()) {
-				templateFolder = null;
-				int idx = serverVersion.indexOf('.');
-				String majorVersion = idx > -1 ? serverVersion.substring(0, idx) : serverVersion;
-				templatePath.append(TEMPLATE_VARIATION_STR);
-				templatePath.append(majorVersion);
-				templateFolder = new File(templatePath.toString());
-				if (!templateFolder.exists() && !templateFolder.isDirectory()) {
-					templateFolder = null;
-				}
-			}
-		}
-		return templateFolder;
 	}
 
 	public static String getInstanceTomcatVersion(File instanceFolder) {
