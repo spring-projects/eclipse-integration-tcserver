@@ -19,14 +19,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.IServer.IOperationListener;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.junit.After;
@@ -86,76 +81,77 @@ public class TcServerDeploymentTest {
 		File file = new File(deploymentDir, "servlet-3.0-project/WEB-INF/lib/servlet-3.0-fragment.jar");
 		assertTrue("Expected fragement at " + file, file.exists());
 
-		/*
-		 * Start server
-		 */
-		OperationListener listener = new OperationListener();
-		server.start(ILaunchManager.RUN_MODE, listener);
-		waitForOperation(listener);
-		assertEquals(IServer.STATE_STARTED, server.getModuleState(modules));
-
-		/*
-		 * Stop module
-		 */
-		listener = new OperationListener();
-		server.stopModule(modules, listener);
-		waitForOperation(listener);
-		assertEquals(IServer.STATE_STOPPED, server.getModuleState(modules));
-
-		/*
-		 * Start module
-		 */
-		listener = new OperationListener();
-		server.startModule(modules, listener);
-		waitForOperation(listener);
-		assertEquals(IServer.STATE_STARTED, server.getModuleState(modules));
-
-		/*
-		 * Stop module for restarting stopped module
-		 */
-		listener = new OperationListener();
-		server.stopModule(modules, listener);
-		waitForOperation(listener);
-		assertEquals(IServer.STATE_STOPPED, server.getModuleState(modules));
-
-		/*
-		 * Restart the stopped module
-		 */
-		listener = new OperationListener();
-		server.restartModule(modules, listener);
-		waitForOperation(listener);
-		assertEquals(IServer.STATE_STARTED, server.getModuleState(modules));
-
-		/*
-		 * Restart the started module
-		 */
-		listener = new OperationListener();
-		server.restartModule(modules, listener);
-		waitForOperation(listener);
-		assertEquals(IServer.STATE_STARTED, server.getModuleState(modules));
-
-		/*
-		 * Stop the server
-		 */
-		listener = new OperationListener();
-		server.stop(true, listener);
-		waitForOperation(listener);
-		assertEquals(IServer.STATE_STOPPED, server.getModuleState(modules));
+		// /*
+		// * Start server
+		// */
+		// OperationListener listener = new OperationListener();
+		// server.start(ILaunchManager.RUN_MODE, listener);
+		// waitForOperation(listener);
+		// assertEquals(IServer.STATE_STARTED, server.getModuleState(modules));
+		//
+		// /*
+		// * Stop module
+		// */
+		// listener = new OperationListener();
+		// server.stopModule(modules, listener);
+		// waitForOperation(listener);
+		// assertEquals(IServer.STATE_STOPPED, server.getModuleState(modules));
+		//
+		// /*
+		// * Start module
+		// */
+		// listener = new OperationListener();
+		// server.startModule(modules, listener);
+		// waitForOperation(listener);
+		// assertEquals(IServer.STATE_STARTED, server.getModuleState(modules));
+		//
+		// /*
+		// * Stop module for restarting stopped module
+		// */
+		// listener = new OperationListener();
+		// server.stopModule(modules, listener);
+		// waitForOperation(listener);
+		// assertEquals(IServer.STATE_STOPPED, server.getModuleState(modules));
+		//
+		// /*
+		// * Restart the stopped module
+		// */
+		// listener = new OperationListener();
+		// server.restartModule(modules, listener);
+		// waitForOperation(listener);
+		// assertEquals(IServer.STATE_STARTED, server.getModuleState(modules));
+		//
+		// /*
+		// * Restart the started module
+		// */
+		// listener = new OperationListener();
+		// server.restartModule(modules, listener);
+		// waitForOperation(listener);
+		// assertEquals(IServer.STATE_STARTED, server.getModuleState(modules));
+		//
+		// /*
+		// * Stop the server
+		// */
+		// listener = new OperationListener();
+		// server.stop(true, listener);
+		// waitForOperation(listener);
+		// assertEquals(IServer.STATE_STOPPED, server.getModuleState(modules));
 	}
 
-	private void waitForOperation(OperationListener listener) throws Exception {
-		while (!listener.isDone()) {
-			while (PlatformUI.getWorkbench().getDisplay().readAndDispatch()) {
-				// nothing
-			}
-			Thread.sleep(100);
-		}
-		/*
-		 * Sleep half a second for the operation to finish and assign states to
-		 * modules accordingly. Flaky, but didn't figure anything better yet.
-		 */
-		Thread.sleep(500);
-	}
+	// private void waitForOperation(OperationListener listener) throws
+	// Exception {
+	// while (!listener.isDone()) {
+	// while (PlatformUI.getWorkbench().getDisplay().readAndDispatch()) {
+	// // nothing
+	// }
+	// Thread.sleep(100);
+	// }
+	// /*
+	// * Sleep half a second for the operation to finish and assign states to
+	// * modules accordingly. Flaky, but didn't figure anything better yet.
+	// */
+	// Thread.sleep(500);
+	// }
 
 	private List<File> getDeployedDirectories(File deploymentDir) {
 		List<File> list = Arrays.asList(deploymentDir.listFiles());
@@ -167,18 +163,18 @@ public class TcServerDeploymentTest {
 		return list;
 	}
 
-	private class OperationListener implements IOperationListener {
-
-		private final AtomicBoolean isDone = new AtomicBoolean(false);
-
-		public void done(IStatus result) {
-			isDone.compareAndSet(false, true);
-		}
-
-		public boolean isDone() {
-			return isDone.get();
-		}
-
-	}
+	// private class OperationListener implements IOperationListener {
+	//
+	// private final AtomicBoolean isDone = new AtomicBoolean(false);
+	//
+	// public void done(IStatus result) {
+	// isDone.compareAndSet(false, true);
+	// }
+	//
+	// public boolean isDone() {
+	// return isDone.get();
+	// }
+	//
+	// }
 
 }
