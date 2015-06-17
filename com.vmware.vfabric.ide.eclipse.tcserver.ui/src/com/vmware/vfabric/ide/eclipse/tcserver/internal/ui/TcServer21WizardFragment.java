@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IMessageProvider;
@@ -37,6 +38,7 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.TaskModel;
+import org.eclipse.wst.server.core.internal.ServerPlugin;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
 import org.eclipse.wst.server.ui.wizard.WizardFragment;
@@ -225,8 +227,8 @@ public class TcServer21WizardFragment extends WizardFragment {
 			((ServerWorkingCopy) wc).importRuntimeConfiguration(wc.getRuntime(), null);
 		}
 		catch (CoreException e) {
-			StatusHandler.log(new Status(IStatus.ERROR, TcServerUiPlugin.PLUGIN_ID,
-					"Failed to load runtime configuration", e));
+			StatusHandler.log(
+					new Status(IStatus.ERROR, TcServerUiPlugin.PLUGIN_ID, "Failed to load runtime configuration", e));
 			// Trace.trace(Trace.SEVERE, "Failed to load runtime configuration",
 			// e);
 		}
@@ -262,8 +264,8 @@ public class TcServer21WizardFragment extends WizardFragment {
 						Messages.UNKNOWN_INSTANCE_TOMCAT_VERSION);
 			}
 			if (status.isOK() && !tomcatVersion.equals(instanceTomcatVersion)) {
-				status = new Status(IStatus.WARNING, ITcServerConstants.PLUGIN_ID, MessageFormat.format(
-						Messages.TOMCAT_VERSION_MISMATCH, tomcatVersion, instanceTomcatVersion));
+				status = new Status(IStatus.WARNING, ITcServerConstants.PLUGIN_ID,
+						MessageFormat.format(Messages.TOMCAT_VERSION_MISMATCH, tomcatVersion, instanceTomcatVersion));
 			}
 			return status;
 		}
@@ -347,6 +349,30 @@ public class TcServer21WizardFragment extends WizardFragment {
 	public void performFinish(IProgressMonitor monitor) throws CoreException {
 		// reset completion status in case the wizard is re-used
 		setComplete(false);
+
+		/*
+		 * Check if the default server name is set currently. If yes then prefix
+		 * the server name with the name of the instance.
+		 */
+		IServerWorkingCopy defaultServer = wc.getServerType().createServer(null, null, wc.getRuntime(),
+				new NullProgressMonitor());
+		if (wc.getName().equals(defaultServer.getName())) {
+			String prefix = wc.getAttribute(TcServer.KEY_SERVER_NAME, (String) null);
+			if (prefix != null && !prefix.isEmpty()) {
+				String name = prefix + " - " + wc.getName();
+				int idx = name.lastIndexOf('(');
+				if (idx != -1) {
+					name = name.substring(0, idx).trim();
+				}
+				int i = 2;
+				String newName = name;
+				while (ServerPlugin.isNameInUse(wc.getOriginal(), newName)) {
+					newName = name + " (" + i + ")";
+					i++;
+				}
+				wc.setName(newName);
+			}
+		}
 
 		if (creatingNewInstance) {
 			// instance creation is handled by
