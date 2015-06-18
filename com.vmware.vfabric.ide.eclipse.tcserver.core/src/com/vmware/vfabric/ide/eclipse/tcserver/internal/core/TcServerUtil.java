@@ -19,12 +19,15 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatServer;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
+import org.eclipse.wst.server.core.ServerUtil;
+import org.eclipse.wst.server.core.internal.ServerPlugin;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 
@@ -198,6 +201,33 @@ public class TcServerUtil {
 			}
 		}
 		return null;
+	}
+
+	public static void setTcServerDefaultName(IServerWorkingCopy wc) {
+		ServerUtil.setServerDefaultName(wc);
+		String defaultName = wc.getName();
+		String prefix = wc.getAttribute(TcServer.KEY_SERVER_NAME, (String) null);
+		if (prefix != null && !prefix.isEmpty()) {
+			String name = prefix + " - " + defaultName;
+			int idx = name.lastIndexOf('(');
+			if (idx != -1) {
+				name = name.substring(0, idx).trim();
+			}
+			int i = 2;
+			defaultName = name;
+			while (ServerPlugin.isNameInUse(wc.getOriginal(), defaultName)) {
+				defaultName = name + " (" + i + ")";
+				i++;
+			}
+		}
+		wc.setName(defaultName);
+	}
+
+	public static boolean isTcServerDefaultName(IServerWorkingCopy wc) {
+		ServerWorkingCopy defaultServer = new ServerWorkingCopy(null, null, wc.getRuntime(), wc.getServerType());
+		defaultServer.setAttribute(TcServer.KEY_SERVER_NAME, wc.getAttribute(TcServer.KEY_SERVER_NAME, (String) null));
+		defaultServer.setDefaults(new NullProgressMonitor());
+		return wc.getName().equals(defaultServer.getName());
 	}
 
 }

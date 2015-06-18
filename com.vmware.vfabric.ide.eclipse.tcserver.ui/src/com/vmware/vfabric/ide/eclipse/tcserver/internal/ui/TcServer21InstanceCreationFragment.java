@@ -155,6 +155,8 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 	private Button locationBrowseButton;
 
+	private boolean isDefaultServerName;
+
 	protected TcServer21InstanceCreationFragment() {
 		setComplete(false);
 	}
@@ -424,11 +426,15 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 	@Override
 	public void exit() {
+		if (isDefaultServerName) {
+			TcServerUtil.setTcServerDefaultName(wc);
+		}
 		InstanceConfiguration model = initModel();
 		getTaskModel().putObject(INSTANCE_CONFIGURATION, model);
 	}
 
 	private void initialize() {
+		isDefaultServerName = wc == null || TcServerUtil.isTcServerDefaultName(wc);
 		if (runtime == null) {
 			setComplete(false);
 			return;
@@ -448,6 +454,9 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		}
 		templateViewer.setInput(templates);
 		locationPathField.setText(runtime.getLocation().toOSString());
+		if (wc != null) {
+			wc.setName(nameText.getText());
+		}
 	}
 
 	@Override

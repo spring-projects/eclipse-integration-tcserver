@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2015 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -295,6 +295,9 @@ public class TcServer extends TomcatServer {
 	@Override
 	public void setDefaults(IProgressMonitor monitor) {
 		super.setDefaults(monitor);
+
+		TcServerUtil.setTcServerDefaultName(getServerWorkingCopy());
+
 		// test mode is now supported
 		// setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, (String) null);
 		// setAttribute(ITomcatServer.PROPERTY_TEST_ENVIRONMENT, false);
