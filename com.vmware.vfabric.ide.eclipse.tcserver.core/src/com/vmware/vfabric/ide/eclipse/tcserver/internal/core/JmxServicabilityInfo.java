@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2015 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -95,7 +95,13 @@ public class JmxServicabilityInfo implements IServicabilityInfo {
 	}
 
 	public String getHost() {
-		String value = listener.getAttributeValue("bind");
+		/*
+		 * tc Server 3.1.1 has "address", lower versions have "bind"
+		 */
+		String value = listener.getAttributeValue("address");
+		if (value == null) {
+			value = listener.getAttributeValue("bind");
+		}
 		return (value != null) ? TcServer.substitute(value, properties) : null;
 	}
 
