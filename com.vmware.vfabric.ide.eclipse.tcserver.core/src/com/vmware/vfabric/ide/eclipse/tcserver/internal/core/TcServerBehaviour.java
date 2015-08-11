@@ -315,24 +315,21 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 		}
 
 		if (addLogManager) {
-			argsToAdd
-					.add("-Djava.util.logging.manager=com.springsource.tcserver.serviceability.logging.TcServerLogManager");
+			argsToAdd.add(
+					"-Djava.util.logging.manager=com.springsource.tcserver.serviceability.logging.TcServerLogManager");
 		}
 
 		if (addLogConfigFile) {
-			argsToAdd.add("-Djava.util.logging.config.file="
-					+ getTomcatServer().getInstanceBase(getServer().getRuntime()).append("conf")
-							.append("logging.properties"));
+			argsToAdd.add("-Djava.util.logging.config.file=\"" + getTomcatServer()
+					.getInstanceBase(getServer().getRuntime()).append("conf").append("logging.properties") + "\"");
 		}
 
 		argsToAdd.addAll(getTomcatServer().getAddExtraVmArgs());
 		argsToRemove.addAll(getTomcatServer().getRemoveExtraVmArgs());
 
 		if (argsToAdd.size() > 0 || argsToRemove.size() > 0) {
-			workingCopy.setAttribute(
-					IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS,
-					mergeArguments(existingVMArgs, argsToAdd.toArray(new String[0]),
-							argsToRemove.toArray(new String[0]), false));
+			workingCopy.setAttribute(IJavaLaunchConfigurationConstants.ATTR_VM_ARGUMENTS, mergeArguments(existingVMArgs,
+					argsToAdd.toArray(new String[0]), argsToRemove.toArray(new String[0]), false));
 		}
 
 	}
@@ -607,8 +604,8 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 			}
 			catch (TimeoutException e) {
 				setModuleState(module, IServer.STATE_UNKNOWN);
-				throw new CoreException(new Status(IStatus.ERROR, TcServerCorePlugin.PLUGIN_ID, "Cannot start module '"
-						+ module[0].getName() + "'", e));
+				throw new CoreException(new Status(IStatus.ERROR, TcServerCorePlugin.PLUGIN_ID,
+						"Cannot start module '" + module[0].getName() + "'", e));
 			}
 		}
 	}
@@ -626,8 +623,8 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 			}
 			catch (TimeoutException e) {
 				setModuleState(module, IServer.STATE_UNKNOWN);
-				throw new CoreException(new Status(IStatus.ERROR, TcServerCorePlugin.PLUGIN_ID, "Cannot start module '"
-						+ module[0].getName() + "'", e));
+				throw new CoreException(new Status(IStatus.ERROR, TcServerCorePlugin.PLUGIN_ID,
+						"Cannot start module '" + module[0].getName() + "'", e));
 			}
 		}
 	}

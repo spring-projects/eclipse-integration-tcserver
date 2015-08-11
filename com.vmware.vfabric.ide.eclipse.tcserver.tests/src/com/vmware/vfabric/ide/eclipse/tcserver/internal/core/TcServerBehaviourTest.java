@@ -48,7 +48,8 @@ public class TcServerBehaviourTest {
 	}
 
 	@Test
-	// @Ignore("Layout.COMBINED javadoc says it's supported by v2.5 and later only.")
+	// @Ignore("Layout.COMBINED javadoc says it's supported by v2.5 and later
+	// only.")
 	public void testRuntimeVMArgumentsCombined21() throws Exception {
 		runtimeVMArguments(TcServerFixture.V_6_0, TcServerFixture.INST_COMBINED, "tomcat-6.0.33.A.RELEASE",
 				TcServerFixture.INST_COMBINED);
@@ -83,10 +84,11 @@ public class TcServerBehaviourTest {
 		assertTrue(
 				"Expected -Djava.util.logging.manager=com.springsource.tcserver.serviceability.logging.TcServerLogManager in '"
 						+ args + "'",
-				args.contains("-Djava.util.logging.manager=com.springsource.tcserver.serviceability.logging.TcServerLogManager"));
-		TcServer tcServer = (TcServer) server.getAdapter(TcServer.class);
-		String logConfFileArg = "-Djava.util.logging.config.file="
-				+ tcServer.getInstanceBase(server.getRuntime()).append("conf").append("logging.properties");
+				args.contains(
+						"-Djava.util.logging.manager=com.springsource.tcserver.serviceability.logging.TcServerLogManager"));
+		TcServer tcServer = server.getAdapter(TcServer.class);
+		String logConfFileArg = "-Djava.util.logging.config.file=\""
+				+ tcServer.getInstanceBase(server.getRuntime()).append("conf").append("logging.properties") + "\"";
 		assertTrue("Expected " + logConfFileArg + " in '" + args + "'", args.contains(logConfFileArg));
 	}
 
