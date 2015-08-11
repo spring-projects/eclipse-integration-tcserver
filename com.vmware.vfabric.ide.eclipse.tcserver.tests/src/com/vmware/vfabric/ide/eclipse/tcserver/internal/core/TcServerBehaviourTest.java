@@ -88,7 +88,7 @@ public class TcServerBehaviourTest {
 						"-Djava.util.logging.manager=com.springsource.tcserver.serviceability.logging.TcServerLogManager"));
 		@SuppressWarnings("cast")
 		/*
-		 * Keep the cast for the P44 maven build.
+		 * Keep the cast for the P44 Maven build.
 		 */
 		TcServer tcServer = (TcServer) server.getAdapter(TcServer.class);
 		String logConfFileArg = "-Djava.util.logging.config.file=\""
