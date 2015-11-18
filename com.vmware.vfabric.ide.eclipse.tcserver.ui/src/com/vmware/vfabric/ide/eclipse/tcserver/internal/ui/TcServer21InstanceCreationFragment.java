@@ -55,6 +55,7 @@ import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.forms.widgets.SharedScrolledComposite;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.TaskModel;
@@ -173,14 +174,23 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		handle.setTitle("Create tc Server Instance");
 		handle.setDescription(SPECIFY_INSTANCE_PARAMETERS_MESSAGE);
 		handle.setImageDescriptor(TcServerImages.WIZB_SERVER);
+		
+		SharedScrolledComposite scroller = new SharedScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL) {};
+//		scroller.setWidthHint(500); // Avoid excessively wide dialogs
+//		Display display = Display.getCurrent();
+//		Color blue = display.getSystemColor(SWT.COLOR_BLUE);
+//		scroller.setBackground(blue);
+		scroller.setExpandHorizontal(true);
+		scroller.setExpandVertical(true);
 
-		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(3, false));
 
-		Label label = new Label(composite, SWT.NONE);
+		Composite page = new Composite(scroller, SWT.NONE);
+		page.setLayout(new GridLayout(3, false));
+
+		Label label = new Label(page, SWT.NONE);
 		label.setText("Name:");
 
-		nameText = new Text(composite, SWT.BORDER);
+		nameText = new Text(page, SWT.BORDER);
 		GridDataFactory.fillDefaults().grab(true, false).applyTo(nameText);
 		nameText.addModifyListener(new ModifyListener() {
 			public void modifyText(ModifyEvent e) {
@@ -189,12 +199,12 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			}
 		});
 
-		label = new Label(composite, SWT.NONE);
+		label = new Label(page, SWT.NONE);
 		GridDataFactory.fillDefaults().span(3, 1).applyTo(label);
 		label.setText("Templates:");
 
-		templateViewer = CheckboxTableViewer.newCheckList(composite, SWT.BORDER);
-		GC gc = new GC(composite);
+		templateViewer = CheckboxTableViewer.newCheckList(page, SWT.BORDER);
+		GC gc = new GC(page);
 		FontMetrics fm = gc.getFontMetrics();
 		int textLineHeight = fm.getHeight();
 		int hintHeight = textLineHeight * 13; // We don't yet know how big
@@ -257,12 +267,12 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 		templateViewer.setSorter(new ViewerSorter());
 
-		readmeLabel = new Label(composite, SWT.NONE);
+		readmeLabel = new Label(page, SWT.NONE);
 		GridDataFactory.fillDefaults().span(3, 1).grab(true, false).applyTo(readmeLabel);
 		readmeLabel.setText("Template information:");
 
-		readmeText = new Text(composite, SWT.V_SCROLL | SWT.BORDER | SWT.READ_ONLY | SWT.WRAP);
-		gc = new GC(composite);
+		readmeText = new Text(page, SWT.V_SCROLL | SWT.BORDER | SWT.READ_ONLY | SWT.WRAP);
+		gc = new GC(page);
 		fm = gc.getFontMetrics();
 		textLineHeight = fm.getHeight();
 		gc.dispose();
@@ -271,7 +281,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 				.applyTo(readmeText);
 		readmeText.setText("Click on a template to see information about that template.");
 
-		Group layoutGroup = new Group(composite, SWT.BORDER);
+		Group layoutGroup = new Group(page, SWT.BORDER);
 		GridDataFactory.fillDefaults().span(3, 1).grab(true, false).applyTo(layoutGroup);
 		layoutGroup.setLayout(new GridLayout(1, false));
 		layoutGroup.setText("Layout");
@@ -282,7 +292,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		combinedLayoutButton = new Button(layoutGroup, SWT.RADIO);
 		combinedLayoutButton.setText("Combined");
 
-		defaultLocationCheckbox = new Button(composite, SWT.CHECK | SWT.LEFT);
+		defaultLocationCheckbox = new Button(page, SWT.CHECK | SWT.LEFT);
 		defaultLocationCheckbox.setSelection(true);
 		defaultLocationCheckbox.setText("Use default instance location");
 		GridDataFactory.fillDefaults().span(3, 1).applyTo(defaultLocationCheckbox);
@@ -301,13 +311,13 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			}
 		});
 
-		locationLabel = new Label(composite, SWT.NONE);
+		locationLabel = new Label(page, SWT.NONE);
 		locationLabel.setText("Location:");
 		GridData data = new GridData();
 		locationLabel.setLayoutData(data);
 		locationLabel.setEnabled(false);
 
-		locationPathField = new Combo(composite, SWT.DROP_DOWN);
+		locationPathField = new Combo(page, SWT.DROP_DOWN);
 		locationPathField.setEnabled(false);
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		locationPathField.setLayoutData(data);
@@ -318,7 +328,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			}
 		});
 
-		locationBrowseButton = new Button(composite, SWT.PUSH);
+		locationBrowseButton = new Button(page, SWT.PUSH);
 		locationBrowseButton.setText("Browse...");
 		data = new GridData();
 		locationBrowseButton.setLayoutData(data);
@@ -331,8 +341,10 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		});
 		locationBrowseButton.setEnabled(false);
 
-		Dialog.applyDialogFont(composite);
-		return composite;
+		Dialog.applyDialogFont(page);
+        page.pack(true);
+		scroller.setContent(page);
+		return scroller;
 	}
 
 	private void handleLocationBrowseButtonPressed() {
