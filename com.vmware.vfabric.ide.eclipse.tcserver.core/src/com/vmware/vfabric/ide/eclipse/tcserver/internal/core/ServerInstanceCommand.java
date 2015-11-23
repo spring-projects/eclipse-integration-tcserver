@@ -67,7 +67,11 @@ public final class ServerInstanceCommand {
 
 	public int execute(String... arguments) {
 		List<String> allArguments = new ArrayList<String>(arguments.length + 1);
-		allArguments.add(this.script.getAbsolutePath());
+		if (isWindows()) {
+			allArguments.add("\"" + this.script.getAbsolutePath() + "\"");  
+		} else {
+			allArguments.add(this.script.getAbsolutePath());  
+		}
 		allArguments.addAll(Arrays.asList(arguments));
 
 		try {
