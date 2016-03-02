@@ -17,20 +17,20 @@
 	<category-def name="Resources / Eclipse Integration vFabric tc Server" label="Resources / Eclipse Integration vFabric tc Server"/>
 
 	<feature 
-		url="features/org.springsource.ide.eclipse.commons_3.7.3.qualifier.jar" 
-		id="org.springsource.ide.eclipse.commons" version="3.7.3.qualifier">
+		url="features/org.springsource.ide.eclipse.commons_3.8.0.qualifier.jar" 
+		id="org.springsource.ide.eclipse.commons" version="3.8.0.qualifier">
 	</feature>
 
 	<!-- tc Server Integration -->
 	<feature
-		url="com.vmware.vfabric.ide.eclipse.tcserver_3.7.3.qualifier.jar"
-		id="com.vmware.vfabric.ide.eclipse.tcserver" version="3.7.3.qualifier">
+		url="com.vmware.vfabric.ide.eclipse.tcserver_3.8.0.qualifier.jar"
+		id="com.vmware.vfabric.ide.eclipse.tcserver" version="3.8.0.qualifier">
 		<category name="Core / Eclipse Integration vFabric tc Server" />
 	</feature>
 
 	<feature
-		url="com.vmware.vfabric.ide.eclipse.tcserver.insight_3.7.3.qualifier.jar"
-		id="com.vmware.vfabric.ide.eclipse.tcserver.insight" version="3.7.3.qualifier">
+		url="com.vmware.vfabric.ide.eclipse.tcserver.insight_3.8.0.qualifier.jar"
+		id="com.vmware.vfabric.ide.eclipse.tcserver.insight" version="3.8.0.qualifier">
 		<category name="Core / Eclipse Integration vFabric tc Server" />
 	</feature>
 

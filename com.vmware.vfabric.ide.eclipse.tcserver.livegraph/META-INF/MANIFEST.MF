@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SpringSource Tool Suite tc Server Live Beans Graph Integration (experimental)
 Bundle-SymbolicName: com.vmware.vfabric.ide.eclipse.tcserver.livegraph;singleton:=true
-Bundle-Version: 3.7.3.qualifier
+Bundle-Version: 3.8.0.qualifier
 Bundle-Activator: com.vmware.vfabric.ide.eclipse.tcserver.livegraph.TcServerLiveGraphPlugin
 Bundle-Vendor: Pivotal Software, Inc.
 Require-Bundle: org.eclipse.ui,
