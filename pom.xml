@@ -27,19 +27,15 @@
 	<module>com.vmware.vfabric.ide.eclipse.tcserver.tests.ui</module>
 	<module>com.vmware.vfabric.ide.eclipse.tcserver.ui</module>
 
-	<module>com.vmware.vfabric.ide.eclipse.tcserver.insight-feature</module>
-	<module>com.vmware.vfabric.ide.eclipse.tcserver.insight.tests</module>
-	<module>com.vmware.vfabric.ide.eclipse.tcserver.insight.ui</module>
-
 	<module>com.vmware.vfabric.ide.eclipse.tcserver.site</module>
   </modules>
 
   <!-- Common Configuration -->
   <organization>
-    <name>SpringSource, a division of VMware, Inc.</name>
-    <url>http://springsource.com</url>
+    <name>Pivotal, Inc.</name>
+    <url>http://pivotal.io</url>
   </organization>
-  <url>http://www.springsource.com/developer/sts</url>
+  <url>http://spring.io/tools</url>
   <inceptionYear>2007</inceptionYear>
 
   <prerequisites>
@@ -60,14 +56,14 @@
     <!-- Eclipse Integration Commons Properties -->
     <p2.qualifier>SNAPSHOT</p2.qualifier>
     <p2.sign>false</p2.sign>
-    <p2.repository.name>VMware vFabric tc Server Integration for Eclipse</p2.repository.name>
+    <p2.repository.name>Pivotal tc Server Integration for Eclipse</p2.repository.name>
 
 	<!-- Signing -->
 	<signing.skip>true</signing.skip>
 	<signing.alias>pivotal</signing.alias>
 	<signing.keystore>~/.keytool/pivotal.jks</signing.keystore>
 
-    <dist.name>VMware vFabric tc Server Integration for Eclipse</dist.name>
+    <dist.name>Pivotal tc Server Integration for Eclipse</dist.name>
     <dist.project>eclipse-integration-tcserver</dist.project>
     <dist.key>TOOLS</dist.key>
     <dist.target.classifier>eclipseintegrationtcserver-${dist.target}</dist.target.classifier>

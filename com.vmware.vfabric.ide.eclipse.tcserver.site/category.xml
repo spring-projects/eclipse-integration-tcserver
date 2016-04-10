@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 /*******************************************************************************
- * Copyright (c) 2012 VMware, Inc.
+ * Copyright (c) 2012, 2016 VMware, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,8 +13,8 @@
 -->
 <site pack200="true">
 	
-	<category-def name="Core / Eclipse Integration vFabric tc Server" label="Core / Eclipse Integration vFabric tc Server"/>
-	<category-def name="Resources / Eclipse Integration vFabric tc Server" label="Resources / Eclipse Integration vFabric tc Server"/>
+	<category-def name="Core / Eclipse Integration Pivotal tc Server" label="Core / Eclipse Integration Pivotal tc Server"/>
+	<category-def name="Resources / Eclipse Integration Pivotal tc Server" label="Resources / Eclipse Integration Pivotal tc Server"/>
 
 	<feature 
 		url="features/org.springsource.ide.eclipse.commons_3.8.0.qualifier.jar" 
@@ -25,13 +25,7 @@
 	<feature
 		url="com.vmware.vfabric.ide.eclipse.tcserver_3.8.0.qualifier.jar"
 		id="com.vmware.vfabric.ide.eclipse.tcserver" version="3.8.0.qualifier">
-		<category name="Core / Eclipse Integration vFabric tc Server" />
-	</feature>
-
-	<feature
-		url="com.vmware.vfabric.ide.eclipse.tcserver.insight_3.8.0.qualifier.jar"
-		id="com.vmware.vfabric.ide.eclipse.tcserver.insight" version="3.8.0.qualifier">
-		<category name="Core / Eclipse Integration vFabric tc Server" />
+		<category name="Core / Eclipse Integration Pivotal tc Server" />
 	</feature>
 
 </site>
