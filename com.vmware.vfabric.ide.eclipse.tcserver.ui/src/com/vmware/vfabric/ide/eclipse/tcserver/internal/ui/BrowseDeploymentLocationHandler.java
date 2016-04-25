@@ -21,10 +21,13 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatServer;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.ISources;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.ui.IServerModule;
@@ -48,30 +51,36 @@ public class BrowseDeploymentLocationHandler extends AbstractHandler {
 		}
 
 		try {
-			Desktop.getDesktop().browse(uri);
-		}
-		catch (IOException e) {
+			if (Desktop.getDesktop().isSupported(Desktop.Action.OPEN)) {
+				Desktop.getDesktop().open(file);
+			} else {
+				actionNotSupportedMessage();
+			}
+		} catch (UnsupportedOperationException e) {
+			StatusHandler.log(new Status(IStatus.ERROR, TcServerUiPlugin.PLUGIN_ID,
+					"Open action not supported.", e));
+			actionNotSupportedMessage();
+		} catch (IOException e) {
 			StatusHandler.log(new Status(IStatus.ERROR, TcServerUiPlugin.PLUGIN_ID,
 					"Failed to browse deployment location.", e));
 		}
-
+		
 		return null;
+	}
+	
+	private void actionNotSupportedMessage() {
+		final Display display = PlatformUI.getWorkbench().getDisplay();
+		if (display != null) {
+			display.asyncExec(new Runnable() {
+				public void run() {
+					MessageDialog.openError(display.getActiveShell(), "Action Not Supported", "Open folder action is not supported on current Operating System.");
+				}
+			});
+		}
 	}
 
 	@Override
 	public void setEnabled(Object evaluationContext) {
-		try {
-			if (!Desktop.getDesktop().isSupported(Desktop.Action.BROWSE)) {
-				setBaseEnabled(false);
-				return;
-			}
-
-		}
-		catch (UnsupportedOperationException e) {
-			setBaseEnabled(false);
-			return;
-		}
-
 		IServer selectedServer = getSelectedServer(evaluationContext);
 		if (selectedServer == null) {
 			setBaseEnabled(false);
