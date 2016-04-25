@@ -30,5 +30,4 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.commons.io
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.vmware.vfabric.ide.eclipse.tcserver.tests.ui;x-internal:=true
-Import-Package: com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui,
- org.springsource.ide.eclipse.commons.frameworks.test.util
+Import-Package: org.springsource.ide.eclipse.commons.frameworks.test.util

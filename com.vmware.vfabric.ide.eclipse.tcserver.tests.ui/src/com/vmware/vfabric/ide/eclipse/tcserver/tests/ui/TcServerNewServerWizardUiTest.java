@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2016 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,6 @@ import org.springsource.ide.eclipse.commons.frameworks.test.util.SWTBotUtils;
 import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 import org.springsource.ide.eclipse.commons.tests.util.swtbot.StsUiTestCase;
 
-import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.InsightTcServerCallback;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer21InstanceCreationFragment;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer21WizardFragment;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerInstanceConfiguratorPage;
@@ -559,17 +558,6 @@ public class TcServerNewServerWizardUiTest extends StsUiTestCase {
 		// jmxremote.access, jmxremote.password, server.xml, tomcat-users.xml,
 		// and web.xml
 		assertTrue(files.length > 7);
-
-	}
-
-	private void checkForInsightDialog(String serverName) {
-		SWTBotTreeItem treeItem = selectServer(serverName);
-		// SWTBotShell parentShell = bot.activeShell();
-
-		treeItem.contextMenu("Start").click();
-		bot.sleep(1000);
-		bot.waitUntil(Conditions.shellIsActive(InsightTcServerCallback.WANT_INSIGHT_DIALOG_TITLE));
-		bot.button("Yes").click();
 
 	}
 

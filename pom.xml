@@ -27,19 +27,15 @@
 	<module>com.vmware.vfabric.ide.eclipse.tcserver.tests.ui</module>
 	<module>com.vmware.vfabric.ide.eclipse.tcserver.ui</module>
 
-	<module>com.vmware.vfabric.ide.eclipse.tcserver.insight-feature</module>
-	<module>com.vmware.vfabric.ide.eclipse.tcserver.insight.tests</module>
-	<module>com.vmware.vfabric.ide.eclipse.tcserver.insight.ui</module>
-
 	<module>com.vmware.vfabric.ide.eclipse.tcserver.site</module>
   </modules>
 
   <!-- Common Configuration -->
   <organization>
-    <name>SpringSource, a division of VMware, Inc.</name>
-    <url>http://springsource.com</url>
+    <name>Pivotal, Inc.</name>
+    <url>http://pivotal.io</url>
   </organization>
-  <url>http://www.springsource.com/developer/sts</url>
+  <url>http://spring.io/tools</url>
   <inceptionYear>2007</inceptionYear>
 
   <prerequisites>
@@ -60,14 +56,14 @@
     <!-- Eclipse Integration Commons Properties -->
     <p2.qualifier>SNAPSHOT</p2.qualifier>
     <p2.sign>false</p2.sign>
-    <p2.repository.name>VMware vFabric tc Server Integration for Eclipse</p2.repository.name>
+    <p2.repository.name>Pivotal tc Server Integration for Eclipse</p2.repository.name>
 
 	<!-- Signing -->
 	<signing.skip>true</signing.skip>
 	<signing.alias>pivotal</signing.alias>
 	<signing.keystore>~/.keytool/pivotal.jks</signing.keystore>
 
-    <dist.name>VMware vFabric tc Server Integration for Eclipse</dist.name>
+    <dist.name>Pivotal tc Server Integration for Eclipse</dist.name>
     <dist.project>eclipse-integration-tcserver</dist.project>
     <dist.key>TOOLS</dist.key>
     <dist.target.classifier>eclipseintegrationtcserver-${dist.target}</dist.target.classifier>
@@ -242,7 +238,40 @@
 		<repository>
 		  <id>eclipse-integration-commons</id>
 		  <layout>p2</layout>
-		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}/e4.4</url>
+		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
+		</repository>
+	  </repositories>
+    </profile>
+
+    <profile>
+      <id>e46</id>
+      <properties>
+        <dist.target>e4.6</dist.target>
+        <dist.platform.name>Neon</dist.platform.name>
+        <dist.platform.id>neon</dist.platform.id>		
+        <dist.platform.version>4.6</dist.platform.version>
+        <package.qualifierPrefix>e46</package.qualifierPrefix>
+      </properties>
+      <repositories>
+		<repository>
+		  <id>platform</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/eclipse/updates/4.6/</url>
+		</repository>
+		<repository>
+		  <id>indigo</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/releases/neon/</url>
+		</repository>
+		<repository>
+		  <id>swtbot</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+		</repository>
+		<repository>
+		  <id>eclipse-integration-commons</id>
+		  <layout>p2</layout>
+		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
 		</repository>
 	  </repositories>
     </profile>
