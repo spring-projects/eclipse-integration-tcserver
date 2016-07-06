@@ -17,14 +17,14 @@
 	<category-def name="Resources / Eclipse Integration Pivotal tc Server" label="Resources / Eclipse Integration Pivotal tc Server"/>
 
 	<feature 
-		url="features/org.springsource.ide.eclipse.commons_3.8.0.qualifier.jar" 
-		id="org.springsource.ide.eclipse.commons" version="3.8.0.qualifier">
+		url="features/org.springsource.ide.eclipse.commons_3.8.1.qualifier.jar" 
+		id="org.springsource.ide.eclipse.commons" version="3.8.1.qualifier">
 	</feature>
 
 	<!-- tc Server Integration -->
 	<feature
-		url="com.vmware.vfabric.ide.eclipse.tcserver_3.8.0.qualifier.jar"
-		id="com.vmware.vfabric.ide.eclipse.tcserver" version="3.8.0.qualifier">
+		url="com.vmware.vfabric.ide.eclipse.tcserver_3.8.1.qualifier.jar"
+		id="com.vmware.vfabric.ide.eclipse.tcserver" version="3.8.1.qualifier">
 		<category name="Core / Eclipse Integration Pivotal tc Server" />
 	</feature>
 
