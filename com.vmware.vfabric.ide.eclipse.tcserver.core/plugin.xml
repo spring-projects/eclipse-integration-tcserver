@@ -17,9 +17,6 @@
        <moduleType
          types="jst.utility"
          versions="1.0"/>
-       <moduleType
-         types="grails.app"
-         versions="1.0"/>
     </runtimeType>
     <runtimeType
        id="com.pivotal.server.tc.runtime.80"
@@ -33,9 +30,6 @@
          versions="2.2, 2.3, 2.4, 2.5, 3.0, 3.1"/>
        <moduleType
          types="jst.utility"
-         versions="1.0"/>
-       <moduleType
-         types="grails.app"
          versions="1.0"/>
     </runtimeType>
   </extension>
@@ -150,9 +144,6 @@
       <facet
          id="jst.utility"
          version="1.0"/>
-      <facet
-         id="grails.app"
-         version="1.0"/>
     </supported>
   </extension>
   
@@ -185,9 +176,6 @@
          version="3.0,3.1"/>
       <facet
          id="jst.utility"
-         version="1.0"/>
-      <facet
-         id="grails.app"
          version="1.0"/>
     </supported>
   </extension>
