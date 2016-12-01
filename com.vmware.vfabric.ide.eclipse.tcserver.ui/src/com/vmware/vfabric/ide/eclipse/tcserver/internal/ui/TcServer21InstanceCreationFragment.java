@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2015 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2016 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -54,10 +54,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.forms.events.HyperlinkEvent;
-import org.eclipse.ui.forms.events.IHyperlinkListener;
-import org.eclipse.ui.forms.widgets.Hyperlink;
 import org.eclipse.ui.forms.widgets.SharedScrolledComposite;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
@@ -68,7 +66,6 @@ import org.eclipse.wst.server.ui.wizard.WizardFragment;
 import org.springsource.ide.eclipse.commons.core.FileUtil;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 import org.springsource.ide.eclipse.commons.ui.UiUtil;
-import org.springsource.ide.eclipse.commons.ui.UnderlinedHyperlink;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntime;
@@ -206,18 +203,6 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 
 		label = new Label(page, SWT.NONE);
 		label.setText("Templates:");
-		Hyperlink link = new UnderlinedHyperlink(page, SWT.WRAP);
-		link.setText("Additional templates can be downloaded separately. See tc-server template documentation for details.");
-		link.addHyperlinkListener(new IHyperlinkListener() {
-			public void linkExited(HyperlinkEvent e) {
-			}
-			public void linkEntered(HyperlinkEvent e) {
-			}
-			public void linkActivated(HyperlinkEvent e) {
-				UiUtil.openUrl("http://tcserver.docs.pivotal.io/docs-tcserver/topics/template.html#managing-templates");
-			}
-		});
-		GridDataFactory.fillDefaults().span(2, 1).applyTo(link);
 
 		templateViewer = CheckboxTableViewer.newCheckList(page, SWT.BORDER);
 		GC gc = new GC(page);
@@ -282,6 +267,17 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		});
 
 		templateViewer.setSorter(new ViewerSorter());
+	    
+		Link link = new Link(page, SWT.NONE);
+	    String message = "(for more templates, please visit the <a>tc server documentation</a>)";
+	    link.setText(message);
+	    link.addSelectionListener(new SelectionAdapter(){
+	        @Override
+	        public void widgetSelected(SelectionEvent e) {
+	        		UiUtil.openUrl("http://tcserver.docs.pivotal.io/docs-tcserver/topics/template.html#managing-templates");
+	        }
+	    });
+		GridDataFactory.fillDefaults().span(3, 1).align(SWT.END, SWT.BEGINNING).applyTo(link);
 
 		readmeLabel = new Label(page, SWT.NONE);
 		GridDataFactory.fillDefaults().span(3, 1).grab(true, false).applyTo(readmeLabel);
