@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2016 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,8 +15,6 @@ package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
  * @author Christian Dupuis
  */
 public interface ITcServerConstants {
-
-	public static final String GRAILS_APP_MODULE_TYPE = "grails.app";
 
 	public static String ID_CONFIG_TC_SERVER_2_1 = "com.springsource.sts.ide.configurator.server.TcServer21";
 

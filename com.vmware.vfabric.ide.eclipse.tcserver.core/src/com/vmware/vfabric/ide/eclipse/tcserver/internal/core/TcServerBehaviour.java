@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2016 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunch;
@@ -265,12 +264,8 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 			argsToRemove.add("-Dspringloaded");
 		}
 
-		boolean grailsInstalled = Platform.getBundle("org.grails.ide.eclipse.runonserver") != null
-				|| Platform.getBundle("com.springsource.sts.grails.runonserver") != null;
-
 		boolean addXmx = true;
 		boolean addXss = true;
-		boolean addGrailsGspEnable = true;
 		boolean addMaxPermSize = true;
 		boolean addLogManager = true;
 		boolean addLogConfigFile = true;
@@ -286,9 +281,6 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 				}
 				else if (parsedVMArg.startsWith("-XX:MaxPermSize=")) {
 					addMaxPermSize = false;
-				}
-				else if (parsedVMArg.startsWith("-Dgrails.gsp.enable.reload=")) {
-					addGrailsGspEnable = false;
 				}
 				else if (parsedVMArg.startsWith("-Djava.util.logging.manager")) {
 					addLogManager = false;
@@ -306,12 +298,6 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 		}
 		if (addMaxPermSize) {
 			argsToAdd.add("-XX:MaxPermSize=256m");
-		}
-
-		if (grailsInstalled) {
-			if (addGrailsGspEnable) {
-				argsToAdd.add("-Dgrails.gsp.enable.reload=true");
-			}
 		}
 
 		if (addLogManager) {

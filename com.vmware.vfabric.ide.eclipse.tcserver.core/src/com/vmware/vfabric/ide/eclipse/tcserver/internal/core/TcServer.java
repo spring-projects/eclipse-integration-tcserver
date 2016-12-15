@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2015 Pivotal Software, Inc.
+ * Copyright (c) 2012 - 2016 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -102,22 +102,6 @@ public class TcServer extends TomcatServer {
 
 	private static final String DEFAULT_JMX_PORT = "6969";
 
-	@Override
-	public IStatus canModifyModules(IModule[] add, IModule[] remove) {
-		if (add != null) {
-			int size = add.length;
-			for (int i = 0; i < size; i++) {
-				IModule module = add[i];
-
-				if (ITcServerConstants.GRAILS_APP_MODULE_TYPE.equals(module.getModuleType().getId())) {
-					return Status.OK_STATUS;
-				}
-			}
-		}
-
-		return super.canModifyModules(add, remove);
-	}
-
 	@SuppressWarnings("unchecked")
 	public List<String> getAddExtraVmArgs() {
 		return getAttribute(PROPERTY_ADD_EXTRA_VMARGS, Collections.EMPTY_LIST);
@@ -201,14 +185,6 @@ public class TcServer extends TomcatServer {
 	@SuppressWarnings("unchecked")
 	public List<String> getRemoveExtraVmArgs() {
 		return getAttribute(PROPERTY_REMOVE_EXTRA_VMARGS, Collections.EMPTY_LIST);
-	}
-
-	@Override
-	public IModule[] getRootModules(IModule module) throws CoreException {
-		if (ITcServerConstants.GRAILS_APP_MODULE_TYPE.equals(module.getModuleType().getId())) {
-			return new IModule[] { module };
-		}
-		return super.getRootModules(module);
 	}
 
 	public String getServerName() {
