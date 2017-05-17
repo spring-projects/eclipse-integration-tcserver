@@ -277,6 +277,39 @@
     </profile>
 
     <profile>
+      <id>e47</id>
+      <properties>
+        <dist.target>e4.7</dist.target>
+        <dist.platform.name>Oxygen</dist.platform.name>
+        <dist.platform.id>oxygen</dist.platform.id>		
+        <dist.platform.version>4.7</dist.platform.version>
+        <package.qualifierPrefix>e47</package.qualifierPrefix>
+      </properties>
+      <repositories>
+		<repository>
+		  <id>platform</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/eclipse/updates/4.7/</url>
+		</repository>
+		<repository>
+		  <id>indigo</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/releases/oxygen/</url>
+		</repository>
+		<repository>
+		  <id>swtbot</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+		</repository>
+		<repository>
+		  <id>eclipse-integration-commons</id>
+		  <layout>p2</layout>
+		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
+		</repository>
+	  </repositories>
+    </profile>
+
+    <profile>
       <id>build.springsource.com</id>
       <activation>
         <property>
