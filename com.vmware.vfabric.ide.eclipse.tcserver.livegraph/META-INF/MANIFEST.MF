@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.jst.server.tomcat.core,
  org.springframework.ide.eclipse.beans.ui.livegraph;bundle-version="3.1.0";resolution:=optional,
  org.springsource.ide.eclipse.commons.core,
- org.eclipse.jst.server.tomcat.ui
+ org.eclipse.jst.server.tomcat.ui,
+ org.springframework.ide.eclipse.beans.ui.live;bundle-version="3.9.1"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.core.runtime,

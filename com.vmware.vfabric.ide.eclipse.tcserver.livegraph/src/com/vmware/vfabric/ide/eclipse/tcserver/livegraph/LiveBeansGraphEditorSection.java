@@ -49,7 +49,7 @@ import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerListener;
 import org.eclipse.wst.server.core.ServerEvent;
 import org.eclipse.wst.server.ui.editor.ServerEditorSection;
-import org.springframework.ide.eclipse.beans.ui.livegraph.model.LiveBeansModel;
+import org.springframework.ide.eclipse.beans.ui.live.model.LiveBeansModel;
 import org.springframework.ide.eclipse.beans.ui.livegraph.model.LiveBeansModelGenerator;
 import org.springframework.ide.eclipse.beans.ui.livegraph.views.LiveBeansGraphView;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
