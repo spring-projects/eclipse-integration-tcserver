@@ -126,7 +126,11 @@ public class TcServerBehaviourTest {
 		args.add("-Dcatalina.base=\"" + location.append(instance).toOSString() + "\"");
 		args.add("-Dcatalina.home=\"" + location.append(runtime).toOSString() + "\"");
 		args.add("-Dwtp.deploy=\"" + location.append(instance).append("wtpwebapps").toOSString() + "\"");
-		args.add("-Djava.endorsed.dirs=\"" + location.append(runtime).append("endorsed").toOSString() + "\"");
+		if (location.append(runtime).append("endorsed").toFile().exists()) {
+			// https://tomcat.apache.org/tomcat-8.0-doc/class-loader-howto.html#XML_Parsers_and_Java
+			// Should be present if folder is present
+			args.add("-Djava.endorsed.dirs=\"" + location.append(runtime).append("endorsed").toOSString() + "\"");
+		}
 		return args;
 	}
 
