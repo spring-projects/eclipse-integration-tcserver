@@ -160,7 +160,7 @@
 		  <url>http://download.eclipse.org/eclipse/updates/4.3/</url>
 		</repository>
 		<repository>
-		  <id>indigo</id>
+		  <id>kepler</id>
 		  <layout>p2</layout>
 		  <url>http://download.eclipse.org/releases/kepler/</url>
 		</repository>
@@ -193,7 +193,7 @@
 		  <url>http://download.eclipse.org/eclipse/updates/4.4/</url>
 		</repository>
 		<repository>
-		  <id>indigo</id>
+		  <id>luna</id>
 		  <layout>p2</layout>
 		  <url>http://download.eclipse.org/releases/luna/</url>
 		</repository>
@@ -226,7 +226,7 @@
 		  <url>http://download.eclipse.org/eclipse/updates/4.5/</url>
 		</repository>
 		<repository>
-		  <id>indigo</id>
+		  <id>mars</id>
 		  <layout>p2</layout>
 		  <url>http://download.eclipse.org/releases/mars/</url>
 		</repository>
@@ -259,7 +259,7 @@
 		  <url>http://download.eclipse.org/eclipse/updates/4.6/</url>
 		</repository>
 		<repository>
-		  <id>indigo</id>
+		  <id>neon</id>
 		  <layout>p2</layout>
 		  <url>http://download.eclipse.org/releases/neon/</url>
 		</repository>
@@ -292,9 +292,42 @@
 		  <url>http://download.eclipse.org/eclipse/updates/4.7/</url>
 		</repository>
 		<repository>
-		  <id>indigo</id>
+		  <id>oxygen</id>
 		  <layout>p2</layout>
 		  <url>http://download.eclipse.org/releases/oxygen/</url>
+		</repository>
+		<repository>
+		  <id>swtbot</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+		</repository>
+		<repository>
+		  <id>eclipse-integration-commons</id>
+		  <layout>p2</layout>
+		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
+		</repository>
+	  </repositories>
+    </profile>
+
+    <profile>
+      <id>e48</id>
+      <properties>
+        <dist.target>e4.8</dist.target>
+        <dist.platform.name>Photon</dist.platform.name>
+        <dist.platform.id>photon</dist.platform.id>		
+        <dist.platform.version>4.8</dist.platform.version>
+        <package.qualifierPrefix>e48</package.qualifierPrefix>
+      </properties>
+      <repositories>
+		<repository>
+		  <id>platform</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/eclipse/updates/4.8/</url>
+		</repository>
+		<repository>
+		  <id>photon</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/releases/photon/</url>
 		</repository>
 		<repository>
 		  <id>swtbot</id>
