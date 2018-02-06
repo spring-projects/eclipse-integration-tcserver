@@ -335,6 +335,11 @@
 		  <url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
 		</repository>
 		<repository>
+		  <id>wtp-latest</id>
+		  <layout>p2</layout>
+		  <url>http://download.eclipse.org/webtools/downloads/drops/R3.9.2/R-3.9.2-20171201000141/repository</url>
+		</repository>
+		<repository>
 		  <id>eclipse-integration-commons</id>
 		  <layout>p2</layout>
 		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
