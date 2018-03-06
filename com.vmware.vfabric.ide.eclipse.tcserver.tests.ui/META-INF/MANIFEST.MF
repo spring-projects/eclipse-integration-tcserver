@@ -28,6 +28,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.swtbot.junit4_x;bundle-version="2.0.5",
  org.eclipse.swtbot.swt.finder;bundle-version="2.0.5",
  org.apache.commons.io
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Export-Package: com.vmware.vfabric.ide.eclipse.tcserver.tests.ui;x-internal:=true
 Import-Package: org.springsource.ide.eclipse.commons.frameworks.test.util
