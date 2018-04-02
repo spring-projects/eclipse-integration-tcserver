@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2015 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -39,7 +39,13 @@ import org.eclipse.wst.server.core.internal.Runtime;
  * @author Christian Dupuis
  * @author Terry Denney
  */
-public class TcServerRuntime extends TomcatRuntime {
+public class TcServerRuntime extends TomcatRuntime implements ITcRuntime {
+	
+	private static final String INSTANCE_CREATION_SCRIPT = "tcruntime-instance";
+	
+	protected static final String UNIX_SUFFIX = ".sh";
+
+	protected static final String WINDOWS_SUFFIX = ".bat";
 
 	/**
 	 * Sorts server directories. Higher versions have lower indices.
@@ -61,11 +67,11 @@ public class TcServerRuntime extends TomcatRuntime {
 
 	public static String ID_TC_SERVER_3_0 = "com.pivotal.server.tc.runtime.80";
 
-	private static final String TEMPLATES_FOLDER = "templates";
+	protected static final String TEMPLATES_FOLDER = "templates";
 
-	private static final String TEMPLATE_VARIATION_STR = "-tomcat-";
+	protected static final String TEMPLATE_VARIATION_STR = "-tomcat-";
 
-	private static final Pattern TEMPLATE_PATTERN = Pattern.compile("(.*)-tomcat-(.*)");
+	protected static final Pattern TEMPLATE_PATTERN = Pattern.compile("(.*)-tomcat-(.*)");
 
 	public static final String KEY_SERVER_VERSION = "com.springsource.tcserver.version";
 
@@ -99,17 +105,7 @@ public class TcServerRuntime extends TomcatRuntime {
 	}
 
 	public IPath getTomcatLocation() {
-		return getTomcatLocation(getRuntime());
-	}
-
-	/**
-	 * Returns the <code>catalina.home</code> directory for <code>runtime</code>
-	 * .
-	 *
-	 * @return the path or null
-	 */
-	public static IPath getTomcatLocation(IRuntime runtime) {
-		IPath installPath = runtime.getLocation();
+		IPath installPath = getTomcatServersContainer();
 		// If installPath is relative, convert to canonical path and hope for
 		// the best
 		if (!installPath.isAbsolute()) {
@@ -124,7 +120,7 @@ public class TcServerRuntime extends TomcatRuntime {
 
 		if (!installPath.append("lib").append("catalina.jar").toFile().exists()) {
 			// search for Tomcat instance
-			String serverVersion = ((Runtime) runtime).getAttribute(KEY_SERVER_VERSION, (String) null);
+			String serverVersion = ((Runtime) getRuntime()).getAttribute(KEY_SERVER_VERSION, (String) null);
 			if (serverVersion != null) {
 				installPath = installPath.append(serverVersion);
 			}
@@ -177,7 +173,7 @@ public class TcServerRuntime extends TomcatRuntime {
 		if (status.getMessage().contains("Java SDK")) {
 			// ignore, tc Server does not require a JRE to compile JSPs
 
-			File f = getRuntime().getLocation().append("conf").toFile();
+			File f = new File(runtimeLocation().toFile(), "conf");
 			File[] conf = f.listFiles();
 			if (conf != null) {
 				int size = conf.length;
@@ -216,10 +212,10 @@ public class TcServerRuntime extends TomcatRuntime {
 	 */
 	public Set<String> getTemplates() {
 		Set<String> templates = new HashSet<String>();
-		IPath runtimePath = getRuntime().getLocation();
-		IPath templatePath = runtimePath.append(TEMPLATES_FOLDER);
-		if (templatePath.toFile().exists()) {
-			File[] children = templatePath.toFile().listFiles();
+		IPath runtimePath = runtimeLocation();
+		File templatePath = new File(runtimePath.toFile(), TEMPLATES_FOLDER);
+		if (templatePath.exists()) {
+			File[] children = templatePath.listFiles();
 			if (children != null) {
 				for (File child : children) {
 					if (child.isDirectory()) {
@@ -227,7 +223,7 @@ public class TcServerRuntime extends TomcatRuntime {
 						if (matcher.matches()) {
 							String template = matcher.group(1);
 							String version = matcher.group(2);
-							if (TcServerUtil.getServerVersion(getRuntime()).startsWith(version)) {
+							if (TcServerUtil.getServerVersion(getTomcatLocation().lastSegment()).startsWith(version)) {
 								templates.add(template);
 							}
 						}
@@ -249,7 +245,7 @@ public class TcServerRuntime extends TomcatRuntime {
 	 */
 	public File getTemplateFolder(String templateName) {
 		StringBuilder templatePath = new StringBuilder();
-		templatePath.append(getRuntime().getLocation());
+		templatePath.append(runtimeLocation());
 		templatePath.append(File.separator);
 		templatePath.append(TEMPLATES_FOLDER);
 		templatePath.append(File.separator);
@@ -257,7 +253,7 @@ public class TcServerRuntime extends TomcatRuntime {
 		File templateFolder = new File(templatePath.toString());
 		if (!templateFolder.exists() || !templateFolder.isDirectory()) {
 			templateFolder = null;
-			String serverVersion = TcServerUtil.getServerVersion(getRuntime());
+			String serverVersion = TcServerUtil.getServerVersion(getTomcatLocation().lastSegment());
 			if (serverVersion != null && !serverVersion.isEmpty()) {
 				templateFolder = null;
 				int idx = serverVersion.indexOf('.');
@@ -271,6 +267,26 @@ public class TcServerRuntime extends TomcatRuntime {
 			}
 		}
 		return templateFolder;
+	}
+
+	@Override
+	public IPath runtimeLocation() {
+		return getRuntime().getLocation();
+	}
+
+	@Override
+	public IPath instanceCreationScript() {
+		return runtimeLocation().append(INSTANCE_CREATION_SCRIPT + (TcServerUtil.isWindows() ? WINDOWS_SUFFIX : UNIX_SUFFIX));
+	}
+
+	@Override
+	public IPath instanceDirectory(String instanceName) {
+		return getRuntime().getLocation().append(instanceName);
+	}
+	
+	@Override
+	public IPath getTomcatServersContainer() {
+		return getRuntime().getLocation();
 	}
 
 }

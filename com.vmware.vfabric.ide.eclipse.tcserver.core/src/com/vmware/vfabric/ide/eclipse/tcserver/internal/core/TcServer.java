@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2016 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,6 +49,8 @@ public class TcServer extends TomcatServer {
 	public static String ID_TC_SERVER_2_5 = "com.vmware.server.tc.70";
 
 	public static String ID_TC_SERVER_3_0 = "com.pivotal.server.tc.80";
+	
+	public static String ID_TC_SERVER_4_0 = "com.pivotal.server.tc.90";
 
 	public static final String DEFAULT_DEPLOYER_HOST = "localhost";
 
@@ -138,7 +140,8 @@ public class TcServer extends TomcatServer {
 	 * is configured to use.
 	 */
 	public IPath getInstanceBase(IRuntime runtime) {
-		IPath path = runtime.getLocation();
+		ITcRuntime tcRuntime = TcServerUtil.getTcRuntime(runtime);
+		IPath path = tcRuntime.runtimeLocation();
 		if (isAsfLayout()) {
 			return getTomcatRuntime().getTomcatLocation();
 		}
@@ -149,7 +152,7 @@ public class TcServer extends TomcatServer {
 			}
 			String serverName = getAttribute(KEY_SERVER_NAME, (String) null);
 			if (serverName != null && !path.toOSString().endsWith(serverName)) {
-				path = path.append(serverName);
+				path = tcRuntime.instanceDirectory(serverName);
 			}
 			return path;
 		}
@@ -278,7 +281,8 @@ public class TcServer extends TomcatServer {
 		// setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, (String) null);
 		// setAttribute(ITomcatServer.PROPERTY_TEST_ENVIRONMENT, false);
 		// ASF layout is only supported by tc Server 2.0 and earlier
-		if (isVersion25(getServer().getRuntime()) || isVersion30(getServer().getRuntime())) {
+		if (isVersion25(getServer().getRuntime()) || isVersion30(getServer().getRuntime())
+				|| isVersion40(getServer().getRuntime())) {
 			setAttribute(TcServer.KEY_ASF_LAYOUT, false);
 			setAttribute(ITomcatServer.PROPERTY_SAVE_SEPARATE_CONTEXT_FILES, true);
 		}
@@ -365,6 +369,10 @@ public class TcServer extends TomcatServer {
 		return runtime.getRuntimeType().getId().endsWith("80");
 	}
 
+	public static boolean isVersion40(IRuntime runtime) {
+		return runtime.getRuntimeType().getId().endsWith("90");
+	}
+	
 	public static String substitute(String value, Properties properties) {
 		String[] segments = value.split("\\$\\{");
 		StringBuffer sb = new StringBuffer(value.length());

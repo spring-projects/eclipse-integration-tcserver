@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2014 Pivotal Software, Inc.
+ * Copyright (c) 2013, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,8 +37,11 @@ public class InsightTestFixture extends TcServerFixture {
 			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.9.3.RELEASE", V_2_9_URL);
 
 	public static InsightTestFixture V_3_0 = new InsightTestFixture(TcServerTestPlugin.PLUGIN_ID,
-			TcServer.ID_TC_SERVER_3_0, "pivotal-tc-server-developer-3.0.0.RELEASE", V_3_0_URL);
+			TcServer.ID_TC_SERVER_3_0, "pivotal-tc-server-developer-3.0.1.RELEASE", V_3_0_URL);
 
+	public static InsightTestFixture V_3_1 = new InsightTestFixture(TcServerTestPlugin.PLUGIN_ID,
+			TcServer.ID_TC_SERVER_3_0, "pivotal-tc-server-developer-3.1.0.RELEASE", V_3_1_URL);
+	
 	public InsightTestFixture(String testPlugin, String serverType, String stubPath, String downloadUrl) {
 		super(testPlugin, serverType, stubPath, downloadUrl);
 	}
@@ -55,7 +58,7 @@ public class InsightTestFixture extends TcServerFixture {
 						IPath installLocation = wc.getRuntime().getLocation();
 						if (!installLocation.append(DEFAULT_INSTANCE).toFile().exists()) {
 							String[] arguments = new String[] { "create", DEFAULT_INSTANCE, "-t", "insight", "--force" };
-							TcServerUtil.executeInstanceCreation(installLocation, DEFAULT_INSTANCE, arguments);
+							TcServerUtil.executeInstanceCreation(wc.getRuntime(), DEFAULT_INSTANCE, arguments);
 						}
 						wc.setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, (String) null);
 						wc.setAttribute(ITomcatServer.PROPERTY_TEST_ENVIRONMENT, false);

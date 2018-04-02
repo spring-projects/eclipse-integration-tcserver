@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2015 Spring IDE Developers
+ * Copyright (c) 2012, 2018 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -138,6 +138,10 @@ public class TemplatePropertiesReader {
 				defaultValue = findDefaultValue(key, serverFragmentContent);
 				if (defaultValue == null && sslPropertiesContent != null) {
 					defaultValue = findDefaultValue(key, sslPropertiesContent);
+					// Replace ${template.name} with template name
+					if (defaultValue != null) {
+						defaultValue = defaultValue.replace("${template.name}", templateDir.getName().replaceAll("-tomcat-\\d*", ""));
+					}
 				}
 				if (defaultValue != null) {
 					if (isLinked(defaultValue)) {

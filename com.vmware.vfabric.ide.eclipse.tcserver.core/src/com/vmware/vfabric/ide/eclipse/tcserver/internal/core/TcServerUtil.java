@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2015 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,6 +20,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatServer;
 import org.eclipse.osgi.util.NLS;
@@ -48,10 +49,8 @@ public class TcServerUtil {
 	}
 
 	public static String getServerVersion(IRuntime runtime) {
-		// String directory = ((Runtime)
-		// runtime).getAttribute(TcServerRuntime.KEY_SERVER_VERSION, (String)
-		// null);
-		String directory = TcServerRuntime.getTomcatLocation(runtime).lastSegment();
+		ITcRuntime tcRuntime = getTcRuntime(runtime);
+		String directory = tcRuntime.getTomcatLocation().lastSegment();
 		return getServerVersion(directory);
 	}
 
@@ -92,9 +91,10 @@ public class TcServerUtil {
 		return Status.OK_STATUS;
 	}
 
-	public static void executeInstanceCreation(IPath runtimeLocation, String instanceName, String[] arguments)
+	public static void executeInstanceCreation(IRuntime runtime, String instanceName, String[] arguments)
 			throws CoreException {
-		ServerInstanceCommand command = new ServerInstanceCommand(runtimeLocation.toFile());
+		ITcRuntime tcRuntime = getTcRuntime(runtime);
+		ServerInstanceCommand command = new ServerInstanceCommand(tcRuntime);
 
 		// execute
 		int returnCode;
@@ -102,31 +102,31 @@ public class TcServerUtil {
 			returnCode = command.execute(arguments);
 		}
 		catch (Exception e) {
-			throw handleResult(runtimeLocation, command, arguments, new Status(IStatus.ERROR,
+			throw handleResult(tcRuntime.runtimeLocation(), command, arguments, new Status(IStatus.ERROR,
 					ITcServerConstants.PLUGIN_ID, "The instance creation command resulted in an exception", e));
 		}
 
 		if (returnCode != 0) {
-			throw handleResult(runtimeLocation, command, arguments, new Status(IStatus.ERROR,
+			throw handleResult(tcRuntime.runtimeLocation(), command, arguments, new Status(IStatus.ERROR,
 					ITcServerConstants.PLUGIN_ID, "The instance creation command failed and returned code "
 							+ returnCode));
 		}
 
 		// verify result
-		File instanceDirectory = getInstanceDirectory(arguments, instanceName);
+		IPath instanceDirectory = getInstanceDirectory(arguments, instanceName);
 		if (instanceDirectory == null) {
-			instanceDirectory = new File(runtimeLocation.toFile(), instanceName);
+			instanceDirectory = tcRuntime.instanceDirectory(instanceName);
 		}
-		IStatus status = validateInstance(instanceDirectory, true);
+		IStatus status = validateInstance(instanceDirectory.toFile(), true);
 		if (!status.isOK()) {
-			throw handleResult(runtimeLocation, command, arguments, status);
+			throw handleResult(tcRuntime.runtimeLocation(), command, arguments, status);
 		}
 	}
-
-	private static File getInstanceDirectory(String[] arguments, String instanceName) {
+	
+	private static IPath getInstanceDirectory(String[] arguments, String instanceName) {
 		for (int i = 0; i < arguments.length; i++) {
 			if (arguments[i].equals("-i") && arguments[i + 1] != null) {
-				return new File(arguments[i + 1], instanceName);
+				return new Path(new File(arguments[i + 1], instanceName).toString());
 			}
 		}
 		return null;
@@ -228,6 +228,14 @@ public class TcServerUtil {
 		defaultServer.setAttribute(TcServer.KEY_SERVER_NAME, wc.getAttribute(TcServer.KEY_SERVER_NAME, (String) null));
 		defaultServer.setDefaults(new NullProgressMonitor());
 		return wc.getName().equals(defaultServer.getName());
+	}
+
+	static boolean isWindows() {
+		return File.separatorChar == '\\';
+	}
+	
+	public static ITcRuntime getTcRuntime(IRuntime runtime) {
+		return (ITcRuntime) runtime.loadAdapter(ITcRuntime.class, new NullProgressMonitor());
 	}
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,7 +25,8 @@ import org.eclipse.wst.server.core.IRuntime;
 public class TcServerRuntimeClasspathProvider extends RuntimeClasspathProviderDelegate {
 
 	public IClasspathEntry[] resolveClasspathContainer(IProject project, IRuntime runtime) {
-		IPath installPath = TcServerRuntime.getTomcatLocation(runtime);
+		ITcRuntime tcRuntime = TcServerUtil.getTcRuntime(runtime);
+		IPath installPath = tcRuntime.getTomcatLocation();
 		if (installPath == null) {
 			return new IClasspathEntry[0];
 		}

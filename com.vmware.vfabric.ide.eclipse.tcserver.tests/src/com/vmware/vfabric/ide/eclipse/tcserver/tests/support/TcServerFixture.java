@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2015 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,6 @@ import java.util.List;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
@@ -25,6 +24,7 @@ import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.springsource.ide.eclipse.commons.configurator.ServerHandler;
 import org.springsource.ide.eclipse.commons.configurator.ServerHandlerCallback;
 
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.ITcRuntime;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer21ServerHandlerCallback;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntime;
@@ -52,6 +52,8 @@ public class TcServerFixture extends TestConfiguration {
 
 	public static String V_3_1_URL = "http://dist.springsource.com.s3.amazonaws.com/release/TCS/pivotal-tc-server-developer-3.1.0.RELEASE.zip";
 
+	public static String V_4_0_URL = "http://dist.springsource.com.s3.amazonaws.com/release/TCS/pivotal-tc-server-developer-4.0.0.RELEASE.zip";
+	
 	public static TcServerFixture V_2_5 = new TcServerFixture("com.vmware.server.tc.runtime.70",
 			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.5.2.RELEASE",
 			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.5.2.RELEASE.zip");
@@ -76,16 +78,19 @@ public class TcServerFixture extends TestConfiguration {
 	public static TcServerFixture V_3_1 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_3_0,
 			"pivotal-tc-server-developer-3.1.0.RELEASE", V_3_1_URL);
 
+	public static TcServerFixture V_4_0 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_4_0,
+			"pivotal-tc-server", V_4_0_URL);
+	
 	public static TcServerFixture V_6_0 = new TcServerFixture("com.vmware.server.tc.runtime.70",
 			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.5.2.RELEASE",
 			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.5.2.RELEASE.zip", "6", true);
 
 	private static TcServerFixture current;
 
-	private static final TcServerFixture DEFAULT = V_3_0;
+	private static final TcServerFixture DEFAULT = V_4_0;
 
 	public static TcServerFixture[] ALL = new TcServerFixture[] { V_6_0, V_2_5, V_2_6, V_2_7, V_2_8, V_2_9, V_3_0,
-			V_3_1 };
+			V_3_1, V_4_0 };
 
 	public static TcServerFixture current() {
 		if (current == null) {
@@ -159,8 +164,8 @@ public class TcServerFixture extends TestConfiguration {
 			public void configureServer(IServerWorkingCopy server) throws CoreException {
 				super.configureServer(server);
 				if (tomcatVersion != null) {
-					IPath installLocation = server.getRuntime().getLocation();
-					List<File> tomcatFolders = TcServerRuntime.getTomcatVersions(installLocation.toFile());
+					ITcRuntime tcRuntime = TcServerUtil.getTcRuntime(server.getRuntime());
+					List<File> tomcatFolders = TcServerRuntime.getTomcatVersions(tcRuntime.getTomcatServersContainer().toFile());
 					for (File tomcatFolder : tomcatFolders) {
 						String version = TcServerUtil.getServerVersion(tomcatFolder.getName());
 						if (version.startsWith(tomcatVersion)) {
@@ -195,7 +200,7 @@ public class TcServerFixture extends TestConfiguration {
 		handler.setServerPath(path);
 		return handler;
 	}
-
+	
 	public String getServerType() {
 		return serverType;
 	}

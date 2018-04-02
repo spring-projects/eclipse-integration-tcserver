@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2016 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -493,8 +493,6 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			return;
 		}
 
-		IPath runtimeLocation = runtime.getLocation();
-
 		List<String> arguments = new ArrayList<String>();
 		arguments.add("create");
 		arguments.add(model.getName());
@@ -526,7 +524,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 			arguments.add(vmInstall.getInstallLocation().getPath());
 		}
 
-		TcServerUtil.executeInstanceCreation(runtimeLocation, model.getName(),
+		TcServerUtil.executeInstanceCreation(runtime, model.getName(),
 				arguments.toArray(new String[arguments.size()]));
 
 		// start server inline for new instances

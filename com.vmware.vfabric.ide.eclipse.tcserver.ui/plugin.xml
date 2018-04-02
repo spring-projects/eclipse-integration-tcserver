@@ -10,7 +10,7 @@
       <image 
          id="com.springsource.tcserver" 
          icon="icons/full/obj16/springsource_obj.png"
-         typeIds="com.pivotal.server.tc.80,com.pivotal.server.tc.runtime.80" />
+         typeIds="com.pivotal.server.tc.80,com.pivotal.server.tc.runtime.80,com.pivotal.server.tc.90,com.pivotal.server.tc.runtime.90" />
    </extension>
 
    <extension point="org.eclipse.wst.common.project.facet.ui.images">
@@ -148,11 +148,11 @@
       <fragment
          id="com.pivotal.server.tc.runtime"
          class="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerRuntimeWizardFragment"
-         typeIds="com.pivotal.server.tc.runtime.80"/>
+         typeIds="com.pivotal.server.tc.runtime.80,com.pivotal.server.tc.runtime.90"/>
       <fragment
-         id="com.pivotal.server.tc.80"
+         id="com.pivotal.server.tc"
          class="com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServer21WizardFragment"
-         typeIds="com.pivotal.server.tc.80"/>
+         typeIds="com.pivotal.server.tc.80,com.pivotal.server.tc.90"/>
    </extension>
 
   <extension point="org.eclipse.ui.popupMenus">

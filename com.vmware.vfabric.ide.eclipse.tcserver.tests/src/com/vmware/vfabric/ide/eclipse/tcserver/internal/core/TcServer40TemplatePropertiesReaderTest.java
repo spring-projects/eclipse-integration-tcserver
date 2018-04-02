@@ -1,12 +1,12 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 Spring IDE Developers
+ * Copyright (c) 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Spring IDE Developers - initial API and implementation
+ *     Pivotal Software, Inc. - initial API and implementation
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 
@@ -29,9 +29,11 @@ import org.junit.Test;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
 
 /**
- * @author Tomasz Zarna
+ * tc Server 4.0 templates tests
+ * 
+ * @author Alex Boyko
  */
-public class TcServerTemplatePropertiesReaderTest {
+public class TcServer40TemplatePropertiesReaderTest {
 
 	private static IServer server;
 
@@ -39,7 +41,7 @@ public class TcServerTemplatePropertiesReaderTest {
 
 	@BeforeClass
 	public static void beforeClass() throws Exception {
-		server = TcServerFixture.V_3_1.createServer(null);
+		server = TcServerFixture.V_4_0.createServer(null);
 		reader = new TemplatePropertiesReader(server);
 	}
 
@@ -51,10 +53,9 @@ public class TcServerTemplatePropertiesReaderTest {
 		if (tcRuntime != null) {
 			actualTemplates = tcRuntime.getTemplates();
 		}
-		String[] expecteds = TcServerFixture.current().after(TcServerFixture.V_3_0) ? new String[] { "ajp", "apr",
-				"apr-ssl", "base", "bio", "bio-ssl", "cluster-node", "diagnostics", "insight", "jmx-ssl", "nio",
-				"nio-ssl" } : new String[] { "ajp", "apr", "apr-ssl", "async-logger", "base", "bio", "bio-ssl",
-				"cluster-node", "diagnostics", "insight", "jmx-ssl", "nio", "nio-ssl" };
+		String[] expecteds = new String[] { "ajp", "apr",
+				"apr-ssl", "base", "cluster-node", "diagnostics", "jmx-ssl", "nio",
+				"nio-ssl" };
 		assertTrue("Not all basic templates are present in current tc server runtime installation",
 				actualTemplates.containsAll(Arrays.asList(expecteds)));
 	}
@@ -88,9 +89,11 @@ public class TcServerTemplatePropertiesReaderTest {
 		Set<TemplateProperty> props = reader.read("apr-ssl", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
-		assertEquals(13, props.size());
+		assertEquals(14, props.size());
 		assertPropsEquals(props, "apr-ssl", "https.port",
 				"Please enter the port that the APR connector should listen for HTTPS requests on:", "8443");
+		assertPropsEquals(props, "apr-ssl", "ssl.protocol",
+				"Please enter the SSL protocol(s) that the APR connector should use:", "all");
 		assertPropsEquals(
 				props,
 				"apr-ssl",
@@ -155,14 +158,18 @@ public class TcServerTemplatePropertiesReaderTest {
 				"Please enter the port that the JMX socket listener should listen on:", "6969");
 		assertPropsEquals(props, "base", "shutdown.port",
 				"Please enter the port that Tomcat Shutdown should listen on:", "-1");
-		assertPropsEquals(props, "base", "runtime.user",
-				"Please enter the user account that should start the instance when using the 'bin/init.d.sh' script:",
-				"tcserver");
+		
+		/*
+		 * Tc Server 4.x installation doesn't have `bin/init.d.sh` file to fetch default for `runtime.user`
+		 */
+//		assertPropsEquals(props, "base", "runtime.user",
+//				"Please enter the user account that should start the instance when using the 'bin/init.d.sh' script:",
+//				"tcserver");
 	}
 
 	@Test
 	public void bioTemplate() throws Exception {
-		Set<TemplateProperty> props = reader.read("bio", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("bio-tomcat-7", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
 		assertEquals(2, props.size());
@@ -174,12 +181,14 @@ public class TcServerTemplatePropertiesReaderTest {
 
 	@Test
 	public void bioSslTemplate() throws Exception {
-		Set<TemplateProperty> props = reader.read("bio-ssl", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("bio-ssl-tomcat-7", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
-		assertEquals(TcServerFixture.current().after(TcServerFixture.V_3_0) ? 19 : 17, props.size());
+		assertEquals(20, props.size());
 		assertPropsEquals(props, "bio-ssl", "https.port",
 				"Please enter the port that the BIO connector should listen for HTTPS requests on:", "8443");
+		assertPropsEquals(props, "bio-ssl", "ssl.protocol",
+				"Please enter the SSL protocol(s) that the BIO connector should use:", "TLS");
 		assertPropsEquals(
 				props,
 				"bio-ssl",
@@ -224,12 +233,23 @@ public class TcServerTemplatePropertiesReaderTest {
 
 	@Test
 	public void clusterNodeTemplate() throws Exception {
-		Set<TemplateProperty> props = reader.read("cluster-node", new NullProgressMonitor());
+		Set<TemplateProperty> props = reader.read("cluster-node-tomcat-7", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
-		assertEquals(1, props.size());
+		assertEquals(5, props.size());
+		/*
+		 * Tc Server 4.0 needs key `nods.name` to be corrected to `node-name` for tomcat-85 and tomcat-9
+		 */
 		assertPropsEquals(props, "cluster-node", "node.name",
 				"Please enter the cluster node name used to identify this instance:", "tc-runtime-1");
+		assertPropsEquals(props, "cluster-node", "membership.address",
+				"Please enter the membership address for this instance:", "228.0.0.4");
+		assertPropsEquals(props, "cluster-node", "membership.port",
+				"Please enter the membership port for this instance:", "45564");
+		assertPropsEquals(props, "cluster-node", "receiver.address",
+				"Please enter the receiver address for this instance:", "auto");
+		assertPropsEquals(props, "cluster-node", "receiver.port",
+				"Please enter the receiver port for this instance:", "4000");
 	}
 
 	@Test
@@ -251,19 +271,11 @@ public class TcServerTemplatePropertiesReaderTest {
 	}
 
 	@Test
-	public void insightTemplate() throws Exception {
-		Set<TemplateProperty> props = reader.read("insight", new NullProgressMonitor());
-		Assume.assumeNotNull(props);
-
-		assertEquals(4, props.size());
-	}
-
-	@Test
 	public void jmxSslTemplate() throws Exception {
 		Set<TemplateProperty> props = reader.read("jmx-ssl", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
-		assertEquals(TcServerFixture.current().after(TcServerFixture.V_3_0) ? 18 : 16, props.size());
+		assertEquals(18, props.size());
 		assertPropsEquals(
 				props,
 				"jmx-ssl",
@@ -323,9 +335,11 @@ public class TcServerTemplatePropertiesReaderTest {
 		Set<TemplateProperty> props = reader.read("nio-ssl", new NullProgressMonitor());
 		Assume.assumeNotNull(props);
 
-		assertEquals(TcServerFixture.current().after(TcServerFixture.V_3_0) ? 19 : 17, props.size());
+		assertEquals(20, props.size());
 		assertPropsEquals(props, "nio-ssl", "https.port",
 				"Please enter the port that the NIO connector should listen for HTTPS requests on:", "8443");
+		assertPropsEquals(props, "nio-ssl", "ssl.protocol",
+				"Please enter the SSL protocol(s) that the NIO connector should use:", "TLS");
 		assertPropsEquals(
 				props,
 				"nio-ssl",
@@ -368,40 +382,44 @@ public class TcServerTemplatePropertiesReaderTest {
 				"Please enter the password that the SSL keystore protects itself with:");
 	}
 
-	@Test
-	public void redisSessionManager() throws Exception {
-		Set<TemplateProperty> props = reader.read("redis-session-manager", new NullProgressMonitor());
-		Assume.assumeNotNull(props);
-
-		assertEquals(5, props.size());
-		assertPropsEquals(props, "redis-session-manager", "poolTimeout",
-				"Please specify the timeout for the Redis connection pool:", "2000");
-		assertPropsEquals(props, "redis-session-manager", "connectionPoolSize",
-				"Please specify the size of the Redis connection pool:", "-1");
-		assertPropsEquals(props, "redis-session-manager", "databaseIndex", "Please specify the Redis database index:",
-				"0");
-		assertPropsEquals(props, "redis-session-manager", "host", "Please specify the Redis host name:", "localhost");
-		assertPropsEquals(props, "redis-session-manager", "port", "Please specify the Redis port number:", "6379");
-	}
-
-	@Test
-	public void redisSessionManagerAuth() throws Exception {
-		Set<TemplateProperty> props = reader.read("redis-session-manager-auth", new NullProgressMonitor());
-		Assume.assumeNotNull(props);
-
-		assertEquals(6, props.size());
-		assertPropsEquals(props, "redis-session-manager-auth", "poolTimeout",
-				"Please specify the timeout for the Redis connection pool:", "2000");
-		assertPropsEquals(props, "redis-session-manager-auth", "connectionPoolSize",
-				"Please specify the size of the Redis connection pool:", "-1");
-		assertPropsEquals(props, "redis-session-manager-auth", "databaseIndex",
-				"Please specify the Redis database index:", "0");
-		assertPropsEquals(props, "redis-session-manager-auth", "host", "Please specify the Redis host name:",
-				"localhost");
-		assertPropsEquals(props, "redis-session-manager-auth", "port", "Please specify the Redis port number:", "6379");
-		assertPropsEquals(props, "redis-session-manager-auth", "password",
-				"Please specify the password for the Redis authentication:");
-	}
+/*
+ * `redis-session-manager` and 	`redis-session-manager-auth` don't come with installation by default and need to be installed separately
+ */
+	
+//	@Test
+//	public void redisSessionManager() throws Exception {
+//		Set<TemplateProperty> props = reader.read("redis-session-manager", new NullProgressMonitor());
+//		Assume.assumeNotNull(props);
+//
+//		assertEquals(5, props.size());
+//		assertPropsEquals(props, "redis-session-manager", "poolTimeout",
+//				"Please specify the timeout for the Redis connection pool:", "2000");
+//		assertPropsEquals(props, "redis-session-manager", "connectionPoolSize",
+//				"Please specify the size of the Redis connection pool:", "-1");
+//		assertPropsEquals(props, "redis-session-manager", "databaseIndex", "Please specify the Redis database index:",
+//				"0");
+//		assertPropsEquals(props, "redis-session-manager", "host", "Please specify the Redis host name:", "localhost");
+//		assertPropsEquals(props, "redis-session-manager", "port", "Please specify the Redis port number:", "6379");
+//	}
+//
+//	@Test
+//	public void redisSessionManagerAuth() throws Exception {
+//		Set<TemplateProperty> props = reader.read("redis-session-manager-auth", new NullProgressMonitor());
+//		Assume.assumeNotNull(props);
+//
+//		assertEquals(6, props.size());
+//		assertPropsEquals(props, "redis-session-manager-auth", "poolTimeout",
+//				"Please specify the timeout for the Redis connection pool:", "2000");
+//		assertPropsEquals(props, "redis-session-manager-auth", "connectionPoolSize",
+//				"Please specify the size of the Redis connection pool:", "-1");
+//		assertPropsEquals(props, "redis-session-manager-auth", "databaseIndex",
+//				"Please specify the Redis database index:", "0");
+//		assertPropsEquals(props, "redis-session-manager-auth", "host", "Please specify the Redis host name:",
+//				"localhost");
+//		assertPropsEquals(props, "redis-session-manager-auth", "port", "Please specify the Redis port number:", "6379");
+//		assertPropsEquals(props, "redis-session-manager-auth", "password",
+//				"Please specify the password for the Redis authentication:");
+//	}
 
 	private void assertPropsEquals(Set<TemplateProperty> actual, String... expected) {
 		for (TemplateProperty prop : actual) {

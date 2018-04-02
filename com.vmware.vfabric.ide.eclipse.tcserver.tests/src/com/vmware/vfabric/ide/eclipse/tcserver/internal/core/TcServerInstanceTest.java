@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Spring IDE Developers
+ * Copyright (c) 2012, 2018 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,9 +13,11 @@ package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
+import org.eclipse.wst.server.core.IServerType;
+import org.eclipse.wst.server.core.ServerCore;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,11 +49,13 @@ public class TcServerInstanceTest {
 	@Test
 	public void testInstanceDir() throws Exception {
 		handler = TcServerFixture.current().provisionServer();
-		IPath runtimeLocation = new Path(handler.getServerPath());
+		IServerType serverType = ServerCore.findServerType(TcServerFixture.current().getServerType());
+		IRuntimeWorkingCopy runtime = serverType.getRuntimeType().createRuntime("runtime", new NullProgressMonitor());
+		runtime.setLocation(new Path(handler.getServerPath()));
 		String instanceName = name.getMethodName();
 		String[] arguments = createArgumentsArray();
-
-		TcServerUtil.executeInstanceCreation(runtimeLocation, instanceName, arguments);
+		
+		TcServerUtil.executeInstanceCreation(runtime, instanceName, arguments);
 	}
 
 	private String[] createArgumentsArray(/* IRuntime runtime */) {

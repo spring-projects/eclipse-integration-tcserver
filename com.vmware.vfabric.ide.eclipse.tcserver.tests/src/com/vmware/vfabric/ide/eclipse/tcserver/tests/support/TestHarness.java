@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -38,7 +38,7 @@ public class TestHarness {
 	public void provisionRuntime(File targetPath) throws Exception {
 		File runtimeArchive = downloadRuntime();
 		ZipFileUtil.unzip(runtimeArchive.toURI().toURL(), targetPath, configuration.getDescription(),
-				PermissionSetter.executableExtensions(".sh"), null);
+				PermissionSetter.executableExtensions(".sh", ""), null);
 	}
 
 	public File downloadRuntime() throws Exception {

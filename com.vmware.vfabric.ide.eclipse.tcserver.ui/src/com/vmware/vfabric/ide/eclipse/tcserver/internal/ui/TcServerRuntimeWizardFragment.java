@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2014 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,6 +34,7 @@ import org.eclipse.wst.server.core.TaskModel;
 import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
 
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.ITcRuntime;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntime;
 
 /**
@@ -124,8 +125,8 @@ public class TcServerRuntimeWizardFragment extends TomcatRuntimeWizardFragment {
 		}
 		serverVersionCombo.removeAll();
 		wc.setAttribute(TcServerRuntime.KEY_SERVER_VERSION, (String) null);
-
-		File file = new File(location);
+		ITcRuntime tcRuntime = (ITcRuntime) wc.getAdapter(ITcRuntime.class);
+		File file = tcRuntime.getTomcatServersContainer().toFile();
 		if (file.exists()) {
 			boolean initialized = false;
 			List<File> serverDirectories = TcServerRuntime.getTomcatVersions(file);

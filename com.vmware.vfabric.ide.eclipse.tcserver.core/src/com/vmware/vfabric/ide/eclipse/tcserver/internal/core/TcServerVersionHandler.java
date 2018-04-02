@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2014 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,6 +35,8 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 	private static String VERIFY_SPEC_2_0 = "tijars";
 
 	private static String VERIFY_SPEC_2_5 = "tcruntime-ctl.sh,lib,templates";
+	
+	private static String VERIFY_SPEC_4_0 = "lib,templates,tcserver,tcserver.bat";
 
 	private static String ID_TOMCAT_RUNTIME_60 = "org.eclipse.jst.server.tomcat.runtime.60";
 
@@ -42,6 +44,8 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 
 	private static String ID_TOMCAT_RUNTIME_80 = "org.eclipse.jst.server.tomcat.runtime.80";
 
+	private static String ID_TOMCAT_RUNTIME_90 = "org.eclipse.jst.server.tomcat.runtime.90";
+	
 	private final String runtimeId;
 
 	public TcServerVersionHandler(String runtimeId) {
@@ -158,8 +162,11 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 		else if (tomcatLocation.lastSegment().startsWith("tomcat-7")) {
 			return TomcatPlugin.TOMCAT_70;
 		}
-		else {
+		else if (tomcatLocation.lastSegment().startsWith("tomcat-8")) {
 			return TomcatPlugin.TOMCAT_80;
+		}
+		else {
+			return TomcatPlugin.TOMCAT_90;
 		}
 	}
 
@@ -171,8 +178,11 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 		else if (tomcatLocation.lastSegment().startsWith("tomcat-7")) {
 			return ID_TOMCAT_RUNTIME_70;
 		}
-		else {
+		else if (tomcatLocation.lastSegment().startsWith("tomcat-8")) {
 			return ID_TOMCAT_RUNTIME_80;
+		}
+		else {
+			return ID_TOMCAT_RUNTIME_90;
 		}
 	}
 
@@ -180,6 +190,9 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 	public IStatus verifyInstallPath(IPath installPath) {
 		if (isVersion_2_5() || isVersion_3_0()) {
 			return checkResource(VERIFY_SPEC_2_5, installPath);
+		}
+		else if (isVersion_4_0()) {
+			return checkResource(VERIFY_SPEC_4_0, TcServerRuntime40.getTcServerRuntimePath(installPath));
 		}
 		else {
 			IStatus status = TomcatPlugin.verifyTomcatVersionFromPath(installPath, TomcatPlugin.TOMCAT_60);
@@ -216,9 +229,13 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 	public boolean isVersion_3_0() {
 		return runtimeId.endsWith("80");
 	}
+	
+	public boolean isVersion_4_0() {
+		return runtimeId.endsWith("90");
+	}
 
 	public boolean supportsServlet30() {
-		return isVersion_2_5() || isVersion_3_0();
+		return isVersion_2_5() || isVersion_3_0() || isVersion_4_0();
 	}
 
 	@Override
@@ -234,6 +251,13 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 			String version = module.getModuleType().getVersion();
 			if ("2.2".equals(version) || "2.3".equals(version) || "2.4".equals(version) || "2.5".equals(version)
 					|| "3.0".equals(version) || "3.1".equals(version)) {
+				return Status.OK_STATUS;
+			}
+		}
+		else if (isVersion_4_0()) {
+			String version = module.getModuleType().getVersion();
+			if ("2.2".equals(version) || "2.3".equals(version) || "2.4".equals(version) || "2.5".equals(version)
+					|| "3.0".equals(version) || "3.1".equals(version) || "4.0".equals(version)) {
 				return Status.OK_STATUS;
 			}
 		}

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2014 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,12 +30,6 @@ import org.springsource.ide.eclipse.commons.core.process.SystemOutOutputWriter;
  */
 public final class ServerInstanceCommand {
 
-	private static final String SCRIPT_NAME = "tcruntime-instance";
-
-	private static final String UNIX_SUFFIX = ".sh";
-
-	private static final String WINDOWS_SUFFIX = ".bat";
-
 	private final ProcessRunner processRunner;
 
 	private final File script;
@@ -54,20 +48,20 @@ public final class ServerInstanceCommand {
 
 	};
 
-	public ServerInstanceCommand(File runtimeDirectory) {
-		this.script = new File(runtimeDirectory, SCRIPT_NAME + (isWindows() ? WINDOWS_SUFFIX : UNIX_SUFFIX));
+	public ServerInstanceCommand(ITcRuntime runtime) {
+		this.script = runtime.instanceCreationScript().toFile();
 		this.processRunner = new StandardProcessRunner(//
 				new OutputWriter[] { new SystemOutOutputWriter(), writer }, //
 				new OutputWriter[] { new SystemErrOutputWriter(), writer });
 	}
-
+	
 	public String getOutput() {
 		return writer.toString();
 	}
 
 	public int execute(String... arguments) {
 		List<String> allArguments = new ArrayList<String>(arguments.length + 1);
-		if (isWindows()) {
+		if (TcServerUtil.isWindows()) {
 			allArguments.add("\"" + this.script.getAbsolutePath() + "\"");  
 		} else {
 			allArguments.add(this.script.getAbsolutePath());  
@@ -84,10 +78,6 @@ public final class ServerInstanceCommand {
 		catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	private boolean isWindows() {
-		return File.separatorChar == '\\';
 	}
 
 	public String toString() {

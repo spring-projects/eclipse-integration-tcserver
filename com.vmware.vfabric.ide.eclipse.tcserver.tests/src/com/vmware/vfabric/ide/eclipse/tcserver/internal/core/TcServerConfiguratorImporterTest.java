@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2014 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -54,7 +54,7 @@ public class TcServerConfiguratorImporterTest {
 	public static Collection<Object[]> data() {
 		Object[][] data = new Object[][] {
 				{ new TcServerFixture[] { TcServerFixture.V_2_7, TcServerFixture.V_2_8, TcServerFixture.V_2_9 } },
-				{ new TcServerFixture[] { TcServerFixture.V_3_0 } } };
+				{ new TcServerFixture[] { TcServerFixture.V_3_0, TcServerFixture.V_4_0 } } };
 		return Arrays.asList(data);
 	}
 
