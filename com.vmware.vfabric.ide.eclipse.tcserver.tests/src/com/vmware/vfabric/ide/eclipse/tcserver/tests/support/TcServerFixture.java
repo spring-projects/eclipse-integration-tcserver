@@ -52,7 +52,7 @@ public class TcServerFixture extends TestConfiguration {
 
 	public static String V_3_1_URL = "http://dist.springsource.com.s3.amazonaws.com/release/TCS/pivotal-tc-server-developer-3.1.0.RELEASE.zip";
 
-	public static String V_4_0_URL = "http://dist.springsource.com.s3.amazonaws.com/release/TCS/pivotal-tc-server-developer-4.0.0.RELEASE.zip";
+	public static String V_4_0_URL = "http://dist.springsource.com/release/STS/bundle/pivotal-tc-server-developer-4.0.0.RELEASE.zip";
 	
 	public static TcServerFixture V_2_5 = new TcServerFixture("com.vmware.server.tc.runtime.70",
 			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.5.2.RELEASE",

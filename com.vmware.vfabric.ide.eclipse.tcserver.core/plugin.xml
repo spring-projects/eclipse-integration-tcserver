@@ -378,7 +378,7 @@
            callback="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer21ServerHandlerCallback"
            description="Pivotal tc Server is an enterprise version of Apache Tomcat that provides developers with the lightweight server they want paired with the operational management, advanced diagnostics, and mission-critical support capabilities businesses need."
            id="com.springsource.sts.ide.configurator.server.TcServer40"
-           installPath="pivotal-tc-server"
+           installPath="pivotal-tc-server/developer"
            name="Pivotal tc Server Developer Edition"
            runtimeName="Pivotal tc Server Developer Edition (Runtime) v4.0"
            runtimeTypeId="com.pivotal.server.tc.runtime.90"
