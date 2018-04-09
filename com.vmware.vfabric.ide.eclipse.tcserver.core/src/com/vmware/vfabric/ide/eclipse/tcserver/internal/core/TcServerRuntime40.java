@@ -49,7 +49,7 @@ public class TcServerRuntime40 extends TcServerRuntime {
 
 	@Override
 	public IPath instanceCreationScript() {
-		return runtimeLocation().append(INSTANCE_CREATION_SCRIPT);
+		return runtimeLocation().append(INSTANCE_CREATION_SCRIPT + (TcServerUtil.isWindows() ? WINDOWS_SUFFIX : ""));
 	}
 
 	@Override
