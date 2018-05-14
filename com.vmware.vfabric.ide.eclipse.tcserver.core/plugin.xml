@@ -60,7 +60,7 @@
   <extension point="org.eclipse.jst.server.core.runtimeClasspathProviders">
      <runtimeClasspathProvider
         id="com.springsource.sts.ide.tomcat.runtimeTarget"
-        runtimeTypeIds="com.springsource.tcserver.runtime.60,com.springsource.tcserver.runtime.70,com.vmware.server.tc.runtime.70,com.pivotal.server.tc.runtime.80"
+        runtimeTypeIds="com.springsource.tcserver.runtime.60,com.springsource.tcserver.runtime.70,com.vmware.server.tc.runtime.70,com.pivotal.server.tc.runtime.80,com.pivotal.server.tc.runtime.90"
         class="com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntimeClasspathProvider"/>
    </extension>
 
