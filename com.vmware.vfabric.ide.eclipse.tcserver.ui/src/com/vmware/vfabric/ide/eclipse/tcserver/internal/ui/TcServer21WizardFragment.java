@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2015 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2018 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -42,6 +42,7 @@ import org.eclipse.wst.server.ui.wizard.IWizardHandle;
 import org.eclipse.wst.server.ui.wizard.WizardFragment;
 import org.springsource.ide.eclipse.commons.core.StatusHandler;
 
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.ITcRuntime;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.ITcServerConstants;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerUtil;
@@ -291,11 +292,11 @@ public class TcServer21WizardFragment extends WizardFragment {
 			 */
 			String previous = serverNameCombo.getText();
 			serverNameCombo.removeAll();
-			IPath path = wc.getRuntime().getLocation();
+			ITcRuntime tcRuntime = TcServerUtil.getTcRuntime(wc.getRuntime());
 			// add all directories that have a server configuration
-			File file = path.toFile();
-			if (file.exists()) {
-				File[] serverDirectories = file.listFiles();
+			if (tcRuntime != null) {
+				IPath instancesDirectory = tcRuntime.defaultInstancesDirectory();
+				File[] serverDirectories = instancesDirectory.toFile().listFiles();
 				if (serverDirectories != null) {
 					for (File directory : serverDirectories) {
 						if (directory.isDirectory() && new File(directory, ".tc-runtime-instance").exists()) {

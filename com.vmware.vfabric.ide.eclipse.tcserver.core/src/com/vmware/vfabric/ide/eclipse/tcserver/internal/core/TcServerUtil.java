@@ -190,13 +190,11 @@ public class TcServerUtil {
 			}
 			String serverName = wc.getAttribute(TcServer.KEY_SERVER_NAME, (String) null);
 			if (serverName != null) {
-				IPath path = wc.getRuntime().getLocation();
+				ITcRuntime tcRuntime = getTcRuntime(wc.getRuntime());
+				IPath path = tcRuntime == null ? wc.getRuntime().getLocation() : tcRuntime.instanceDirectory(serverName);
 				File directory = path.toFile();
 				if (directory.exists()) {
-					File file = new File(directory, serverName);
-					if (file.exists()) {
-						return file;
-					}
+					return directory;
 				}
 			}
 		}

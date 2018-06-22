@@ -278,15 +278,21 @@ public class TcServerRuntime extends TomcatRuntime implements ITcRuntime {
 	public IPath instanceCreationScript() {
 		return runtimeLocation().append(INSTANCE_CREATION_SCRIPT + (TcServerUtil.isWindows() ? WINDOWS_SUFFIX : UNIX_SUFFIX));
 	}
-
+	
 	@Override
 	public IPath instanceDirectory(String instanceName) {
-		return getRuntime().getLocation().append(instanceName);
+		return defaultInstancesDirectory().append(instanceName);
 	}
-	
+
 	@Override
 	public IPath getTomcatServersContainer() {
 		return getRuntime().getLocation();
 	}
 
+	@Override
+	public IPath defaultInstancesDirectory() {
+		return runtimeLocation();
+	}
+
+	
 }

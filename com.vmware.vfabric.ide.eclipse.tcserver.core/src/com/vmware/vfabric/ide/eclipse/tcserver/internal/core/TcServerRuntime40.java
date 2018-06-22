@@ -36,7 +36,11 @@ public class TcServerRuntime40 extends TcServerRuntime {
 		File[] files = installPath.toFile().listFiles(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
-				return Pattern.matches("developer-\\d\\.\\d\\.\\d\\.(RELEASE|SNAPSHOT-BUILD)", name) && new File(dir, name).isDirectory();
+				return  (
+							Pattern.matches("developer-\\d\\.\\d\\.\\d\\.(RELEASE|SNAPSHOT-BUILD)", name)
+								|| Pattern.matches("standard-\\d\\.\\d\\.\\d\\.(RELEASE|SNAPSHOT-BUILD)", name)
+						) 
+						&& new File(dir, name).isDirectory();
 			}
 		});
 		return files.length > 0 ? Path.fromOSString(files[0].toString()) : null;
@@ -58,8 +62,8 @@ public class TcServerRuntime40 extends TcServerRuntime {
 	}
 	
 	@Override
-	public IPath instanceDirectory(String instanceName) {
-		return getRuntime().getLocation().append("instances").append(instanceName);
+	public IPath defaultInstancesDirectory() {
+		return getRuntime().getLocation().append("instances");
 	}
 
 }

@@ -30,5 +30,7 @@ public interface ITcRuntime {
 	IPath getTomcatServersContainer();
 	
 	IPath instanceDirectory(String instanceName);
+	
+	IPath defaultInstancesDirectory();
 
 }
