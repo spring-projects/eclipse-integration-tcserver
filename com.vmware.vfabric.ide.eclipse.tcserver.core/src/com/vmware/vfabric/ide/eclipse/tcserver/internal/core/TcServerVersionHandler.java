@@ -138,20 +138,34 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 		tomcatVersion = TomcatVersionHelper.getCatalinaVersion(tomcatLocation,
 				mapToTomcatServerId(tomcatLocation, serverTypeId));
 
-		IStatus status;
-		if (server.isServeModulesWithoutPublish()) {
-			status = TomcatVersionHelper.copyLoaderJar(getRuntimeBaseDirectory(server).append("lib"),
-					mapToTomcatRuntimeId(tomcatLocation, runtimeTypeId), tomcatVersion);
-			if (status.isOK() && server.isTestEnvironment()) {
-				status = TomcatVersionHelper.updatePropertiesToServeDirectly(baseDir, "lib", "common");
+		IStatus status = Status.OK_STATUS;
+		
+		String tomcatServerId = mapToTomcatRuntimeId(tomcatLocation, runtimeTypeId);
+		
+		if (isJarLoaderPresent(tomcatServerId)) {
+			if (server.isServeModulesWithoutPublish()) {
+				status = TomcatVersionHelper.copyLoaderJar(getRuntimeBaseDirectory(server).append("lib"),
+						tomcatServerId, tomcatVersion);
+				if (status.isOK() && server.isTestEnvironment()) {
+					status = TomcatVersionHelper.updatePropertiesToServeDirectly(baseDir, "lib", "common");
+				}
+			}
+			else {
+				TomcatVersionHelper.removeLoaderJar(getRuntimeBaseDirectory(server).append("lib"),
+						tomcatServerId, tomcatVersion);
+				status = Status.OK_STATUS;
 			}
 		}
-		else {
-			TomcatVersionHelper.removeLoaderJar(getRuntimeBaseDirectory(server).append("lib"),
-					mapToTomcatRuntimeId(tomcatLocation, runtimeTypeId), tomcatVersion);
-			status = Status.OK_STATUS;
-		}
 		return status;
+	}
+	
+	private static boolean isJarLoaderPresent(String tomcatRuntimeId) {
+		int idx = tomcatRuntimeId.lastIndexOf('.');
+		if (idx >= 0 && idx < tomcatRuntimeId.length() - 1) {
+			String version = tomcatRuntimeId.substring(idx + 1);
+			return version.startsWith("50" ) || version.startsWith("55") || version.startsWith("60") || version.startsWith("70"); 
+		}
+		return false;
 	}
 
 	private String mapToTomcatServerId(IPath tomcatLocation, String id) {
