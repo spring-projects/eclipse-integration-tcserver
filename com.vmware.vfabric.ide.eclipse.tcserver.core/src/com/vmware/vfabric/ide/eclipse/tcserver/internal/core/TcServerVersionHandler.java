@@ -168,7 +168,7 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 		return false;
 	}
 
-	private String mapToTomcatServerId(IPath tomcatLocation, String id) {
+	static String mapToTomcatServerId(IPath tomcatLocation, String id) {
 		if (tomcatLocation.lastSegment().startsWith("tomcat-6")) {
 			// catalina.base points to Tomcat 6 runtime
 			return TomcatPlugin.TOMCAT_60;
@@ -184,7 +184,7 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 		}
 	}
 
-	private String mapToTomcatRuntimeId(IPath tomcatLocation, String id) {
+	static String mapToTomcatRuntimeId(IPath tomcatLocation, String id) {
 		if (tomcatLocation.lastSegment().startsWith("tomcat-6")) {
 			// catalina.base points to Tomcat 6 runtime
 			return ID_TOMCAT_RUNTIME_60;

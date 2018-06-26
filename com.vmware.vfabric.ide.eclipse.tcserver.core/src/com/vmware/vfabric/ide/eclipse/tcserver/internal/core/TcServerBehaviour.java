@@ -38,10 +38,12 @@ import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.jdt.launching.IRuntimeClasspathEntry;
 import org.eclipse.jdt.launching.JavaRuntime;
 import org.eclipse.jst.server.tomcat.core.internal.FileUtil;
+import org.eclipse.jst.server.tomcat.core.internal.ITomcatVersionHandler;
 import org.eclipse.jst.server.tomcat.core.internal.Messages;
 import org.eclipse.jst.server.tomcat.core.internal.PingThread;
 import org.eclipse.jst.server.tomcat.core.internal.ProgressUtil;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatServerBehaviour;
+import org.eclipse.jst.server.tomcat.core.internal.TomcatVersionHelper;
 import org.eclipse.jst.server.tomcat.core.internal.Trace;
 import org.eclipse.mylyn.commons.net.WebLocation;
 import org.eclipse.wst.server.core.IModule;
@@ -622,5 +624,40 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 			setModuleState(module, IServer.STATE_STARTED);
 		}
 	}
+	
+	@Override
+	protected void publishFinish(IProgressMonitor monitor) throws CoreException {
+		IStatus status;
+		IPath baseDir = getRuntimeBaseDirectory();
+		TcServer ts = getTomcatServer();
+		ITomcatVersionHandler tvh = getTomcatVersionHandler();
+		String serverTypeID = getServer().getServerType().getId();
+		IPath tomcatLocation = ts.getTomcatRuntime().getTomcatLocation();
+		serverTypeID = TcServerVersionHandler.mapToTomcatServerId(tomcatLocation, serverTypeID);
+		String tomcatVersion = TomcatVersionHelper.getCatalinaVersion(tomcatLocation, serverTypeID);
+		// Include or remove loader jar depending on state of serving directly 
+		status = tvh.prepareForServingDirectly(baseDir, getTomcatServer(), tomcatVersion);
+		if (status.isOK()) {
+			// If serving modules directly, update server.xml accordingly (includes project context.xmls)
+			if (ts.isServeModulesWithoutPublish()) {
+				status = TomcatVersionHelper.updateContextsToServeDirectly(baseDir, tomcatVersion, tvh.getSharedLoader(baseDir), false, monitor);
+			}
+			// Else serving normally. Add project context.xmls to server.xml
+			else {
+				// Publish context configuration for servers that support META-INF/context.xml
+				status = TomcatVersionHelper.publishCatalinaContextConfig(baseDir, getServerDeployDirectory(), monitor);
+			}
+			if (status.isOK() && ts.isSaveSeparateContextFiles()) {
+				// Determine if context's path attribute should be removed
+				boolean noPath = serverTypeID.indexOf("55") > 0 || serverTypeID.indexOf("60") > 0;
+				boolean serverStopped = getServer().getServerState() == IServer.STATE_STOPPED;
+				// TODO Add a monitor
+				TomcatVersionHelper.moveContextsToSeparateFiles(baseDir, noPath, serverStopped, null);
+			}
+		}
+		if (!status.isOK())
+			throw new CoreException(status);
+	}
+
 
 }
