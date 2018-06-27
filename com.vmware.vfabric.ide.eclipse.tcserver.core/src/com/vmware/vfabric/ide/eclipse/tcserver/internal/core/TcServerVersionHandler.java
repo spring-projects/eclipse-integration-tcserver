@@ -135,7 +135,7 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 		IPath tomcatLocation = ((TcServer) server).getTomcatRuntime().getTomcatLocation();
 		String runtimeTypeId = server.getServer().getRuntime().getRuntimeType().getId();
 		String serverTypeId = server.getServer().getServerType().getId();
-		tomcatVersion = TomcatVersionHelper.getCatalinaVersion(tomcatLocation,
+		tomcatVersion = TcServerUtil.getCatalinaVersion(tomcatLocation,
 				mapToTomcatServerId(tomcatLocation, serverTypeId));
 
 		IStatus status = Status.OK_STATUS;

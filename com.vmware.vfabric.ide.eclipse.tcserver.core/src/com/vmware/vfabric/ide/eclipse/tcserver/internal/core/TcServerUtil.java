@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatServer;
+import org.eclipse.jst.server.tomcat.core.internal.TomcatVersionHelper;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IRuntimeWorkingCopy;
@@ -236,4 +237,11 @@ public class TcServerUtil {
 		return (ITcRuntime) runtime.loadAdapter(ITcRuntime.class, new NullProgressMonitor());
 	}
 
+	public static String getCatalinaVersion(IPath tomcatLocation, String serverTypeID) {
+		String version = TomcatVersionHelper.getCatalinaVersion(tomcatLocation, serverTypeID);
+		if ((version == null || version.isEmpty()) && (tomcatLocation != null && !tomcatLocation.isEmpty())) {
+			version = getServerVersion(tomcatLocation.lastSegment());
+		}
+		return version;
+	}
 }
