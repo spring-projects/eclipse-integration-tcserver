@@ -634,7 +634,7 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 		String serverTypeID = getServer().getServerType().getId();
 		IPath tomcatLocation = ts.getTomcatRuntime().getTomcatLocation();
 		serverTypeID = TcServerVersionHandler.mapToTomcatServerId(tomcatLocation, serverTypeID);
-		String tomcatVersion = TomcatVersionHelper.getCatalinaVersion(tomcatLocation, serverTypeID);
+		String tomcatVersion = TcServerUtil.getCatalinaVersion(tomcatLocation, serverTypeID);
 		// Include or remove loader jar depending on state of serving directly 
 		status = tvh.prepareForServingDirectly(baseDir, getTomcatServer(), tomcatVersion);
 		if (status.isOK()) {
