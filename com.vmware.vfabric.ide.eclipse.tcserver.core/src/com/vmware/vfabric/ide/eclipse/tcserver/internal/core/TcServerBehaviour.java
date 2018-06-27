@@ -631,12 +631,11 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 		IPath baseDir = getRuntimeBaseDirectory();
 		TcServer ts = getTomcatServer();
 		ITomcatVersionHandler tvh = getTomcatVersionHandler();
-		String serverTypeID = getServer().getServerType().getId();
 		IPath tomcatLocation = ts.getTomcatRuntime().getTomcatLocation();
-		serverTypeID = TcServerVersionHandler.mapToTomcatServerId(tomcatLocation, serverTypeID);
-		String tomcatVersion = TcServerUtil.getCatalinaVersion(tomcatLocation, serverTypeID);
+		String tomcatServerTypeID = TcServerVersionHandler.mapToTomcatServerId(tomcatLocation, getServer().getServerType().getId());
+		String tomcatVersion = TcServerUtil.getCatalinaVersion(tomcatLocation, tomcatServerTypeID);
 		// Include or remove loader jar depending on state of serving directly 
-		status = tvh.prepareForServingDirectly(baseDir, getTomcatServer(), tomcatVersion);
+		status = tvh.prepareForServingDirectly(baseDir, ts, tomcatVersion);
 		if (status.isOK()) {
 			// If serving modules directly, update server.xml accordingly (includes project context.xmls)
 			if (ts.isServeModulesWithoutPublish()) {
@@ -649,7 +648,7 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 			}
 			if (status.isOK() && ts.isSaveSeparateContextFiles()) {
 				// Determine if context's path attribute should be removed
-				boolean noPath = serverTypeID.indexOf("55") > 0 || serverTypeID.indexOf("60") > 0;
+				boolean noPath = tomcatServerTypeID.indexOf("55") > 0 || tomcatServerTypeID.indexOf("60") > 0;
 				boolean serverStopped = getServer().getServerState() == IServer.STATE_STOPPED;
 				// TODO Add a monitor
 				TomcatVersionHelper.moveContextsToSeparateFiles(baseDir, noPath, serverStopped, null);
