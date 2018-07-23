@@ -18,11 +18,13 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jdt.launching.JavaRuntime;
+import org.eclipse.jst.server.tomcat.core.internal.Messages;
 import org.eclipse.jst.server.tomcat.core.internal.Tomcat60Handler;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatPlugin;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatServer;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatVersionHelper;
 import org.eclipse.jst.server.tomcat.core.internal.VerifyResourceSpec;
+import org.eclipse.osgi.util.NLS;
 import org.eclipse.wst.server.core.IModule;
 
 /**
@@ -222,18 +224,21 @@ public class TcServerVersionHandler extends Tomcat60Handler {
 
 	private IStatus checkResource(String spec, IPath installPath) {
 		String dir = installPath.toOSString();
-		if (!dir.endsWith(File.separator)) {
-			dir += File.separator;
-		}
-		String[] array = spec.split(",");
-		for (String value : array) {
-			VerifyResourceSpec resourceSpec = new VerifyResourceSpec(value);
-			IStatus result = resourceSpec.checkResource(dir);
-			if (!result.isOK()) {
-				return result;
+		if (installPath.toFile().exists()) {
+			if (!dir.endsWith(File.separator)) {
+				dir += File.separator;
 			}
+			String[] array = spec.split(",");
+			for (String value : array) {
+				VerifyResourceSpec resourceSpec = new VerifyResourceSpec(value);
+				IStatus result = resourceSpec.checkResource(dir);
+				if (!result.isOK()) {
+					return result;
+				}
+			}
+			return Status.OK_STATUS;
 		}
-		return Status.OK_STATUS;
+		return new Status(IStatus.ERROR, TomcatPlugin.PLUGIN_ID, 0, NLS.bind(Messages.errorInstallDirDoesNotExist, installPath.toFile()), null);
 	}
 
 	public boolean isVersion_2_5() {

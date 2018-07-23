@@ -43,7 +43,7 @@ public class TcServerRuntime40 extends TcServerRuntime {
 						&& new File(dir, name).isDirectory();
 			}
 		});
-		return files.length > 0 ? Path.fromOSString(files[0].toString()) : null;
+		return files != null && files.length > 0 ? Path.fromOSString(files[0].toString()) : installPath;
 	}
 
 	@Override
