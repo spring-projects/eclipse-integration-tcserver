@@ -63,8 +63,8 @@ public class TcServerFixture extends TestConfiguration {
 			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.6.1.RELEASE.zip");
 
 	public static TcServerFixture V_2_7 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_5,
-			"vfabric-tc-server-developer-2.7.0.RC1",
-			"http://download.springsource.com/milestone/TCS/vfabric-tc-server-developer-2.7.0.RC1.zip");
+			"vfabric-tc-server-developer-2.7.5.RELEASE",
+			"http://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.7.5.RELEASE.zip");
 
 	public static TcServerFixture V_2_8 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_2_5,
 			"vfabric-tc-server-developer-2.8.0.RELEASE", V_2_8_URL);
