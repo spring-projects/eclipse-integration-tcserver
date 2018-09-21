@@ -18,8 +18,8 @@
 
 	<!-- tc Server Integration -->
 	<feature
-		url="com.vmware.vfabric.ide.eclipse.tcserver_3.9.6.qualifier.jar"
-		id="com.vmware.vfabric.ide.eclipse.tcserver" version="3.9.6.qualifier">
+		url="com.vmware.vfabric.ide.eclipse.tcserver_3.9.7.qualifier.jar"
+		id="com.vmware.vfabric.ide.eclipse.tcserver" version="3.9.7.qualifier">
 		<category name="Core / Eclipse Integration Pivotal tc Server" />
 	</feature>
 
