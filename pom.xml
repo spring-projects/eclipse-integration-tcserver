@@ -393,7 +393,7 @@
 			<repository>
 				<id>photon</id>
 				<layout>p2</layout>
-				<url>http://download.eclipse.org/releases/2ß18-12/</url>
+				<url>http://download.eclipse.org/releases/2018-12/</url>
 			</repository>
 			<repository>
 				<id>swtbot</id>
@@ -646,6 +646,16 @@
 							<!-- TODO assume versionRange=0.0.0 when no <versionRange> element is present  -->
 							<versionRange>0.0.0</versionRange>
 						</requirement>
+						<requirement>
+							<type>eclipse-plugin</type>
+							<id>org.eclipse.equinox.event</id>
+							<versionRange>0.0.0</versionRange>
+						</requirement>
+						<requirement>
+							<type>eclipse-plugin</type>
+							<id>org.apache.felix.scr</id>
+							<versionRange>0.0.0</versionRange>
+						</requirement>
 					</extraRequirements>
 				</dependency-resolution>
 				<resolver>p2</resolver>
@@ -789,6 +799,20 @@
             <appArgLine>
                 -eclipse.keyring ${project.build.directory}/keystore -eclipse.password ${project.build.directory}/keystore.password
             </appArgLine>
+
+			<bundleStartLevel>
+				<bundle>
+					<id>org.eclipse.equinox.event</id>
+					<level>2</level>
+					<autoStart>true</autoStart>
+				</bundle>
+				<bundle>
+					<id>org.apache.felix.scr</id>
+					<level>2</level>
+					<autoStart>true</autoStart>
+				</bundle>
+			</bundleStartLevel>
+
           </configuration>
         </plugin>
       </plugins>
