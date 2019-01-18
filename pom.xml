@@ -358,7 +358,7 @@
 				<url>http://download.eclipse.org/eclipse/updates/4.9/</url>
 			</repository>
 			<repository>
-				<id>photon</id>
+				<id>2018-09</id>
 				<layout>p2</layout>
 				<url>http://download.eclipse.org/releases/2018-09/</url>
 			</repository>
@@ -391,9 +391,42 @@
 				<url>http://download.eclipse.org/eclipse/updates/4.10/</url>
 			</repository>
 			<repository>
-				<id>photon</id>
+				<id>2018-12</id>
 				<layout>p2</layout>
 				<url>http://download.eclipse.org/releases/2018-12/</url>
+			</repository>
+			<repository>
+				<id>swtbot</id>
+				<layout>p2</layout>
+				<url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+			</repository>
+			<repository>
+			  <id>eclipse-integration-commons</id>
+			  <layout>p2</layout>
+			  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
+			</repository>
+		</repositories>
+	</profile>
+
+	<profile>
+		<id>e411</id>
+		<properties>
+			<dist.target>e4.11</dist.target>
+			<dist.platform.name>2019-03</dist.platform.name>
+			<dist.platform.id>2019-03</dist.platform.id>
+			<dist.platform.version>4.11</dist.platform.version>
+			<package.qualifierPrefix>e411</package.qualifierPrefix>
+		</properties>
+		<repositories>
+			<repository>
+				<id>platform</id>
+				<layout>p2</layout>
+				<url>http://download.eclipse.org/eclipse/updates/4.11/</url>
+			</repository>
+			<repository>
+				<id>2019-03</id>
+				<layout>p2</layout>
+				<url>http://download.eclipse.org/releases/2019-03/</url>
 			</repository>
 			<repository>
 				<id>swtbot</id>
