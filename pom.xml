@@ -51,6 +51,13 @@
     <system>BAMBOO</system>
   </ciManagement>
 
+  <licenses>
+	<license>
+		<name>Eclipse Public License v1.0</name>
+		<url>https://www.eclipse.org/legal/epl-v10.html</url>
+	</license>
+  </licenses>
+
   <properties>
     <!-- Eclipse Integration Commons Properties -->
     <p2.qualifier>SNAPSHOT</p2.qualifier>
