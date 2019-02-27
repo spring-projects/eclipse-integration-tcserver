@@ -2,8 +2,8 @@
 <!--
    STS PARENT POM
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="https://maven.apache.org/POM/4.0.0" xmlns:xsi="https://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://maven.apache.org/POM/4.0.0 https://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.vmware.vfabric.ide.eclipse.tcserver</groupId>
@@ -12,10 +12,9 @@
   <packaging>pom</packaging>
 
   <scm>
-    <connection>scm:git:ssh://git.springsource.com:sts/eclipse-integration-tcserver.git</connection>
-    <developerConnection>scm:git:ssh://git.springsource.com:sts/eclipse-integration-tcserver.git</developerConnection>
+    <connection>https://github.com/spring-projects/eclipse-integration-tcserver.git</connection>
     <tag>HEAD</tag>
-    <url>http://git.springsource.com/sts/eclipse-integration-tcserver</url>
+    <url>https://github.com/spring-projects/eclipse-integration-tcserver</url>
   </scm>
 
   <modules>
@@ -33,9 +32,9 @@
   <!-- Common Configuration -->
   <organization>
     <name>Pivotal, Inc.</name>
-    <url>http://pivotal.io</url>
+    <url>https://pivotal.io</url>
   </organization>
-  <url>http://spring.io/tools</url>
+  <url>https://spring.io/tools</url>
   <inceptionYear>2007</inceptionYear>
 
   <prerequisites>
@@ -43,12 +42,12 @@
   </prerequisites>
 
   <issueManagement>
-    <url>https://issuetracker.springsource.com/browse/STS</url>
-    <system>JIRA</system>
+    <url>https://github.com/spring-projects/eclipse-integration-tcserver/issues</url>
+    <system>GitHub</system>
   </issueManagement>
 
   <ciManagement>
-    <url>https://build.springsource.com/browse/STS</url>
+    <url>https://build.spring.io/browse/IDE</url>
     <system>BAMBOO</system>
   </ciManagement>
 
@@ -119,27 +118,27 @@
 		<repository>
 		  <id>mylyn</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/mylyn/releases/3.7</url>
+		  <url>https://download.eclipse.org/mylyn/releases/3.7</url>
 		</repository>
 		<repository>
 		  <id>platform</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/eclipse/updates/3.7/</url>
+		  <url>https://download.eclipse.org/eclipse/updates/3.7/</url>
 		</repository>
 		<repository>
 		  <id>indigo</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/releases/indigo/</url>
+		  <url>https://download.eclipse.org/releases/indigo/</url>
 		</repository>
 		<repository>
 		  <id>swtbot</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</url>
+		  <url>https://download.eclipse.org/technology/swtbot/helios/dev-build/update-site/</url>
 		</repository>
 		<repository>
 		  <id>eclipse-integration-commons</id>
 		  <layout>p2</layout>
-		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}/e3.7</url>
+		  <url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}/e3.7</url>
 		</repository>
 	  </repositories>
     </profile>
@@ -157,22 +156,22 @@
 		<repository>
 		  <id>platform</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/eclipse/updates/4.3/</url>
+		  <url>https://download.eclipse.org/eclipse/updates/4.3/</url>
 		</repository>
 		<repository>
 		  <id>kepler</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/releases/kepler/</url>
+		  <url>https://download.eclipse.org/releases/kepler/</url>
 		</repository>
 		<repository>
 		  <id>swtbot</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+		  <url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
 		</repository>
 		<repository>
 		  <id>eclipse-integration-commons</id>
 		  <layout>p2</layout>
-		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}/e3.7</url>
+		  <url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}/e3.7</url>
 		</repository>
 	  </repositories>
     </profile>
@@ -190,22 +189,22 @@
 		<repository>
 		  <id>platform</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/eclipse/updates/4.4/</url>
+		  <url>https://download.eclipse.org/eclipse/updates/4.4/</url>
 		</repository>
 		<repository>
 		  <id>luna</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/releases/luna/</url>
+		  <url>https://download.eclipse.org/releases/luna/</url>
 		</repository>
 		<repository>
 		  <id>swtbot</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+		  <url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
 		</repository>
 		<repository>
 		  <id>eclipse-integration-commons</id>
 		  <layout>p2</layout>
-		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}/e4.4</url>
+		  <url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}/e4.4</url>
 		</repository>
 	  </repositories>
     </profile>
@@ -223,22 +222,22 @@
 		<repository>
 		  <id>platform</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/eclipse/updates/4.5/</url>
+		  <url>https://download.eclipse.org/eclipse/updates/4.5/</url>
 		</repository>
 		<repository>
 		  <id>mars</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/releases/mars/</url>
+		  <url>https://download.eclipse.org/releases/mars/</url>
 		</repository>
 		<repository>
 		  <id>swtbot</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+		  <url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
 		</repository>
 		<repository>
 		  <id>eclipse-integration-commons</id>
 		  <layout>p2</layout>
-		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
+		  <url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
 		</repository>
 	  </repositories>
     </profile>
@@ -256,22 +255,22 @@
 		<repository>
 		  <id>platform</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/eclipse/updates/4.6/</url>
+		  <url>https://download.eclipse.org/eclipse/updates/4.6/</url>
 		</repository>
 		<repository>
 		  <id>neon</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/releases/neon/</url>
+		  <url>https://download.eclipse.org/releases/neon/</url>
 		</repository>
 		<repository>
 		  <id>swtbot</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+		  <url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
 		</repository>
 		<repository>
 		  <id>eclipse-integration-commons</id>
 		  <layout>p2</layout>
-		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
+		  <url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
 		</repository>
 	  </repositories>
     </profile>
@@ -289,22 +288,22 @@
 		<repository>
 		  <id>platform</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/eclipse/updates/4.7/</url>
+		  <url>https://download.eclipse.org/eclipse/updates/4.7/</url>
 		</repository>
 		<repository>
 		  <id>oxygen</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/releases/oxygen/</url>
+		  <url>https://download.eclipse.org/releases/oxygen/</url>
 		</repository>
 		<repository>
 		  <id>swtbot</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+		  <url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
 		</repository>
 		<repository>
 		  <id>eclipse-integration-commons</id>
 		  <layout>p2</layout>
-		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
+		  <url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
 		</repository>
 	  </repositories>
     </profile>
@@ -322,22 +321,22 @@
 		<repository>
 		  <id>platform</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/eclipse/updates/4.8/</url>
+		  <url>https://download.eclipse.org/eclipse/updates/4.8/</url>
 		</repository>
 		<repository>
 		  <id>photon</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/releases/photon/</url>
+		  <url>https://download.eclipse.org/releases/photon/</url>
 		</repository>
 		<repository>
 		  <id>swtbot</id>
 		  <layout>p2</layout>
-		  <url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+		  <url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
 		</repository>
 		<repository>
 		  <id>eclipse-integration-commons</id>
 		  <layout>p2</layout>
-		  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
+		  <url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
 		</repository>
 	  </repositories>
     </profile>
@@ -355,22 +354,22 @@
 			<repository>
 				<id>platform</id>
 				<layout>p2</layout>
-				<url>http://download.eclipse.org/eclipse/updates/4.9/</url>
+				<url>https://download.eclipse.org/eclipse/updates/4.9/</url>
 			</repository>
 			<repository>
 				<id>2018-09</id>
 				<layout>p2</layout>
-				<url>http://download.eclipse.org/releases/2018-09/</url>
+				<url>https://download.eclipse.org/releases/2018-09/</url>
 			</repository>
 			<repository>
 				<id>swtbot</id>
 				<layout>p2</layout>
-				<url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+				<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
 			</repository>
 			<repository>
 			  <id>eclipse-integration-commons</id>
 			  <layout>p2</layout>
-			  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
+			  <url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
 			</repository>
 		</repositories>
 	</profile>
@@ -388,22 +387,22 @@
 			<repository>
 				<id>platform</id>
 				<layout>p2</layout>
-				<url>http://download.eclipse.org/eclipse/updates/4.10/</url>
+				<url>https://download.eclipse.org/eclipse/updates/4.10/</url>
 			</repository>
 			<repository>
 				<id>2018-12</id>
 				<layout>p2</layout>
-				<url>http://download.eclipse.org/releases/2018-12/</url>
+				<url>https://download.eclipse.org/releases/2018-12/</url>
 			</repository>
 			<repository>
 				<id>swtbot</id>
 				<layout>p2</layout>
-				<url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+				<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
 			</repository>
 			<repository>
 			  <id>eclipse-integration-commons</id>
 			  <layout>p2</layout>
-			  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
+			  <url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
 			</repository>
 		</repositories>
 	</profile>
@@ -421,22 +420,22 @@
 			<repository>
 				<id>platform</id>
 				<layout>p2</layout>
-				<url>http://download.eclipse.org/eclipse/updates/4.11/</url>
+				<url>https://download.eclipse.org/eclipse/updates/4.11/</url>
 			</repository>
 			<repository>
 				<id>2019-03</id>
 				<layout>p2</layout>
-				<url>http://download.eclipse.org/releases/2019-03/</url>
+				<url>https://download.eclipse.org/releases/2019-03/</url>
 			</repository>
 			<repository>
 				<id>swtbot</id>
 				<layout>p2</layout>
-				<url>http://download.eclipse.org/technology/swtbot/releases/latest/</url>
+				<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
 			</repository>
 			<repository>
 			  <id>eclipse-integration-commons</id>
 			  <layout>p2</layout>
-			  <url>http://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
+			  <url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
 			</repository>
 		</repositories>
 	</profile>
@@ -460,7 +459,7 @@
       <activation>
         <property>
           <name>java.vendor.url</name>
-          <value>http://www.apple.com/</value>
+          <value>https://www.apple.com/</value>
         </property>
       </activation>
       <properties>
@@ -483,18 +482,18 @@
 	<repository>
 	  <id>spring-ide</id>
 	  <layout>p2</layout>
-	  <url>http://dist.springframework.org/${dist.type}/IDE/${dist.spring-ide-version}</url>
+	  <url>https://dist.springframework.org/${dist.type}/IDE/${dist.spring-ide-version}</url>
 	</repository>
 
     <!-- required for Maven and Ant AWS dependency -->
     <repository>
       <id>springsource-maven-release</id>
       <name>SpringSource Maven Release Repository</name>
-      <url>http://repository.springsource.com/maven/bundles/release</url>
+      <url>https://repository.springsource.com/maven/bundles/release</url>
     </repository>
     <repository>
       <id>maven-mirror</id>
-      <url>http://repo.exist.com/maven2</url>
+      <url>https://repo.exist.com/maven2</url>
     </repository>
   </repositories>
   
@@ -503,12 +502,12 @@
     <pluginRepository>
       <id>spring-maven-release</id>
       <name>Spring Maven Release Repository</name>
-      <url>http://maven.springframework.org/release</url>
+      <url>https://maven.springframework.org/release</url>
     </pluginRepository>
     <pluginRepository>
       <id>springsource-maven-release</id>
       <name>SpringSource Maven Release Repository</name>
-      <url>http://repository.springsource.com/maven/bundles/release</url>
+      <url>https://repository.springsource.com/maven/bundles/release</url>
     </pluginRepository>
 	<pluginRepository>
       <id>tycho-staging</id>
@@ -650,7 +649,7 @@
 				<keystore>${signing.keystore}</keystore>
 				<storepass>${signing.store.password}</storepass>
 				<keypass>${signing.key.password}</keypass>
-				<tsa>http://sha256timestamp.ws.symantec.com/sha256/timestamp</tsa>
+				<tsa>https://sha256timestamp.ws.symantec.com/sha256/timestamp</tsa>
 			</configuration>
 		</plugin>
 
