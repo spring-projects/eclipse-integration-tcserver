@@ -14,21 +14,21 @@
   You can install the latest release of the vFabric tc Server Integration for Eclipse from the
   Eclipse Marketplace by looking for "tc Server". You can also install it manually from this update site:
 
-  http://dist.springsource.com/release/TOOLS/eclipse-integration-tcserver/
+  https://dist.springsource.com/release/TOOLS/eclipse-integration-tcserver/
 
 ## Installation (Milestone)
 
   You can install the latest milestone build of the vFabric tc Server Integration for Eclipse
   manually from this udpate site:
 
-  http://dist.springsource.com/milestone/TOOLS/eclipse-integration-tcserver/
+  https://dist.springsource.com/milestone/TOOLS/eclipse-integration-tcserver/
 
 ## Installation (CI builds)
 
   If you want to live on the leading egde, you can also install always up-to-date continuous
   integration buids from this update site:
 
-  http://dist.springsource.com/snapshot/TOOLS/eclipse-integration-tcserver/nightly
+  https://dist.springsource.com/snapshot/TOOLS/eclipse-integration-tcserver/nightly
 
   But take care, those builds could be broken from time to time and might contain non-ship-ready
   features that might never appear in the milestone or release builds.
@@ -38,7 +38,7 @@
   If you have a question that Google can't answer, the best way is to go to the stackoverflow
   using the tag `spring-tool-suite`:
 
-  http://stackoverflow.com/tags/spring-tool-suite[`spring-tool-suite`]
+  https://stackoverflow.com/tags/spring-tool-suite[`spring-tool-suite`]
   
   Bug reports and enhancement requests are tracked using GitHub issues here:
   

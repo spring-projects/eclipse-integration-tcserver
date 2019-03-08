@@ -127,9 +127,9 @@ LICENCE: all the source code provided by AOP Alliance is Public Domain.
 
 License:
 
-Bouncy Castle Licence http://www.bouncycastle.org/licence.html
+Bouncy Castle Licence https://www.bouncycastle.org/licence.html
 
-Apache Software License, Version 1.1 http://www.apache.org/licenses/LICENSE-1.1
+Apache Software License, Version 1.1 https://www.apache.org/licenses/LICENSE-1.1
 
 
 >>> springframework.roo.wrapping.bcprov-jdk15_1.45-1.45
@@ -156,7 +156,7 @@ Apache License, V2.0 is applicable to the following component(s).
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *       http://www.apache.org/licenses/LICENSE-2.0
+ *       https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -185,7 +185,7 @@ Apache HttpClient
 Copyright 1999-2016 The Apache Software Foundation
 
 This product includes software developed at
-The Apache Software Foundation (http://www.apache.org/).
+The Apache Software Foundation (https://www.apache.org/).
 
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -194,7 +194,7 @@ The Apache Software Foundation (http://www.apache.org/).
  * (the "License"); you may not use this file except in compliance with
  * the License.  You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ *     https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -222,7 +222,7 @@ This Source Code Form is subject to the terms of the Mozilla Public
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * 
- * http://www.apache.org/licenses/LICENSE-2.0
+ * https://www.apache.org/licenses/LICENSE-2.0
  * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -241,7 +241,7 @@ This Source Code Form is subject to the terms of the Mozilla Public
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
 *
-* http://www.apache.org/licenses/LICENSE-2.0
+* https://www.apache.org/licenses/LICENSE-2.0
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
@@ -259,7 +259,7 @@ This Source Code Form is subject to the terms of the Mozilla Public
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
 *
-* http://www.apache.org/licenses/LICENSE-2.0
+* https://www.apache.org/licenses/LICENSE-2.0
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
@@ -277,7 +277,7 @@ This Source Code Form is subject to the terms of the Mozilla Public
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -295,7 +295,7 @@ This Source Code Form is subject to the terms of the Mozilla Public
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
 *
-* http://www.apache.org/licenses/LICENSE-2.0
+* https://www.apache.org/licenses/LICENSE-2.0
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
@@ -312,7 +312,7 @@ This Source Code Form is subject to the terms of the Mozilla Public
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -343,7 +343,7 @@ conditions of the subcomponent's license, as noted in the LICENSE file.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -360,7 +360,7 @@ conditions of the subcomponent's license, as noted in the LICENSE file.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -378,7 +378,7 @@ conditions of the subcomponent's license, as noted in the LICENSE file.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -396,7 +396,7 @@ conditions of the subcomponent's license, as noted in the LICENSE file.
 * you may not use this file except in compliance with the License.
 * You may obtain a copy of the License at
 *
-* http://www.apache.org/licenses/LICENSE-2.0
+* https://www.apache.org/licenses/LICENSE-2.0
 *
 * Unless required by applicable law or agreed to in writing, software
 * distributed under the License is distributed on an "AS IS" BASIS,
@@ -414,7 +414,7 @@ conditions of the subcomponent's license, as noted in the LICENSE file.
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -437,7 +437,7 @@ License: Apache 2.0
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -454,7 +454,7 @@ License: Apache 2.0
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -471,7 +471,7 @@ License: Apache 2.0
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *      https://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -488,7 +488,7 @@ Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
 
-http://www.apache.org/licenses/LICENSE-2.0
+https://www.apache.org/licenses/LICENSE-2.0
 
 Unless required by applicable law or agreed to in writing, software
 distributed under the License is distributed on an "AS IS" BASIS,
@@ -509,10 +509,10 @@ About This Content
 April 6, 2016
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributor's license for terms and conditions of use.
@@ -539,10 +539,10 @@ About This Content
 April 6, 2016
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributor's license for terms and conditions of use.
@@ -569,10 +569,10 @@ About This Content
 April 6, 2016
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributor's license for terms and conditions of use.
@@ -599,17 +599,17 @@ About This Content
 January 22, 2009
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
 Objenesis 1.0
-The plug-in includes Objenesis ("Objenesis") developed by http://objenesis.org/. Therefore:
+The plug-in includes Objenesis ("Objenesis") developed by https://objenesis.org/. Therefore:
 This product includes software developed by Objenesis (
-http://objenesis.org/
+https://objenesis.org/
 ).
 A subset of the Objenesis binary code is included with no modifications except postprocessing (pack200 conditioning and signing). The corresponding Objenesis source code is located in src.zip.
 Objenesis is:
@@ -617,10 +617,10 @@ Copyright (c) 2003-2006, Objenesis Team and all contributors.
 Your use of the Objenesis code is subject to the terms and conditions of the MIT License. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
-http://www.opensource.org/licenses/mit-license.php
+https://www.opensource.org/licenses/mit-license.php
 .
 Examples and documentation as well as updated source code for Objenesis is available at 
-http://objenesis.org/
+https://objenesis.org/
 .
 
 
@@ -631,10 +631,10 @@ About This Content
 June 8, 2007
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
@@ -647,7 +647,7 @@ Your use of the backport-util-concurrent code is subject to the terms and condit
 license.html
 .
 Examples and documentation as well as updated source code for backport-util-concurrent is available at 
-http://backport-jsr166.sourceforge.net/
+https://backport-jsr166.sourceforge.net/
 .
 
 
@@ -658,10 +658,10 @@ About This Content
 June, 2008
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributor's license for terms and conditions of use.
@@ -669,10 +669,10 @@ JavaBeans Activation Framework 1.1
 Your use of the Activation Framework code is subject to the terms and conditions of the Apache License Version 2.0. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
-http://www.apache.org/licenses/
+https://www.apache.org/licenses/
 .
 The source for the javax.activation bundle is available on the Apache Geronimo website at 
-http://geronimo.apache.org/
+https://geronimo.apache.org/
 .
 
 
@@ -683,10 +683,10 @@ About This Content
 January 02, 2014
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
@@ -695,7 +695,7 @@ The plug-in includes software developed by Sun as part of the Glassfish project.
 Your use of the library code is subject to the terms and conditions of the Common Development and Distribution License("CDDL") license. A copy of the Common Development and Distribution License is contained in the file 
 LICENSE_CDDL.txt
  and is also available at 
-http://glassfish.java.net/public/CDDL+GPL.html
+https://glassfish.java.net/public/CDDL+GPL.html
 .
 Original binaries and source are available from the 
 Glassfish website
@@ -709,9 +709,9 @@ About This Content
 May 05, 2011
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
-If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at http://www.eclipse.org
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at https://www.eclipse.org
 .
 Third Party Content
 
@@ -726,7 +726,7 @@ The plug-in includes software developed by Sun as part of the Glassfish project.
 Your use of the library code is subject to the terms and conditions of the Common Development and Distribution License("CDDL") license. A copy of the Common Development and Distribution License is contained in the file 
 LICENSE_CDDL.txt
  and is also available at 
-http://glassfish.java.net/public/CDDL+GPL.html
+https://glassfish.java.net/public/CDDL+GPL.html
 .
 Original binaries and source are available from the 
 Glassfish website
@@ -740,10 +740,10 @@ About This Content
 May 09, 2012
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
@@ -752,7 +752,7 @@ The plug-in includes software developed as part of Java EE 6 SDK.
 Your use of the JMS API code is subject to the terms and conditions of the Common Developmen and Distribution License 1.0. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
-http://www.opensource.org/licenses/CDDL-1.0
+https://www.opensource.org/licenses/CDDL-1.0
 .
 Original binaries are available from the 
 Oracle website
@@ -767,9 +767,9 @@ About This Content
 June 08, 2007
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
-If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at http://www.eclipse.org.
+If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at https://www.eclipse.org.
 
 
 Third Party Content
@@ -785,10 +785,10 @@ Java Mail 1.4
 Your use of the Java Mail code is subject to the terms and conditions of the Apache License Version 2.0. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
-http://www.apache.org/licenses/
+https://www.apache.org/licenses/
 .
 The source for the javax.mail bundle is available on the Apache Geronimo website at 
-http://geronimo.apache.org/
+https://geronimo.apache.org/
 .
 
 
@@ -799,10 +799,10 @@ About This Content
 March, 2009
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributor's license for terms and conditions of use.
@@ -810,10 +810,10 @@ StAX 1.0.
 Your use of the StAX code is subject to the terms and conditions of the Apache Software License v2.0. A copy of the license is contained in the file 
 LICENCE.txt
  and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0
+https://www.apache.org/licenses/LICENSE-2.0
 .
 The source for the bundle is available at the StAX website at 
-http://stax.codehaus.org/
+https://stax.codehaus.org/
 .
 
 
@@ -824,10 +824,10 @@ About This Content
 January 27, 2009
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributor's license for terms and conditions of use.
@@ -835,8 +835,8 @@ Java API for XML Web Services (JAX-WS API)
 Your use of the JAX-WS API code is subject to the terms and conditions of the Apache License Version 2.0. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0
-The source for the javax.xml.ws bundle is available on the Apache Geronimo website at http://geronimo.apache.org/.
+https://www.apache.org/licenses/LICENSE-2.0
+The source for the javax.xml.ws bundle is available on the Apache Geronimo website at https://geronimo.apache.org/.
 
 
 >>> org.apache.commons.codec-1.6.0
@@ -846,10 +846,10 @@ About This Content
 May 30, 2008
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 
 ADDITIONAL LICENSE INFORMATION:
@@ -859,7 +859,7 @@ Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
 Apache Commons Codec 1.6
 This code is licensed under the Apache License v2.0 and can be found at 
-http://www.apache.org/licenses/LICENSE-2.0.txt
+https://www.apache.org/licenses/LICENSE-2.0.txt
 . (
 local copy
 )
@@ -875,17 +875,17 @@ About This Content
 November 16, 2015
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
 Commons Collections 3.2.2
 The plug-in includes Commons Collections 3.2.2 ("Commons Collections") developed by the Apache Software Foundation as part of the Apache Commons project. Therefore:
 This product includes software developed by the Apache Software Foundation (
-http://www.apache.org/
+https://www.apache.org/
 ).
 The Commons Collections binary code is included with no modifications except post processing (pack200 conditioning and signing). The corresponding Commons Collections source code is located in src.zip.
 Commons Net is:
@@ -893,13 +893,13 @@ Copyright (c) 1997-2005 The Apache Software Foundation. All rights reserved.
 Your use of the Commons Collections code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0.html
+https://www.apache.org/licenses/LICENSE-2.0.html
 .
 The Apache attribution 
 NOTICE.txt
  file is included with the Content in accordance with 4d of the Apache License, Version 2.0.
 Examples and documentation as well as updated source code for Commons Collections is available at 
-http://commons.apache.org/collections/
+https://commons.apache.org/collections/
 .
 
 
@@ -910,17 +910,17 @@ About This Content
 June 8, 2007
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributors license for terms and conditions of use.
 Apache Commons IO 2.2.0
 The plug-in includes Commons IO 2.2.0 ("Commons IO") developed by the Apache Software Foundation. Therefore:
 This product includes software developed by the Apache Software Foundation (
-http://www.apache.org/
+https://www.apache.org/
 ).
 The Commons IO binary code is included with no modifications except postprocessing (pack200 conditioning and signing). The corresponding Commons IO source code is located in src.zip.
 Commons IO is:
@@ -928,13 +928,13 @@ Copyright (c) 1997-2005 The Apache Software Foundation. All rights reserved.
 Your use of the Commons IO code is subject to the terms and conditions of the Apache Software License 2.0. A copy of the license is contained in the file 
 LICENSE.txt
  and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0.html
+https://www.apache.org/licenses/LICENSE-2.0.html
 .
 The Apache attribution 
 NOTICE.txt
  file is included with the Content in accordance with 4d of the Apache License, Version 2.0.
 Examples and documentation as well as updated source code for Commons IO is available at 
-http://commons.apache.org/io/
+https://commons.apache.org/io/
 .
 
 
@@ -945,10 +945,10 @@ About This Content
 April 12, 2016
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 Third Party Content
 The Content includes items that have been sourced from third parties as set out below. If you did not receive this Content directly from the Eclipse Foundation, the following is provided for informational purposes only, and you should look to the Redistributor's license for terms and conditions of use.
@@ -983,10 +983,10 @@ About This Content
 March 12, 2009
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 
 ADDITIONAL LICENSE INFORMATION:
@@ -998,13 +998,13 @@ Jackson JSON processor (Jackson)
 Your use of Jackson is subject to the terms and conditions of the Apache License, Version 2.0 ("Apache License"). A copy of the Apache License can be found in 
 ASL2.0
  and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0.html
+https://www.apache.org/licenses/LICENSE-2.0.html
 .
 The Apache attribution 
 NOTICE
  file is included with the Content in accordance with 4d of the Apache License, Version 2.0.
 Jackson including its source is available from 
-http://jackson.codehaus.org/
+https://jackson.codehaus.org/
 .
 
 
@@ -1015,10 +1015,10 @@ About This Content
 March 12, 2009
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 
 ADDITIONAL LICENSE INFORMATION:
@@ -1029,13 +1029,13 @@ Jackson JSON processor (Jackson)
 Your use of Jackson is subject to the terms and conditions of the Apache License, Version 2.0 ("Apache License"). A copy of the Apache License can be found in 
 ASL2.0
  and is also available at 
-http://www.apache.org/licenses/LICENSE-2.0.html
+https://www.apache.org/licenses/LICENSE-2.0.html
 .
 The Apache attribution 
 NOTICE
  file is included with the Content in accordance with 4d of the Apache License, Version 2.0.
 Jackson including its source is available from 
-http://jackson.codehaus.org/
+https://jackson.codehaus.org/
 .
 
 
@@ -1046,10 +1046,10 @@ About This Content
 June 5, 2006
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 
 
@@ -1060,10 +1060,10 @@ About This Content
 June 5, 2006
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 
 
@@ -1074,10 +1074,10 @@ About This Content
 June 5, 2006
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 
 
@@ -1088,10 +1088,10 @@ About This Content
 June 5, 2006
 License
 The Eclipse Foundation makes available all content in this plug-in ("Content"). Unless otherwise indicated below, the Content is provided to you under the terms and conditions of the Eclipse Public License Version 1.0 ("EPL"). A copy of the EPL is available at 
-http://www.eclipse.org/legal/epl-v10.html
+https://www.eclipse.org/legal/epl-v10.html
 . For purposes of the EPL, "Program" will mean the Content.
 If you did not receive this Content directly from the Eclipse Foundation, the Content is being redistributed by another party ("Redistributor") and different terms and conditions may apply to your use of any object code in the Content. Check the Redistributor's license that was provided with the Content. If no such license exists, contact the Redistributor. Unless otherwise indicated below, the terms and conditions of the EPL still apply to any source code in the Content and such source code may be obtained at 
-http://www.eclipse.org
+https://www.eclipse.org
 .
 
 
@@ -1526,7 +1526,7 @@ to a jury trial in any resulting litigation.
 Apache License 
 
 Version 2.0, January 2004 
-http://www.apache.org/licenses/ 
+https://www.apache.org/licenses/ 
 
 TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION 
 
@@ -1991,7 +1991,7 @@ DAMAGES, SO THIS EXCLUSION AND LIMITATION MAY NOT APPLY TO YOU.
 
 The Covered Software is a "commercial item," as that term is defined
 in 48 C.F.R. 2.101 (Oct. 1995), consisting of "commercial computer
-software" (as that term is defined at 48 C.F.R. ¤ 252.227-7014(a)(1)) and
+software" (as that term is defined at 48 C.F.R. ï¿½ 252.227-7014(a)(1)) and
 "commercial computer software documentation" as such terms are used in
 48 C.F.R. 12.212 (Sept.  1995). Consistent with 48 C.F.R. 12.212 and 48
 C.F.R. 227.7202-1 through 227.7202-4 (June 1995), all U.S. Government End
@@ -2206,7 +2206,7 @@ If You choose to distribute Source Code Form that is Incompatible With Secondary
 
 Exhibit A - Source Code Form License Notice
 
-This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
+This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 If it is not possible or desirable to put the notice in a particular file, then You may include the notice in a location (such as a LICENSE file in a relevant directory) where a recipient would be likely to look for such a notice.
 
@@ -2227,7 +2227,7 @@ available (as would be noted above), you may obtain a copy of
 the source code corresponding to the binaries for such open
 source components and modifications thereto, if any, (the
 "Source Files"), by downloading the Source Files from Pivotal's website at
-http://network.pivotal.io/open-source, or by sending a request, 
+https://network.pivotal.io/open-source, or by sending a request, 
 with your name and address to: Pivotal Software, Inc., 875 Howard Street, 5th
 floor, San Francisco, CA 94103, Attention: General Counsel. All such requests
 should clearly specify: OPEN SOURCE FILES REQUEST, Attention General Counsel. 

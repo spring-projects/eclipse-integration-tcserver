@@ -3,7 +3,7 @@
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
+ * https://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
  *    Spring IDE Developers - initial API and implementation
@@ -83,7 +83,7 @@ public class TcServerConfigurationPage extends AbstractTcServerPage {
 		instanceCombo.setText("gibberish gibberish");
 		// Per this site, you need a space before the text if there
 		// is a warning/error icon.
-		// http://www.prait.ch/wordpress/?p=251
+		// https://www.prait.ch/wordpress/?p=251
 		shell.bot().text(" " + TcServer20WizardFragment.SERVER_DOES_NOT_EXIST_MESSAGE);
 		// Any valid server will have a "lib" directory which is not
 		// appropriate to use as an instance directory
