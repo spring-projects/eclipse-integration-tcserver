@@ -274,7 +274,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 	    link.addSelectionListener(new SelectionAdapter(){
 	        @Override
 	        public void widgetSelected(SelectionEvent e) {
-	        		UiUtil.openUrl("http://tcserver.docs.pivotal.io/docs-tcserver/topics/template.html#managing-templates");
+	        		UiUtil.openUrl("https://tcserver.docs.pivotal.io/4x/docs-tcserver/topics/template.html");
 	        }
 	    });
 		GridDataFactory.fillDefaults().span(3, 1).align(SWT.END, SWT.BEGINNING).applyTo(link);
@@ -478,9 +478,10 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 		}
 		templateViewer.setInput(templates);
 		locationPathField.setText(runtime.getLocation().toOSString());
-		if (wc != null) {
-			wc.setName(nameText.getText());
-		}
+		// Commented out for https://github.com/spring-projects/eclipse-integration-tcserver/issues/10
+//		if (wc != null) {
+//			wc.setName(nameText.getText());
+//		}
 	}
 
 	@Override
