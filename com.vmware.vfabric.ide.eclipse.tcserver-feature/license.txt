@@ -74,5 +74,5 @@ This Agreement is governed by the laws of the State of New York and the intellec
 
 Third party open-source licenses:
 
-- spring-loaded: Apache License 2.0
+- spring-loaded, https://github.com/spring-projects/spring-loaded, licensed under Apache License 2.0
 
