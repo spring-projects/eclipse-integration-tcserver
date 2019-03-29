@@ -6,7 +6,7 @@
   <parent>
     <groupId>com.vmware.vfabric.ide.eclipse.tcserver</groupId>
     <artifactId>com.vmware.vfabric.ide.eclipse.tcserver.parent</artifactId>
-    <version>3.9.8-SNAPSHOT</version>
+    <version>3.9.9-SNAPSHOT</version>
   </parent>
   <artifactId>com.vmware.vfabric.ide.eclipse.tcserver.site</artifactId>
   <packaging>eclipse-repository</packaging>
