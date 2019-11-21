@@ -38,9 +38,7 @@
 	<bundle id="org.reactivestreams.reactive-streams.source" version="0.0.0"/>
 
 	<bundle id="org.springframework.core" version="0.0.0"/>
+	<bundle id="org.springframework.ide.eclipse.beans.ui.live" version="0.0.0"/>
 	<bundle id="org.json" version="0.0.0"/>
-	
-	
-	
 
 </site>
