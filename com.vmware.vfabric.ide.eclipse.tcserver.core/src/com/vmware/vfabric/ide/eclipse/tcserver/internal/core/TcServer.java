@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,12 +45,6 @@ import org.eclipse.wst.server.core.ServerUtil;
  * @author Tomasz Zarna
  */
 public class TcServer extends TomcatServer {
-
-	public static String ID_TC_SERVER_2_5 = "com.vmware.server.tc.70";
-
-	public static String ID_TC_SERVER_3_0 = "com.pivotal.server.tc.80";
-	
-	public static String ID_TC_SERVER_4_0 = "com.pivotal.server.tc.90";
 
 	public static final String DEFAULT_DEPLOYER_HOST = "localhost";
 
