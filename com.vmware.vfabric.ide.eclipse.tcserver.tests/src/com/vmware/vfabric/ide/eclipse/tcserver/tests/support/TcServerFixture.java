@@ -54,6 +54,8 @@ public class TcServerFixture extends TestConfiguration {
 
 	public static String V_4_0_URL = "https://dist.springsource.com/release/STS/bundle/pivotal-tc-server-developer-4.0.0.RELEASE.zip";
 	
+	public static String V_4_1_URL = "file:///Users/aboyko/Downloads/pivotal-tc-server-developer-4.1.0.RELEASE.zip";
+	
 	public static TcServerFixture V_2_5 = new TcServerFixture("com.vmware.server.tc.runtime.70",
 			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.5.2.RELEASE",
 			"https://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.5.2.RELEASE.zip");
@@ -81,6 +83,9 @@ public class TcServerFixture extends TestConfiguration {
 	public static TcServerFixture V_4_0 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_4_0,
 			"pivotal-tc-server", V_4_0_URL);
 	
+	public static TcServerFixture V_4_1 = new TcServerFixture(TcServerTestPlugin.PLUGIN_ID, TcServer.ID_TC_SERVER_4_0,
+			"pivotal-tc-server", V_4_1_URL);
+	
 	public static TcServerFixture V_6_0 = new TcServerFixture("com.vmware.server.tc.runtime.70",
 			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.5.2.RELEASE",
 			"https://download.springsource.com/release/TCS/vfabric-tc-server-developer-2.5.2.RELEASE.zip", "6", true);
@@ -90,7 +95,7 @@ public class TcServerFixture extends TestConfiguration {
 	private static final TcServerFixture DEFAULT = V_4_0;
 
 	public static TcServerFixture[] ALL = new TcServerFixture[] { V_6_0, V_2_5, V_2_6, V_2_7, V_2_8, V_2_9, V_3_0,
-			V_3_1, V_4_0 };
+			V_3_1, V_4_0, V_4_1 };
 
 	public static TcServerFixture current() {
 		if (current == null) {
