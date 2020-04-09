@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2013, 2018 Pivotal Software, Inc.
+ * Copyright (c) 2013, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,16 +31,16 @@ import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerTestPlugin;
 public class InsightTestFixture extends TcServerFixture {
 
 	public static InsightTestFixture V_2_8 = new InsightTestFixture(TcServerTestPlugin.PLUGIN_ID,
-			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.8.0.RELEASE", V_2_8_URL);
+			TcServerFixture.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.8.0.RELEASE", V_2_8_URL);
 
 	public static InsightTestFixture V_2_9 = new InsightTestFixture(TcServerTestPlugin.PLUGIN_ID,
-			TcServer.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.9.3.RELEASE", V_2_9_URL);
+			TcServerFixture.ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.9.3.RELEASE", V_2_9_URL);
 
 	public static InsightTestFixture V_3_0 = new InsightTestFixture(TcServerTestPlugin.PLUGIN_ID,
-			TcServer.ID_TC_SERVER_3_0, "pivotal-tc-server-developer-3.0.1.RELEASE", V_3_0_URL);
+			TcServerFixture.ID_TC_SERVER_3_0, "pivotal-tc-server-developer-3.0.1.RELEASE", V_3_0_URL);
 
 	public static InsightTestFixture V_3_1 = new InsightTestFixture(TcServerTestPlugin.PLUGIN_ID,
-			TcServer.ID_TC_SERVER_3_0, "pivotal-tc-server-developer-3.1.0.RELEASE", V_3_1_URL);
+			TcServerFixture.ID_TC_SERVER_3_0, "pivotal-tc-server-developer-3.1.0.RELEASE", V_3_1_URL);
 	
 	public InsightTestFixture(String testPlugin, String serverType, String stubPath, String downloadUrl) {
 		super(testPlugin, serverType, stubPath, downloadUrl);

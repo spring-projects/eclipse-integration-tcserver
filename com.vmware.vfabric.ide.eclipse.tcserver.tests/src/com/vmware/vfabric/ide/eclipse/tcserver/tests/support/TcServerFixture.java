@@ -38,13 +38,13 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerUtil;
  */
 public class TcServerFixture extends TestConfiguration {
 	
-	private static String ID_TC_SERVER_2_5 = "com.vmware.server.tc.70";
+	public static String ID_TC_SERVER_2_5 = "com.vmware.server.tc.70";
 
-	private static String ID_TC_SERVER_3_0 = "com.pivotal.server.tc.80";
+	public static String ID_TC_SERVER_3_0 = "com.pivotal.server.tc.80";
 	
-	private static String ID_TC_SERVER_4_0 = "com.pivotal.server.tc.90";
+	public static String ID_TC_SERVER_4_0 = "com.pivotal.server.tc.90";
 
-	private static String ID_TC_SERVER_4_1 = "com.vmware.server.tc.90";
+	public static String ID_TC_SERVER_4_1 = "com.vmware.server.tc.90";
 	
 	public static String INST_COMBINED = "combined-instance";
 
@@ -62,8 +62,7 @@ public class TcServerFixture extends TestConfiguration {
 
 	public static String V_4_0_URL = "https://dist.springsource.com/release/STS/bundle/pivotal-tc-server-developer-4.0.0.RELEASE.zip";
 	
-	// TODO: Replace with real download URL for VMware Tc Server 4.1
-	public static String V_4_1_URL = "file:///Users/aboyko/Downloads/pivotal-tc-server-developer-4.1.0.RELEASE.zip";
+	public static String V_4_1_URL = "https://download.springsource.com/release/STS/bundle/pivotal-tc-server-developer-4.1.0.RELEASE.zip";
 	
 	public static TcServerFixture V_2_5 = new TcServerFixture("com.vmware.server.tc.runtime.70",
 			ID_TC_SERVER_2_5, "vfabric-tc-server-developer-2.5.2.RELEASE",
@@ -103,9 +102,8 @@ public class TcServerFixture extends TestConfiguration {
 
 	private static final TcServerFixture DEFAULT = V_4_0;
 
-	// TODO: Uncomment 4.1.0 server tests below. Update 4.1.0 runtime to reflect server runtime installation layout 
 	public static TcServerFixture[] ALL = new TcServerFixture[] { V_6_0, V_2_5, V_2_6, V_2_7, V_2_8, V_2_9, V_3_0,
-			V_3_1, V_4_0, /* V_4_1 */ };
+			V_3_1, V_4_0, V_4_1 };
 
 	public static TcServerFixture current() {
 		if (current == null) {
