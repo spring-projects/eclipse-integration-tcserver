@@ -62,14 +62,14 @@ STS PARENT POM
 		<!-- Eclipse Integration Commons Properties -->
 		<p2.qualifier>SNAPSHOT</p2.qualifier>
 		<p2.sign>false</p2.sign>
-		<p2.repository.name>Pivotal tc Server Integration for Eclipse</p2.repository.name>
+		<p2.repository.name>VMware tc Server Integration for Eclipse</p2.repository.name>
 
 		<!-- Signing -->
 		<signing.skip>true</signing.skip>
 		<signing.alias>pivotal</signing.alias>
 		<signing.keystore>~/.keytool/pivotal.jks</signing.keystore>
 
-		<dist.name>Pivotal tc Server Integration for Eclipse</dist.name>
+		<dist.name>VMware tc Server Integration for Eclipse</dist.name>
 		<dist.project>eclipse-integration-tcserver</dist.project>
 		<dist.key>TOOLS</dist.key>
 		<dist.target.classifier>eclipseintegrationtcserver-${dist.target}</dist.target.classifier>
@@ -463,17 +463,7 @@ STS PARENT POM
 							<environment>
 								<os>win32</os>
 								<ws>win32</ws>
-								<arch>x86</arch>
-							</environment>
-							<environment>
-								<os>win32</os>
-								<ws>win32</ws>
 								<arch>x86_64</arch>
-							</environment>
-							<environment>
-								<os>linux</os>
-								<ws>gtk</ws>
-								<arch>x86</arch>
 							</environment>
 							<environment>
 								<os>linux</os>
