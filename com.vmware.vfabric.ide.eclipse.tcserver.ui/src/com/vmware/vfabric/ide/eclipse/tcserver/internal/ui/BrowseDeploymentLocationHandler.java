@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Spring IDE Developers
+ * Copyright (c) 2012, 2020 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -31,7 +31,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.ui.IServerModule;
-import org.springsource.ide.eclipse.commons.core.StatusHandler;
+
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerCorePlugin;
 
 public class BrowseDeploymentLocationHandler extends AbstractHandler {
 
@@ -57,11 +58,11 @@ public class BrowseDeploymentLocationHandler extends AbstractHandler {
 				actionNotSupportedMessage();
 			}
 		} catch (UnsupportedOperationException e) {
-			StatusHandler.log(new Status(IStatus.ERROR, TcServerUiPlugin.PLUGIN_ID,
+			TcServerCorePlugin.log(new Status(IStatus.ERROR, TcServerUiPlugin.PLUGIN_ID,
 					"Open action not supported.", e));
 			actionNotSupportedMessage();
 		} catch (IOException e) {
-			StatusHandler.log(new Status(IStatus.ERROR, TcServerUiPlugin.PLUGIN_ID,
+			TcServerCorePlugin.log(new Status(IStatus.ERROR, TcServerUiPlugin.PLUGIN_ID,
 					"Failed to browse deployment location.", e));
 		}
 		

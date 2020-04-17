@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,8 +20,8 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerPort;
-import org.springsource.ide.eclipse.commons.ui.UiUtil;
 
+import com.vmware.vfabric.ide.eclipse.tcserver.core.util.UiUtil;
 import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.Activator;
 import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.TcServerInsightUtil;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviour;
@@ -32,7 +32,6 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviour;
  * @author Steffen Pingel
  * @since 2.2.0
  */
-@SuppressWarnings("restriction")
 public class OpenDashboardAction implements IObjectActionDelegate {
 
 	private IServer server;
@@ -40,11 +39,11 @@ public class OpenDashboardAction implements IObjectActionDelegate {
 	/**
 	 * {@inheritDoc}
 	 */
-	@SuppressWarnings("unchecked")
 	public void run(IAction action) {
 		run(server);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void run(IServer server) {
 		try {
 			TcServerBehaviour behaviour = (TcServerBehaviour) server.loadAdapter(TcServerBehaviour.class, null);

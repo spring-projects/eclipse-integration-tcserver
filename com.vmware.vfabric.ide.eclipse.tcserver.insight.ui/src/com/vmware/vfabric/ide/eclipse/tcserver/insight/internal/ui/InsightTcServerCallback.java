@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -30,9 +30,9 @@ import org.eclipse.jst.server.tomcat.core.internal.FileUtil;
 import org.eclipse.jst.server.tomcat.core.internal.TomcatPlugin;
 import org.eclipse.jst.server.tomcat.core.internal.Trace;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
-import org.springsource.ide.eclipse.commons.ui.UiUtil;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviour;
@@ -117,10 +117,11 @@ public class InsightTcServerCallback extends TcServerCallback {
 		if (!TcServerInsightUtil.isInsightEnabled(tcServer)) {
 			String value = Activator.getDefault().getPreferenceStore().getString(PREFERENCE_ENABLE_INSIGHT_PONT);
 			if (MessageDialogWithToggle.PROMPT.equals(value)) {
-				Display.getDefault().asyncExec(new Runnable() {
+				Display display = PlatformUI.getWorkbench().getDisplay();
+				display.asyncExec(new Runnable() {
 					public void run() {
 						MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoCancelQuestion(
-								UiUtil.getShell(), WANT_INSIGHT_DIALOG_TITLE, WANT_INSIGHT_DIALOG_MESSAGE,
+								Display.getCurrent().getActiveShell(), WANT_INSIGHT_DIALOG_TITLE, WANT_INSIGHT_DIALOG_MESSAGE,
 								"Do not ask again", false, Activator.getDefault().getPreferenceStore(),
 								PREFERENCE_ENABLE_INSIGHT_PONT);
 						if (dialog.getReturnCode() == IDialogConstants.YES_ID) {

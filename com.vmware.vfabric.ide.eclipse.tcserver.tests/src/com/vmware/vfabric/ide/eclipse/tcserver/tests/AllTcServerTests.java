@@ -17,7 +17,6 @@ import org.junit.runners.Suite.SuiteClasses;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.PropertyWriterTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer40TemplatePropertiesReaderTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviourTest;
-import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerConfiguratorImporterTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerDeploymentTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerInstanceTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntimeClasspathProviderTest;
@@ -34,7 +33,7 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerVersionHand
 @RunWith(Suite.class)
 @SuiteClasses({ PropertyWriterTest.class, //
 		TcServerBehaviourTest.class, //
-		TcServerConfiguratorImporterTest.class, //
+//		TcServerConfiguratorImporterTest.class, //
 		TcServerDeploymentTest.class, //
 		TcServerRuntimeClasspathProviderTest.class, //
 		TcServerRuntimeTest.class, //

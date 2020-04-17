@@ -13,14 +13,12 @@ package com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui;
 import java.io.File;
 import java.util.Collections;
 
-import junit.framework.TestCase;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
-import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.InsightPlugin;
-import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.InsightPluginModel;
+import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.StsTestUtil;
+
+import junit.framework.TestCase;
 
 
 /**

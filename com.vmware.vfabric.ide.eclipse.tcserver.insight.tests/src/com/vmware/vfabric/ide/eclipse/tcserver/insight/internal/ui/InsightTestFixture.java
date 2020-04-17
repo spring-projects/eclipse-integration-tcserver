@@ -13,15 +13,14 @@ package com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jst.server.tomcat.core.internal.ITomcatServer;
 import org.eclipse.wst.server.core.IServer;
-import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
-import org.springsource.ide.eclipse.commons.configurator.ServerHandler;
-import org.springsource.ide.eclipse.commons.configurator.ServerHandlerCallback;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerUtil;
+import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.ServerHandler;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerTestPlugin;
 
@@ -50,14 +49,14 @@ public class InsightTestFixture extends TcServerFixture {
 	public IServer createServer(String instance) throws Exception {
 		ServerHandler handler = provisionServer();
 		return handler.createServer(new NullProgressMonitor(), ServerHandler.ALWAYS_OVERWRITE,
-				new ServerHandlerCallback() {
-					@Override
-					public void configureServer(IServerWorkingCopy wc) throws CoreException {
+				wc -> {
+					try {
 						String DEFAULT_INSTANCE = "insight-instance";
 						// Create a default instance in case that one is missing
 						IPath installLocation = wc.getRuntime().getLocation();
 						if (!installLocation.append(DEFAULT_INSTANCE).toFile().exists()) {
-							String[] arguments = new String[] { "create", DEFAULT_INSTANCE, "-t", "insight", "--force" };
+							String[] arguments = new String[] { "create", DEFAULT_INSTANCE, "-t", "insight",
+									"--force" };
 							TcServerUtil.executeInstanceCreation(wc.getRuntime(), DEFAULT_INSTANCE, arguments);
 						}
 						wc.setAttribute(ITomcatServer.PROPERTY_INSTANCE_DIR, (String) null);
@@ -68,6 +67,10 @@ public class InsightTestFixture extends TcServerFixture {
 
 						TcServer tcServer = (TcServer) ((ServerWorkingCopy) wc).getWorkingCopyDelegate(null);
 						new ModifyInsightVmArgsCommand(tcServer, true).execute();
+						return Status.OK_STATUS;
+					}
+					catch (CoreException e) {
+						return e.getStatus();
 					}
 				});
 	}

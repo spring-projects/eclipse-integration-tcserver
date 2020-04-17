@@ -15,9 +15,7 @@ import java.io.FileOutputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
-
-import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.InsightPlugin;
+import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.StsTestUtil;
 
 import junit.framework.TestCase;
 

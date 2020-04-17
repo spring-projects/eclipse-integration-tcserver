@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -35,10 +35,10 @@ import org.eclipse.wst.server.core.TaskModel;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
 import org.eclipse.wst.server.ui.wizard.WizardFragment;
-import org.springsource.ide.eclipse.commons.core.StatusHandler;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.ITcServerConstants;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerCorePlugin;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerUtil;
 
 /**
@@ -168,7 +168,7 @@ public class TcServer20WizardFragment extends WizardFragment {
 			((ServerWorkingCopy) wc).importRuntimeConfiguration(wc.getRuntime(), null);
 		}
 		catch (CoreException e) {
-			StatusHandler.log(new Status(IStatus.ERROR, TcServerUiPlugin.PLUGIN_ID,
+			TcServerCorePlugin.log(new Status(IStatus.ERROR, TcServerUiPlugin.PLUGIN_ID,
 					"Failed to load runtime configuration", e));
 			// Trace.trace(Trace.SEVERE, "Failed to load runtime configuration",
 			// e);

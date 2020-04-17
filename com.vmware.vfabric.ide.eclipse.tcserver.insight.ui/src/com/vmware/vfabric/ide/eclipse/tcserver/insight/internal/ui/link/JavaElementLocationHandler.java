@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -45,9 +45,8 @@ import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.ServerUtil;
 import org.eclipse.wst.server.core.model.IURLProvider;
-import org.springsource.ide.eclipse.commons.core.JdtUtils;
-import org.springsource.ide.eclipse.commons.ui.SpringUIUtils;
 
+import com.vmware.vfabric.ide.eclipse.tcserver.core.util.JdtUtils;
 import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.Activator;
 import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.ILocationHandler;
 
@@ -99,7 +98,7 @@ public class JavaElementLocationHandler implements ILocationHandler {
 									"Could not find type '" + className + "' in workspace");
 						}
 						else {
-							IEditorPart editorPart = SpringUIUtils.openInEditor(type);
+							IEditorPart editorPart = JdtUtils.openInEditor(type);
 							int ln = Integer.valueOf(lineNumber);
 							if (editorPart instanceof ITextEditor && ln >= 0) {
 								ITextEditor textEditor = (ITextEditor) editorPart;

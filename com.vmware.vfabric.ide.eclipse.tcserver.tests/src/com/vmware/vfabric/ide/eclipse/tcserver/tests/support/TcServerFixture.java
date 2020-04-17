@@ -12,17 +12,17 @@ package com.vmware.vfabric.ide.eclipse.tcserver.tests.support;
 
 import java.io.File;
 import java.util.List;
+import java.util.function.Function;
 
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.wst.server.core.IRuntime;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
-import org.springsource.ide.eclipse.commons.configurator.ServerHandler;
-import org.springsource.ide.eclipse.commons.configurator.ServerHandlerCallback;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.ITcRuntime;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
@@ -170,36 +170,43 @@ public class TcServerFixture extends TestConfiguration {
 
 	public IServer createServer(final String instance) throws Exception {
 		ServerHandler handler = provisionServer();
-		ServerHandlerCallback callback;
+		Function<IServerWorkingCopy, IStatus> callback;
 		callback = new TcServer21ServerHandlerCallback() {
 
 			@Override
-			public void configureServer(IServerWorkingCopy server) throws CoreException {
-				super.configureServer(server);
-				if (tomcatVersion != null) {
-					ITcRuntime tcRuntime = TcServerUtil.getTcRuntime(server.getRuntime());
-					List<File> tomcatFolders = TcServerRuntime.getTomcatVersions(tcRuntime.getTomcatServersContainer().toFile());
-					for (File tomcatFolder : tomcatFolders) {
-						String version = TcServerUtil.getServerVersion(tomcatFolder.getName());
-						if (version.startsWith(tomcatVersion)) {
-							RuntimeWorkingCopy wc = (RuntimeWorkingCopy) server.getRuntime().createWorkingCopy();
-							wc.setAttribute(TcServerRuntime.KEY_SERVER_VERSION, tomcatFolder.getName());
-							wc.save(true, new NullProgressMonitor());
-							break;
+			public IStatus apply(IServerWorkingCopy server) {
+				IStatus status = super.apply(server);
+				if (status.isOK()) {
+					try {
+						if (tomcatVersion != null) {
+							ITcRuntime tcRuntime = TcServerUtil.getTcRuntime(server.getRuntime());
+							List<File> tomcatFolders = TcServerRuntime.getTomcatVersions(tcRuntime.getTomcatServersContainer().toFile());
+							for (File tomcatFolder : tomcatFolders) {
+								String version = TcServerUtil.getServerVersion(tomcatFolder.getName());
+								if (version.startsWith(tomcatVersion)) {
+									RuntimeWorkingCopy wc = (RuntimeWorkingCopy) server.getRuntime().createWorkingCopy();
+									wc.setAttribute(TcServerRuntime.KEY_SERVER_VERSION, tomcatFolder.getName());
+									wc.save(true, new NullProgressMonitor());
+									break;
+								}
+							}
 						}
+						if (legacyTests) {
+							if (instance != null) {
+								((ServerWorkingCopy) server).setAttribute(TcServer.KEY_ASF_LAYOUT, false);
+							}
+							else {
+								((ServerWorkingCopy) server).setAttribute(TcServer.KEY_ASF_LAYOUT, true);
+							}
+							((ServerWorkingCopy) server).setAttribute(TcServer.KEY_SERVER_NAME, instance);
+							((ServerWorkingCopy) server).setAttribute(TcServer.PROPERTY_TEST_ENVIRONMENT, false);
+						}
+						((ServerWorkingCopy) server).importRuntimeConfiguration(server.getRuntime(), null);
+					} catch (CoreException e) {
+						return e.getStatus();
 					}
 				}
-				if (legacyTests) {
-					if (instance != null) {
-						((ServerWorkingCopy) server).setAttribute(TcServer.KEY_ASF_LAYOUT, false);
-					}
-					else {
-						((ServerWorkingCopy) server).setAttribute(TcServer.KEY_ASF_LAYOUT, true);
-					}
-					((ServerWorkingCopy) server).setAttribute(TcServer.KEY_SERVER_NAME, instance);
-					((ServerWorkingCopy) server).setAttribute(TcServer.PROPERTY_TEST_ENVIRONMENT, false);
-				}
-				((ServerWorkingCopy) server).importRuntimeConfiguration(server.getRuntime(), null);
+				return status;
 			}
 
 		};

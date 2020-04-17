@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -19,10 +19,10 @@ import org.eclipse.wst.server.core.IServer;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springsource.ide.eclipse.commons.configurator.ServerHandler;
-import org.springsource.ide.eclipse.commons.core.FileUtil;
-import org.springsource.ide.eclipse.commons.tests.util.StsTestUtil;
 
+import com.vmware.vfabric.ide.eclipse.tcserver.core.util.FileUtil;
+import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.ServerHandler;
+import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.StsTestUtil;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerTestPlugin;
 

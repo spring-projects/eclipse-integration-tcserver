@@ -21,7 +21,7 @@ STS PARENT POM
 		<module>com.vmware.vfabric.ide.eclipse.tcserver-feature</module>
 		<module>com.vmware.vfabric.ide.eclipse.tcserver.core</module>
 		<module>com.vmware.vfabric.ide.eclipse.tcserver.reloading</module>
-		<module>com.vmware.vfabric.ide.eclipse.tcserver.livegraph</module>
+		
 		<module>com.vmware.vfabric.ide.eclipse.tcserver.tests</module>
 		<module>com.vmware.vfabric.ide.eclipse.tcserver.tests.ui</module>
 		<module>com.vmware.vfabric.ide.eclipse.tcserver.ui</module>

@@ -28,15 +28,7 @@
          id="com.vmware.vfabric.ide.eclipse.tcserver.reloading"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="true"/>
-
-   <plugin
-         id="com.vmware.vfabric.ide.eclipse.tcserver.livegraph"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="true"/>
+         version="0.0.0"/>
 
    <plugin
          id="com.vmware.vfabric.ide.eclipse.tcserver.ui"

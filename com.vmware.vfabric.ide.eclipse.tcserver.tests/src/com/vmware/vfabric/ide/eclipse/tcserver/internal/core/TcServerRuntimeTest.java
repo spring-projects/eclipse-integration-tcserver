@@ -21,9 +21,9 @@ import org.eclipse.wst.server.core.IServer;
 import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.springsource.ide.eclipse.commons.configurator.ServerHandler;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer.Layout;
+import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.ServerHandler;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
 
 /**

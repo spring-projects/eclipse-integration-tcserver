@@ -23,8 +23,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
-import org.springsource.ide.eclipse.commons.configurator.ServerHandler;
 
+import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.ServerHandler;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
 
 /**

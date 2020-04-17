@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 Spring IDE Developers
+ * Copyright (c) 2012, 2020 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -27,7 +27,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IServerAttributes;
-import org.springsource.ide.eclipse.commons.core.FileUtil;
+
+import com.vmware.vfabric.ide.eclipse.tcserver.core.util.FileUtil;
 
 /**
  * @author Tomasz Zarna

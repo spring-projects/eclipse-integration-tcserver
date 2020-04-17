@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 - 2013 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,15 +15,17 @@ import java.io.IOException;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.jdt.launching.IJavaLaunchConfigurationConstants;
 import org.eclipse.osgi.service.resolver.VersionRange;
 import org.eclipse.wst.server.core.IServer;
+import org.osgi.framework.Bundle;
 import org.osgi.framework.Version;
-import org.springsource.ide.eclipse.commons.core.StatusHandler;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerCorePlugin;
 
 /**
  * @author Steffen Pingel
@@ -151,7 +153,7 @@ public class TcServerInsightUtil {
 									return agent.getCanonicalPath();
 								}
 								catch (IOException e) {
-									StatusHandler.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+									TcServerCorePlugin.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 											"Could not get path to insight-weaver agent.", e));
 								}
 							}
@@ -162,5 +164,34 @@ public class TcServerInsightUtil {
 		}
 		return null;
 	}
+	
+	/**
+	 * Returns true if Eclipse's runtime bundle has the same or a newer than
+	 * given version.
+	 */
+	public static boolean isEclipseSameOrNewer(int majorVersion, int minorVersion) {
+		Bundle bundle = Platform.getBundle(Platform.PI_RUNTIME);
+		if (bundle != null) {
+			String versionString = (String) bundle.getHeaders().get(org.osgi.framework.Constants.BUNDLE_VERSION);
+			try {
+				Version version = new Version(versionString);
+				int major = version.getMajor();
+				if (major > majorVersion) {
+					return true;
+				}
+				if (major == majorVersion) {
+					int minor = version.getMinor();
+					if (minor >= minorVersion) {
+						return true;
+					}
+				}
+			}
+			catch (IllegalArgumentException e) {
+				// ignore this exception as this can't occur in pratice
+			}
+		}
+		return false;
+	}
+
 
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -20,9 +20,9 @@ import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.internal.browser.BrowserViewer;
 import org.eclipse.ui.internal.browser.WebBrowserEditor;
-import org.springsource.ide.eclipse.commons.core.SpringCoreUtils;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.Activator;
+import com.vmware.vfabric.ide.eclipse.tcserver.insight.internal.ui.TcServerInsightUtil;
 
 /**
  * {@link IPartListener} that registers the STS embedded cookie and the
@@ -74,7 +74,7 @@ public class StsProtocolPartListener implements IPartListener {
 	public void partOpened(IWorkbenchPart part) {
 		if (part instanceof WebBrowserEditor) {
 
-			if (SpringCoreUtils.isEclipseSameOrNewer(3, 5)) {
+			if (TcServerInsightUtil.isEclipseSameOrNewer(3, 5)) {
 				// Add Cookies first; this is Eclipse 3.5 API and therefore we
 				// can't do it on < 3.5
 				installCookies();

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.springsource.ide.eclipse.commons.core.process.OutputWriter;
-import org.springsource.ide.eclipse.commons.core.process.ProcessRunner;
-import org.springsource.ide.eclipse.commons.core.process.StandardProcessRunner;
-import org.springsource.ide.eclipse.commons.core.process.SystemErrOutputWriter;
-import org.springsource.ide.eclipse.commons.core.process.SystemOutOutputWriter;
+import com.vmware.vfabric.ide.eclipse.tcserver.core.util.OutputWriter;
+import com.vmware.vfabric.ide.eclipse.tcserver.core.util.ProcessRunner;
+import com.vmware.vfabric.ide.eclipse.tcserver.core.util.StandardProcessRunner;
+import com.vmware.vfabric.ide.eclipse.tcserver.core.util.SystemErrOutputWriter;
+import com.vmware.vfabric.ide.eclipse.tcserver.core.util.SystemOutOutputWriter;
 
 /**
  * @author Christian Dupuis

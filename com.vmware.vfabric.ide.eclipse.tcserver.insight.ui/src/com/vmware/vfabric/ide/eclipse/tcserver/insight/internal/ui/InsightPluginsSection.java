@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -40,7 +40,6 @@ import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerSorter;
-import org.eclipse.mylyn.commons.workbench.SubstringPatternFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -195,7 +194,19 @@ public class InsightPluginsSection extends ServerEditorSection implements IInsig
 		section.setClient(composite);
 
 		CheckboxFilteredTree filteredTree = new CheckboxFilteredTree(composite, SWT.FULL_SELECTION | SWT.BORDER,
-				new SubstringPatternFilter());
+				new PatternFilter() {
+					// Based on SubstringPatternFilter from Mylyn project
+					@Override
+					public void setPattern(String patternString) {
+						if (patternString == null || patternString.startsWith("*")) {
+							super.setPattern(patternString);
+						}
+						else {
+							super.setPattern("*" + patternString);
+						}
+					}
+				});
+		
 		GridDataFactory.fillDefaults().grab(true, true).hint(SWT.DEFAULT, 200).applyTo(filteredTree);
 		pluginViewer = filteredTree.getCheckboxTreeViewer();
 		// required to make filtering work

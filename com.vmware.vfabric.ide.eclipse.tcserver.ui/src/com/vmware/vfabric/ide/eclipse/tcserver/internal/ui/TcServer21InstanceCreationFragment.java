@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -63,11 +63,11 @@ import org.eclipse.wst.server.core.TaskModel;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
 import org.eclipse.wst.server.ui.wizard.WizardFragment;
-import org.springsource.ide.eclipse.commons.core.FileUtil;
-import org.springsource.ide.eclipse.commons.core.StatusHandler;
-import org.springsource.ide.eclipse.commons.ui.UiUtil;
 
+import com.vmware.vfabric.ide.eclipse.tcserver.core.util.FileUtil;
+import com.vmware.vfabric.ide.eclipse.tcserver.core.util.UiUtil;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerCorePlugin;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntime;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerUtil;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TemplatePropertiesReader;
@@ -563,7 +563,7 @@ public class TcServer21InstanceCreationFragment extends WizardFragment {
 				}
 			}
 			catch (CoreException e) {
-				StatusHandler.log(new Status(IStatus.ERROR, TcServerUiPlugin.PLUGIN_ID,
+				TcServerCorePlugin.log(new Status(IStatus.ERROR, TcServerUiPlugin.PLUGIN_ID,
 						"Failed to load a template property page for '" + templateName + "'.", e));
 			}
 		}
