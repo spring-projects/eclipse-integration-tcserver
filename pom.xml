@@ -99,7 +99,7 @@ STS PARENT POM
 		<test.useUIThread>true</test.useUIThread>
 		<test.skip>${maven.test.skip}</test.skip>
 
-		<tycho-version>1.5.1</tycho-version>
+		<tycho-version>1.6.0</tycho-version>
 
 		<maven.test.error.ignore>false</maven.test.error.ignore>
 		<maven.test.failure.ignore>false</maven.test.failure.ignore>
@@ -137,11 +137,11 @@ STS PARENT POM
 					<layout>p2</layout>
 					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
 				</repository>
-				<repository>
+<!--				<repository>
 					<id>eclipse-integration-commons</id>
 					<layout>p2</layout>
 					<url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
-				</repository>
+				</repository> -->
 			</repositories>
 		</profile>
 
@@ -170,11 +170,11 @@ STS PARENT POM
 					<layout>p2</layout>
 					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
 				</repository>
-				<repository>
+<!--				<repository>
 					<id>eclipse-integration-commons</id>
 					<layout>p2</layout>
 					<url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
-				</repository>
+				</repository> -->
 			</repositories>
 		</profile>
 
@@ -203,11 +203,11 @@ STS PARENT POM
 					<layout>p2</layout>
 					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
 				</repository>
-				<repository>
+<!--				<repository>
 					<id>eclipse-integration-commons</id>
 					<layout>p2</layout>
 					<url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
-				</repository>
+				</repository> -->
 			</repositories>
 		</profile>
 
@@ -249,12 +249,12 @@ STS PARENT POM
 	</profiles>
 
 	<repositories>
-
+		<!--
 		<repository>
 			<id>spring-ide</id>
 			<layout>p2</layout>
 			<url>https://dist.springframework.org/${dist.type}/IDE/${dist.spring-ide-version}</url>
-		</repository>
+		</repository> -->
 	</repositories>
   
 	<pluginRepositories>

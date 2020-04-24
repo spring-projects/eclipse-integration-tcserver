@@ -27,4 +27,3 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: com.vmware.vfabric.ide.eclipse.tcserver.internal.core;x-internal:=true,
  com.vmware.vfabric.ide.eclipse.tcserver.tests;x-internal:=true,
  com.vmware.vfabric.ide.eclipse.tcserver.tests.support
-Import-Package: org.springsource.ide.eclipse.commons.frameworks.test.util
