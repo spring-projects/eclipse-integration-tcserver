@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2014 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.vmware.vfabric.ide.eclipse.tcserver.internal.core;
 
+import java.nio.file.FileSystems;
+import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeoutException;
@@ -42,7 +44,6 @@ import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 import org.eclipse.wst.xml.core.internal.contentmodel.util.NamespaceTable;
 import org.eclipse.wst.xml.core.internal.document.DOMModelImpl;
 import org.eclipse.wst.xml.core.internal.provisional.document.IDOMDocument;
-import org.springframework.util.AntPathMatcher;
 
 /**
  * Publishes and reloads modules through JMX. Only modules that have auto reload
@@ -200,13 +201,12 @@ public class TcPublisher extends PublishOperation2 {
 			}
 			boolean isStatic = false;
 			// Check the configuration options for static resources
-			AntPathMatcher matcher = new AntPathMatcher();
 			TcServer tcServer = (TcServer) server.getServer().loadAdapter(TcServer.class, null);
 			for (String pattern : StringUtils.splitByWholeSeparator(tcServer.getStaticFilenamePatterns(), ",")) {
-				if (pattern.startsWith("!") && matcher.match(pattern.substring(1), name)) {
+				if (pattern.startsWith("!") && FileSystems.getDefault().getPathMatcher("glob:" + pattern.substring(1)).matches(Paths.get(name))) {
 					isStatic = false;
 				}
-				else if (matcher.match(pattern, name)) {
+				else if (FileSystems.getDefault().getPathMatcher("glob:" + pattern).matches(Paths.get(name))) {
 					isStatic = true;
 				}
 			}
