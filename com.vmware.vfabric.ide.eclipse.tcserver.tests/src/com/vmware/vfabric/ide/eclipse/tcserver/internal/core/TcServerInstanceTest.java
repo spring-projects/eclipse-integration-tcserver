@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012, 2018 Spring IDE Developers
+ * Copyright (c) 2012, 2020 Spring IDE Developers
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 import org.junit.rules.TestName;
 
-import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.ServerHandler;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.ServerHandler;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
 
 /**

@@ -26,7 +26,7 @@ import org.eclipse.wst.server.core.IModule;
 import org.eclipse.wst.server.core.IServer;
 import org.eclipse.wst.server.ui.IServerModule;
 
-import com.vmware.vfabric.ide.eclipse.tcserver.core.util.UiUtil;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.util.UiUtil;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 
 /**

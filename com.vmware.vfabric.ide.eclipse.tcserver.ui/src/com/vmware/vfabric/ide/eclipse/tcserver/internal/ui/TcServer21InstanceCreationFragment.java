@@ -64,8 +64,8 @@ import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 import org.eclipse.wst.server.ui.wizard.IWizardHandle;
 import org.eclipse.wst.server.ui.wizard.WizardFragment;
 
-import com.vmware.vfabric.ide.eclipse.tcserver.core.util.FileUtil;
-import com.vmware.vfabric.ide.eclipse.tcserver.core.util.UiUtil;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.util.FileUtil;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.util.UiUtil;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerCorePlugin;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntime;

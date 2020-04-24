@@ -15,16 +15,13 @@ Require-Bundle: org.eclipse.core.resources,
  org.apache.ant,
  org.eclipse.jdt.core,
  com.vmware.vfabric.ide.eclipse.tcserver.reloading,
- org.springsource.ide.eclipse.commons.configurator;bundle-version="2.8.0";resolution:=optional,
+ com.vmware.vfabric.ide.eclipse.tcserver.configurator,
  org.eclipse.mylyn.commons.net;bundle-version="3.0.0",
  org.eclipse.core.commands,
  org.eclipse.ui.workbench,
- org.eclipse.jface,
- org.eclipse.jdt.ui,
- org.eclipse.ui.browser
+ org.eclipse.jface
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Export-Package: com.vmware.vfabric.ide.eclipse.tcserver.core.util;x-friends:="com.vmware.vfabric.ide.eclipse.tcserver.insight.ui,com.vmware.vfabric.ide.eclipse.tcserver.ui,com.vmware.vfabric.ide.eclipse.tcserver.tests",
- com.vmware.vfabric.ide.eclipse.tcserver.internal.core;x-friends:="com.vmware.vfabric.ide.eclipse.tcserver.ui,com.vmware.vfabric.ide.eclipse.tcserver.insight.ui,com.vmware.vfabric.ide.eclipse.tcserver.livegraph"
+Export-Package: com.vmware.vfabric.ide.eclipse.tcserver.internal.core;x-friends:="com.vmware.vfabric.ide.eclipse.tcserver.ui,com.vmware.vfabric.ide.eclipse.tcserver.insight.ui,com.vmware.vfabric.ide.eclipse.tcserver.livegraph"
 Bundle-Activator: com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerCorePlugin
 Bundle-ActivationPolicy: lazy
 Import-Package: org.eclipse.core.runtime,

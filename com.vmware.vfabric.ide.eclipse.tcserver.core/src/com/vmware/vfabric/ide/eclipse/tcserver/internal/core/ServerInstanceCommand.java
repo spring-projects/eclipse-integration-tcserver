@@ -16,11 +16,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.vmware.vfabric.ide.eclipse.tcserver.core.util.OutputWriter;
-import com.vmware.vfabric.ide.eclipse.tcserver.core.util.ProcessRunner;
-import com.vmware.vfabric.ide.eclipse.tcserver.core.util.StandardProcessRunner;
-import com.vmware.vfabric.ide.eclipse.tcserver.core.util.SystemErrOutputWriter;
-import com.vmware.vfabric.ide.eclipse.tcserver.core.util.SystemOutOutputWriter;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.util.OutputWriter;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.util.ProcessRunner;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.util.StandardProcessRunner;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.util.SystemErrOutputWriter;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.util.SystemOutOutputWriter;
 
 /**
  * @author Christian Dupuis

@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.wst.server.core.IServerAttributes;
 
-import com.vmware.vfabric.ide.eclipse.tcserver.core.util.FileUtil;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.util.FileUtil;
 
 /**
  * @author Tomasz Zarna

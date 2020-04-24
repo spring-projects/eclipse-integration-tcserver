@@ -24,6 +24,7 @@ import org.eclipse.wst.server.core.IServerWorkingCopy;
 import org.eclipse.wst.server.core.internal.RuntimeWorkingCopy;
 import org.eclipse.wst.server.core.internal.ServerWorkingCopy;
 
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.ServerHandler;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.ITcRuntime;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer21ServerHandlerCallback;

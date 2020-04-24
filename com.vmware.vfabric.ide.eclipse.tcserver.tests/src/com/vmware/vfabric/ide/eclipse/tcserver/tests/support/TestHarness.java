@@ -15,7 +15,9 @@ import java.net.URI;
 
 import org.junit.Assert;
 
-import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.ZipFileUtil.PermissionSetter;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.util.DownloadManager;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.util.ZipFileUtil;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.util.ZipFileUtil.PermissionSetter;
 
 /**
  * @author Steffen Pingel

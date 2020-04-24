@@ -20,8 +20,8 @@ import org.junit.After;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import com.vmware.vfabric.ide.eclipse.tcserver.core.util.FileUtil;
-import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.ServerHandler;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.ServerHandler;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.util.FileUtil;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.StsTestUtil;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerFixture;
 import com.vmware.vfabric.ide.eclipse.tcserver.tests.support.TcServerTestPlugin;

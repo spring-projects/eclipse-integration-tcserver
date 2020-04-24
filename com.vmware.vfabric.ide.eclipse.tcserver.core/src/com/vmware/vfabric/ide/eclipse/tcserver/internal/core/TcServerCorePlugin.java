@@ -14,10 +14,10 @@ import org.eclipse.core.resources.IResourceChangeEvent;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Plugin;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-public class TcServerCorePlugin extends Plugin {
+public class TcServerCorePlugin extends AbstractUIPlugin  {
 
 	public static final String PLUGIN_ID = "com.vmware.vfabric.ide.eclipse.tcserver.core";
 

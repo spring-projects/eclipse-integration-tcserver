@@ -15,8 +15,9 @@ Require-Bundle: org.eclipse.debug.ui,
  org.eclipse.wst.server.core,
  org.eclipse.wst.server.ui,
  com.vmware.vfabric.ide.eclipse.tcserver.core,
- org.apache.commons.lang,
- org.eclipse.jdt.launching
+ org.eclipse.jdt.launching,
+ com.vmware.vfabric.ide.eclipse.tcserver.configurator,
+ org.apache.commons.lang
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: com.vmware.vfabric.ide.eclipse.tcserver.internal.ui.TcServerUiPlugin

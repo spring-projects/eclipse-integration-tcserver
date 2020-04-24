@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012 Pivotal Software, Inc.
+ * Copyright (c) 2012, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -91,15 +91,15 @@ public class ExtendedTcStaticResourcesEditorSection extends ServerEditorSection 
 			return getElements(parentElement);
 		}
 
-		public Object[] getElements(Object inputElement) {
+		public String[] getElements(Object inputElement) {
 			if (inputElement instanceof IServer) {
 				IServer server = (IServer) inputElement;
 				TcServer tcServer = (TcServer) server.loadAdapter(TcServer.class, null);
-				String[] filenames = StringUtils.splitByWholeSeparator(tcServer.getStaticFilenamePatterns(), ",");
+				String[] filenames = tcServer.getStaticFilenamePatterns().split(",");
 				return filenames;
 
 			}
-			return new Object[0];
+			return new String[0];
 		}
 
 		public Object getParent(Object element) {
@@ -343,9 +343,9 @@ public class ExtendedTcStaticResourcesEditorSection extends ServerEditorSection 
 						});
 				if (dialog.open() == Dialog.OK) {
 					updating = true;
-					List<Object> filenames = new ArrayList<Object>(Arrays.asList(contentProvider.getElements(server)));
+					List<String> filenames = new ArrayList<>(Arrays.asList(contentProvider.getElements(server)));
 					filenames.add(dialog.getValue());
-					execute(new ModifyStaticResourcesCommand(serverWorkingCopy, StringUtils.join(filenames, ",")));
+					execute(new ModifyStaticResourcesCommand(serverWorkingCopy, String.join(",", filenames)));
 					filenamesTableViewer.setInput(server);
 					filenamesTableViewer.setSelection(new StructuredSelection(dialog.getValue()));
 					// update buttons
@@ -365,9 +365,9 @@ public class ExtendedTcStaticResourcesEditorSection extends ServerEditorSection 
 					return;
 				}
 				updating = true;
-				List<Object> filenames = new ArrayList<Object>(Arrays.asList(contentProvider.getElements(server)));
+				List<String> filenames = new ArrayList<>(Arrays.asList(contentProvider.getElements(server)));
 				filenames.remove(selectedArtefact);
-				execute(new ModifyStaticResourcesCommand(serverWorkingCopy, StringUtils.join(filenames, ",")));
+				execute(new ModifyStaticResourcesCommand(serverWorkingCopy, String.join(",", filenames)));
 				filenamesTableViewer.setInput(server);
 				// update buttons
 				updating = false;
@@ -381,16 +381,16 @@ public class ExtendedTcStaticResourcesEditorSection extends ServerEditorSection 
 			public void widgetSelected(SelectionEvent e) {
 				Object selectedArtefact = ((IStructuredSelection) filenamesTableViewer.getSelection())
 						.getFirstElement();
-				List<Object> modules = new ArrayList<Object>();
+				List<String> modules = new ArrayList<>();
 				modules.addAll(Arrays.asList(contentProvider.getElements(server)));
 				int index = modules.indexOf(selectedArtefact);
 				modules.remove(selectedArtefact);
-				modules.add(index - 1, selectedArtefact);
+				modules.add(index - 1, selectedArtefact.toString());
 				if (updating) {
 					return;
 				}
 				updating = true;
-				execute(new ModifyStaticResourcesCommand(serverWorkingCopy, StringUtils.join(modules, ",")));
+				execute(new ModifyStaticResourcesCommand(serverWorkingCopy, String.join(",", modules)));
 				filenamesTableViewer.setInput(server);
 				updateButtons(selectedArtefact);
 				updating = false;
@@ -404,16 +404,16 @@ public class ExtendedTcStaticResourcesEditorSection extends ServerEditorSection 
 			public void widgetSelected(SelectionEvent e) {
 				Object selectedArtefact = ((IStructuredSelection) filenamesTableViewer.getSelection())
 						.getFirstElement();
-				List<Object> modules = new ArrayList<Object>();
+				List<String> modules = new ArrayList<>();
 				modules.addAll(Arrays.asList(contentProvider.getElements(server)));
 				int index = modules.indexOf(selectedArtefact);
 				modules.remove(selectedArtefact);
-				modules.add(index + 1, selectedArtefact);
+				modules.add(index + 1, selectedArtefact.toString());
 				if (updating) {
 					return;
 				}
 				updating = true;
-				execute(new ModifyStaticResourcesCommand(serverWorkingCopy, StringUtils.join(modules, ",")));
+				execute(new ModifyStaticResourcesCommand(serverWorkingCopy, String.join(",", modules)));
 				filenamesTableViewer.setInput(server);
 				updateButtons(selectedArtefact);
 				updating = false;

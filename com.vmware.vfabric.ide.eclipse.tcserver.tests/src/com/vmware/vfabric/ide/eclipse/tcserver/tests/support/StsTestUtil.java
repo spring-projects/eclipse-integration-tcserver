@@ -86,7 +86,7 @@ import org.osgi.framework.Version;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 
-import com.vmware.vfabric.ide.eclipse.tcserver.core.util.FileUtil;
+import com.vmware.vfabric.ide.eclipse.tcserver.configurator.util.FileUtil;
 
 /**
  * @author Steffen Pingel
