@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="com.springsource.sts.ide.ui" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="com.vmware.vfabric.ide.eclipse.tcserver.configurator" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="com.springsource.sts.ide.ui" id="configurator" name="STS Configurator"/>
+         <meta.schema plugin="com.vmware.vfabric.ide.eclipse.tcserver.configurator" id="configurator" name="Tc Server Configurator"/>
       </appinfo>
       <documentation>
          [Enter description of this extension point.]

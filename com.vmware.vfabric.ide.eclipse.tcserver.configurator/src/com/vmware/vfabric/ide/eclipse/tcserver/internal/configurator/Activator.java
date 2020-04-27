@@ -88,7 +88,7 @@ public class Activator extends AbstractUIPlugin {
 
 	static class ConfiguratorExtensionPointReader {
 
-		private static final String EXTENSION_ID_CONFIGURATOR = "com.springsource.sts.ide.ui.configurator";
+		private static final String EXTENSION_ID_CONFIGURATOR = "com.vmware.vfabric.ide.eclipse.tcserver.configurator";
 
 		private static final String ELEMENT_CONFIGURATOR = "configurator";
 

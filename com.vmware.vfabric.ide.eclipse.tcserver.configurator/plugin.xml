@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
-	<extension-point id="com.springsource.sts.ide.configurator.participant" name="STS Workspace Configurator"
+	<extension-point id="com.vmware.vfabric.ide.eclipse.tcserver.configurator.participant" name="Tc Server Workspace Configurator"
 		schema="schema/participant.exsd" />
-	<extension-point id="com.springsource.sts.ide.configurator.serverConfigurations" name="STS Server Configurations"
+	<extension-point id="com.vmware.vfabric.ide.eclipse.tcserver.configurator.serverConfigurations" name="Tc Server Configurations"
 		schema="schema/serverConfigurations.exsd" />
-	<extension-point id="com.springsource.sts.ide.ui.configurator" name="STS Configurator"
+	<extension-point id="com.vmware.vfabric.ide.eclipse.tcserver.configurator" name="Tc Server Configurator"
 		schema="schema/configurator.exsd" />
   <extension
         point="org.eclipse.ui.startup">
@@ -23,16 +23,16 @@
 	</extension>
 	
 	<extension
-          point="com.springsource.sts.ide.configurator.participant">
+          point="com.vmware.vfabric.ide.eclipse.tcserver.configurator.participant">
        <participant
              class="com.vmware.vfabric.ide.eclipse.tcserver.internal.configurator.server.ServerWorkspaceConfigurator"
-             id="com.springsource.sts.ide.configurator.ServerConfigurator">
+             id="com.vmware.vfabric.ide.eclipse.tcserver.configurator.ServerConfigurator">
        </participant>
     </extension>
 
 	
 	<extension
-        point="com.springsource.sts.ide.ui.configurator">
+        point="com.vmware.vfabric.ide.eclipse.tcserver.configurator">
      	<configurator
            class="com.vmware.vfabric.ide.eclipse.tcserver.internal.configurator.ConfiguratorImporter">
      	</configurator>

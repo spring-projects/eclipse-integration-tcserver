@@ -72,7 +72,7 @@ public class ConfiguratorImporter implements IStartup, IConfigurationContext, IC
 
 		private static final String ELEMENT_PARTICIPANT = "participant";
 
-		private static final String EXTENSION_ID_PARTICIPANT = "com.springsource.sts.ide.configurator.participant";
+		private static final String EXTENSION_ID_PARTICIPANT = "com.vmware.vfabric.ide.eclipse.tcserver.configurator.participant";
 
 		public static Set<InstallableItem> getInstallableItems() {
 			Set<InstallableItem> items = new HashSet<InstallableItem>();

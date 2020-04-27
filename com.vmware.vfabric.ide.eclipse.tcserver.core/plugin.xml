@@ -325,7 +325,7 @@
   </extension>
 
   <extension
-        point="com.springsource.sts.ide.configurator.serverConfigurations">
+        point="com.vmware.vfabric.ide.eclipse.tcserver.configurator.serverConfigurations">
      <runtime
            archivePath="vfabric-tc-server-developer"
            bundleId="com.springsource.server.tc.bundle"

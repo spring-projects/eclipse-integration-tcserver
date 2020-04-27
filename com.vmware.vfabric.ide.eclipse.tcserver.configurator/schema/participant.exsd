@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="com.springsource.sts.ide.configurator" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="com.vmware.vfabric.ide.eclipse.tcserver.configurator" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="com.springsource.sts.ide.configurator" id="participant" name="STS Workspace Configurator"/>
+         <meta.schema plugin="com.vmware.vfabric.ide.eclipse.tcserver.configurator" id="participant" name="Tc Server Workspace Configurator"/>
       </appinfo>
       <documentation>
          Provides an contribution mechanism for registering classes that provide automatic workspace configuration.
@@ -109,7 +109,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="identifier" basedOn="com.springsource.sts.ide.configurator.participant/participant/@id"/>
+                  <meta.attribute kind="identifier" basedOn="com.vmware.vfabric.ide.eclipse.tcserver.configurator.participant/participant/@id"/>
                </appinfo>
             </annotation>
          </attribute>

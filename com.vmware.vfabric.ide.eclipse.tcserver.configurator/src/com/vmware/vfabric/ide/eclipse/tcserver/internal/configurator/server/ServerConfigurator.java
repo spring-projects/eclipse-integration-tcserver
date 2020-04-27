@@ -69,7 +69,7 @@ public class ServerConfigurator {
 
 		private static final String ELEMENT_RUNTIME = "runtime";
 
-		private static final String EXTENSION_ID = "com.springsource.sts.ide.configurator.serverConfigurations";
+		private static final String EXTENSION_ID = "com.vmware.vfabric.ide.eclipse.tcserver.configurator.serverConfigurations";
 
 		public static Set<ServerDescriptor> getDescriptors() {
 			Set<ServerDescriptor> items = new HashSet<ServerDescriptor>();
