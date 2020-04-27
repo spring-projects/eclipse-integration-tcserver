@@ -158,7 +158,11 @@ public class HttpUtil {
 					.getServiceReference(IProvisioningAgent.class);
 			IProvisioningAgent provisioningAgent = bundleContext.getService(serviceReference);
 			transport = provisioningAgent.getService(Transport.class);
+			System.out.println("TRANSPORT created " + transport.getClass());
 			bundleContext.ungetService(serviceReference);
+		}
+		else {
+			System.out.println("TRANSPORT is " + transport.getClass());
 		}
 		return transport;
 	}

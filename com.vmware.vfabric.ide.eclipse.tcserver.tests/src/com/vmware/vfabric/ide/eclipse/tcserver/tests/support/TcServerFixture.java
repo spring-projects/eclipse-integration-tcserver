@@ -166,7 +166,6 @@ public class TcServerFixture extends TestConfiguration {
 
 	@Override
 	public TcServerHarness createHarness() {
-		System.out.println("Creating harness for server with download url: " + getDownloadUrl());
 		return new TcServerHarness(this);
 	}
 
