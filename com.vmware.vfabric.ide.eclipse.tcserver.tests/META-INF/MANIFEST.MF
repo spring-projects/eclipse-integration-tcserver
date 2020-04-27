@@ -21,7 +21,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.jst.jee.web,
  org.eclipse.jst.ejb.ui,
  org.eclipse.ui.ide,
- org.eclipse.equinox.p2.core,
  org.eclipse.equinox.p2.metadata,
  org.eclipse.equinox.p2.engine
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

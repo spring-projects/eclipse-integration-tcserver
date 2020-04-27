@@ -67,6 +67,9 @@ public class TcServerProvisioningTest {
 	public void testCreateServer() throws Exception {
 		Assume.assumeNotNull(fixture.getDownloadUrl());
 		try {
+			if (harness == null) {
+				System.out.println("!!! No harness for " + fixture.getDownloadUrl() + " description=" + fixture.getDescription() + " type=" + fixture.getServerType());
+			}
 			IServer server = harness.createServer(null);
 			assertNotNull(server);
 		}
