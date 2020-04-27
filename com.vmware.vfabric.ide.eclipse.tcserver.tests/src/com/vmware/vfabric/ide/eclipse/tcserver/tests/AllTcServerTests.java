@@ -19,6 +19,7 @@ import com.vmware.vfabric.ide.eclipse.tcserver.configurator.tests.ConfiguratorIm
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.PropertyWriterTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServer40TemplatePropertiesReaderTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerBehaviourTest;
+import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerConfiguratorImporterTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerDeploymentTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerInstanceTest;
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerRuntimeClasspathProviderTest;
@@ -37,7 +38,7 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.core.TcServerVersionHand
 		ConfiguratorActionTest.class,
 		ConfiguratorImporterTest.class,
 		TcServerBehaviourTest.class, //
-//		TcServerConfiguratorImporterTest.class, //
+		TcServerConfiguratorImporterTest.class, //
 		TcServerDeploymentTest.class, //
 		TcServerRuntimeClasspathProviderTest.class, //
 		TcServerRuntimeTest.class, //

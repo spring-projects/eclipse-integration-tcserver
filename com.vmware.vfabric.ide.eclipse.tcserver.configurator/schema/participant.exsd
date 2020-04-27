@@ -131,7 +131,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn="org.springsource.ide.eclipse.commons.configurator.WorkspaceConfiguratorParticipant:"/>
+                  <meta.attribute kind="java" basedOn="com.vmware.vfabric.ide.eclipse.tcserver.configurator.WorkspaceConfiguratorParticipant:"/>
                </appinfo>
             </annotation>
          </attribute>
