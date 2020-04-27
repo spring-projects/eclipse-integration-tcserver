@@ -12,7 +12,6 @@ package com.vmware.vfabric.ide.eclipse.tcserver.configurator.tests;
 
 import org.eclipse.equinox.internal.p2.engine.ActionManager;
 import org.eclipse.equinox.p2.engine.spi.ProvisioningAction;
-import org.eclipse.equinox.p2.metadata.VersionRange;
 
 import com.vmware.vfabric.ide.eclipse.tcserver.internal.configurator.Activator;
 
@@ -22,7 +21,7 @@ public class ConfiguratorActionTest extends TestCase {
 
 	public void testActionPresent() {
 		ActionManager manager = new ActionManager();
-		ProvisioningAction action = manager.getAction("com.springsource.sts.ide.configure", VersionRange.create("1.0.0"));
+		ProvisioningAction action = manager.getAction("com.springsource.sts.ide.configure", null);
 		assertNotNull("Expected com.springsource.sts.ide.configure action, got null", action);
 	}
 
