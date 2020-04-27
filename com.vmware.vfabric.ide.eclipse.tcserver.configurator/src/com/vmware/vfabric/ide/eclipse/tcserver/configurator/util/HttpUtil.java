@@ -31,6 +31,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubMonitor;
 import org.eclipse.equinox.internal.p2.repository.Transport;
 import org.eclipse.equinox.p2.core.IProvisioningAgent;
+import org.eclipse.mylyn.internal.discovery.core.util.HttpClientTransportService;
 import org.eclipse.osgi.util.NLS;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceReference;
@@ -42,6 +43,33 @@ import com.vmware.vfabric.ide.eclipse.tcserver.internal.configurator.Activator;
  * @author Steffen Pingel
  */
 public class HttpUtil {
+
+	@FunctionalInterface
+	private interface TransportWrapper {
+		IStatus download(URI uri, OutputStream out, IProgressMonitor monitor);
+	}
+
+	private static TransportWrapper transport;
+
+	private static TransportWrapper getTransport() {
+		if (transport == null) {
+			BundleContext bundleContext = Activator.getDefault().getBundle().getBundleContext();
+			ServiceReference<IProvisioningAgent> serviceReference = bundleContext
+					.getServiceReference(IProvisioningAgent.class);
+			IProvisioningAgent provisioningAgent = bundleContext.getService(serviceReference);
+			Transport p2Transport = provisioningAgent.getService(Transport.class);
+			if (p2Transport == null) {
+				HttpClientTransportService mylynTransport = new HttpClientTransportService();
+				transport = (uri, out, monitor) -> mylynTransport.download(uri, out, monitor);
+			}
+			else {
+				transport = (uri, out, monitor) -> p2Transport.download(uri, out, monitor);
+			}
+			bundleContext.ungetService(serviceReference);
+		}
+		return transport;
+
+	}
 
 	public static IStatus download(String url, File archiveFile, File targetDirectory, IProgressMonitor monitor) {
 		return download(url, archiveFile, targetDirectory, null, monitor);
@@ -147,24 +175,6 @@ public class HttpUtil {
 		if (!result.isOK()) {
 			throw new CoreException(result);
 		}
-	}
-
-	private static Transport transport;
-
-	private static Transport getTransport() {
-		if (transport == null) {
-			BundleContext bundleContext = Activator.getDefault().getBundle().getBundleContext();
-			ServiceReference<IProvisioningAgent> serviceReference = bundleContext
-					.getServiceReference(IProvisioningAgent.class);
-			IProvisioningAgent provisioningAgent = bundleContext.getService(serviceReference);
-			transport = provisioningAgent.getService(Transport.class);
-			System.out.println("TRANSPORT created " + transport.getClass());
-			bundleContext.ungetService(serviceReference);
-		}
-		else {
-			System.out.println("TRANSPORT is " + transport.getClass());
-		}
-		return transport;
 	}
 
 	public static void ping(URI uri) throws MalformedURLException, IOException, CoreException {

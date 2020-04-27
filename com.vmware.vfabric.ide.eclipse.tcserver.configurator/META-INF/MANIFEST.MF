@@ -17,7 +17,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.browser,
  org.eclipse.equinox.p2.repository,
  org.eclipse.equinox.p2.core,
- org.eclipse.equinox.p2.touchpoint.natives
+ org.eclipse.equinox.p2.touchpoint.natives,
+ org.eclipse.mylyn.discovery.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Eclipse-LazyStart: true
 Bundle-ActivationPolicy: lazy
