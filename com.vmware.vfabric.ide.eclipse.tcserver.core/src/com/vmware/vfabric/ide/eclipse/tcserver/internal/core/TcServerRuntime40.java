@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2018 Pivotal Software, Inc.
+ * Copyright (c) 2018, 2020 Pivotal Software, Inc.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -37,8 +37,8 @@ public class TcServerRuntime40 extends TcServerRuntime {
 			@Override
 			public boolean accept(File dir, String name) {
 				return  (
-							Pattern.matches("developer-\\d\\.\\d\\.\\d\\.(RELEASE|SNAPSHOT-BUILD)", name)
-								|| Pattern.matches("standard-\\d\\.\\d\\.\\d\\.(RELEASE|SNAPSHOT-BUILD)", name)
+							Pattern.matches("developer-\\d+\\.\\d+\\.\\d+\\.(RELEASE|SNAPSHOT-BUILD)", name)
+								|| Pattern.matches("standard-\\d+\\.\\d+\\.\\d+\\.(RELEASE|SNAPSHOT-BUILD)", name)
 						) 
 						&& new File(dir, name).isDirectory();
 			}
