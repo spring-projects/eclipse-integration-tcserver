@@ -210,6 +210,72 @@ STS PARENT POM
 		</profile>
 
 		<profile>
+			<id>e416</id>
+			<properties>
+				<dist.target>e4.16</dist.target>
+				<dist.platform.name>2020-06</dist.platform.name>
+				<dist.platform.id>2020-06</dist.platform.id>
+				<dist.platform.version>4.16</dist.platform.version>
+				<package.qualifierPrefix>e416</package.qualifierPrefix>
+			</properties>
+			<repositories>
+				<repository>
+					<id>platform</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/eclipse/updates/4.16/</url>
+				</repository>
+				<repository>
+					<id>2020-06</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/releases/2020-06/</url>
+				</repository>
+				<repository>
+					<id>swtbot</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
+				</repository>
+<!--				<repository>
+					<id>eclipse-integration-commons</id>
+					<layout>p2</layout>
+					<url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
+				</repository> -->
+			</repositories>
+		</profile>
+
+		<profile>
+			<id>e417</id>
+			<properties>
+				<dist.target>e4.17</dist.target>
+				<dist.platform.name>2020-09</dist.platform.name>
+				<dist.platform.id>2020-09</dist.platform.id>
+				<dist.platform.version>4.17</dist.platform.version>
+				<package.qualifierPrefix>e417</package.qualifierPrefix>
+			</properties>
+			<repositories>
+<!--				<repository>
+					<id>platform</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/eclipse/updates/4.17/</url>
+				</repository> -->
+				<repository>
+					<id>2020-09</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/releases/2020-09/</url>
+				</repository>
+				<repository>
+					<id>swtbot</id>
+					<layout>p2</layout>
+					<url>https://download.eclipse.org/technology/swtbot/releases/latest/</url>
+				</repository>
+<!--				<repository>
+					<id>eclipse-integration-commons</id>
+					<layout>p2</layout>
+					<url>https://dist.springsource.com/${dist.type}/TOOLS/eclipse-integration-commons/${dist.pathpostfix}</url>
+				</repository> -->
+			</repositories>
+		</profile>
+
+		<profile>
 			<id>build.springsource.com</id>
 			<activation>
 				<property>
