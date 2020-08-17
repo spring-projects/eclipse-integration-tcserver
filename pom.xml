@@ -8,7 +8,7 @@ STS PARENT POM
 
 	<groupId>com.vmware.vfabric.ide.eclipse.tcserver</groupId>
 	<artifactId>com.vmware.vfabric.ide.eclipse.tcserver.parent</artifactId>
-	<version>4.1.0-SNAPSHOT</version>
+	<version>4.1.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<scm>
