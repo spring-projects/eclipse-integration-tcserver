@@ -64,8 +64,7 @@ STS PARENT POM
 
 		<!-- Signing -->
 		<signing.skip>true</signing.skip>
-		<signing.alias>pivotal</signing.alias>
-		<signing.keystore>~/.keytool/pivotal.jks</signing.keystore>
+		<signing.alias>vmware</signing.alias>
 
 		<dist.name>VMware tc Server Integration for Eclipse</dist.name>
 		<dist.project>eclipse-integration-tcserver</dist.project>
