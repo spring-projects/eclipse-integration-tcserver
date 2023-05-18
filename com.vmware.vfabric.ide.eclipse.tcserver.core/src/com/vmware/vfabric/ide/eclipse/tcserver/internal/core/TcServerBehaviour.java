@@ -268,7 +268,6 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 
 		boolean addXmx = true;
 		boolean addXss = true;
-		boolean addMaxPermSize = true;
 		boolean addLogManager = true;
 		boolean addLogConfigFile = true;
 
@@ -280,9 +279,6 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 				}
 				else if (parsedVMArg.startsWith("-Xss")) {
 					addXss = false;
-				}
-				else if (parsedVMArg.startsWith("-XX:MaxPermSize=")) {
-					addMaxPermSize = false;
 				}
 				else if (parsedVMArg.startsWith("-Djava.util.logging.manager")) {
 					addLogManager = false;
@@ -298,10 +294,6 @@ public class TcServerBehaviour extends TomcatServerBehaviour {
 		if (addXss) {
 			argsToAdd.add("-Xss256k");
 		}
-		if (addMaxPermSize) {
-			argsToAdd.add("-XX:MaxPermSize=256m");
-		}
-
 		if (addLogManager) {
 			argsToAdd.add(
 					"-Djava.util.logging.manager=com.springsource.tcserver.serviceability.logging.TcServerLogManager");
